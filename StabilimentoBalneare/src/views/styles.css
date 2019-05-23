@@ -1,0 +1,54 @@
+.root {
+	-fx-background-color: white;
+}
+
+.container {
+	-fx-background-image: url("/images/backgroundSpiaggiaApp_opacity70.jpg");
+	-fx-background-position: center;
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: cover;
+	-fx-alignment: center;
+}
+
+.loginBox {
+	-fx-padding: 30px 50px 50px 50px;
+	-fx-background-color: rgba(255, 255, 255, 0.8);
+	-fx-alignment: center;
+}
+
+.mainButton {
+	-fx-text-alignment: center;	
+	-fx-font-family: 'Myriad Pro'; /* cambiare se non installato */
+	-fx-font-size: 3em;
+	-fx-font-weight: bold;
+	-fx-background-color: #2e3192;
+	-fx-text-fill: white;
+	-fx-padding: 5px 30px;
+	-fx-alignment: center;
+	-fx-cursor: hand;
+	-fx-pref-width: 400px;
+}
+
+.title {
+	-fx-text-alignment: center;	
+	-fx-font-family: 'Berlin Sans FB'; /* cambiare se non installato */
+	-fx-font-size: 3.5em;
+	-fx-padding: 0 0 20px 0;
+}
+
+GridPane.inputFields {
+	-fx-hgap: 10px;
+	-fx-vgap: 20px;
+	-fx-padding: 20px 0px;
+	-fx-alignment: center;
+}
+
+.inputText {
+	-fx-font: 1.8em Calibri;
+}
+
+Label {
+	-fx-font-family: 'Roboto Condensed'; /* cambiare se non installato */
+	-fx-font-size: 1.8em;
+	-fx-text-fill: black;
+}

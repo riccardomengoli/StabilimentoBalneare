@@ -1,6 +1,6 @@
 module stabilimentoBalneare {
 	requires javafx.base;
-	requires javafx.controls;
+	requires transitive javafx.controls;
 	requires javafx.fxml;
 	requires transitive javafx.graphics;
 	
