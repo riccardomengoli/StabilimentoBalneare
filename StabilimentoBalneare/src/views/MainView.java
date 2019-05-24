@@ -19,7 +19,7 @@ public class MainView extends Application {
 
         stage.getIcons().add(new Image(getClass().getResource("/images/logoTransparent.png").toExternalForm())); 
         stage.setTitle("Stabilimento Balneare");
-        stage.setMinWidth(800);
+        stage.setMinWidth(1024);
         stage.setMinHeight(600);
         stage.setScene(scene);
         stage.show();
