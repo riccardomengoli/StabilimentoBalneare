@@ -7,8 +7,8 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
  
-public class createDb {
-	
+public class Main {
+		
 	static final String createCliente = 
     	"CREATE " +
     		"TABLE CLIENTI ( " +
@@ -39,13 +39,15 @@ public class createDb {
 	;
 	
 	static final String createPrenotazioniTerminate1 = 
-		    "CREATE TABLE PRENOTAZIONI_TERMINATE LIKE PRENOTAZIONI" 
+		    "CREATE TABLE PRENOTAZIONI_TERMINATE AS " + 
+		    "SELECT * " +
+		    "FROM PRENOTAZIONI"
 	;
 	
 	static final String createPrenotazioniTerminate2 = 
 		    "ALTER " +
 		   		"TABLE PRENOTAZIONI_TERMINATE " +
-		 			"ADD saldo DOUBLE NOT NULL"
+		 			"ADD saldo DOUBLE"
 	;
 	
 	static final String createServiziPrenotazione = 
@@ -103,38 +105,46 @@ public class createDb {
 	static final String createPrezzi = 
 		    "CREATE " +
 		   		"TABLE PREZZI ( " +
-		 			"id INT AUTOINCREMENT NOT NULL PRIMARY KEY, " +
+		 			"id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
 		   			"prezzo FLOAT NOT NULL, " + 
 		   			"nomeStagione VARCHAR(40) NOT NULL, " +
 		   			"FOREIGN KEY (nomeStagione) REFERENCES STAGIONI(nomeStagione) )"
 	;
 	
 	static final String createPrezziOmbrelloni1 = 
-		    "CREATE TABLE PREZZI_OMBRELLONI LIKE PREZZI" 
+			 "CREATE TABLE PREZZI_OMBRELLONI AS " + 
+					    "SELECT * " +
+					    "FROM PREZZI" 
 	;
 	
-	static final String createPrezziOmbrellone2 = 
+	static final String createPrezziOmbrelloni2 = 
 			 "ALTER " +
 				   		"TABLE PREZZI_OMBRELLONI " +
-				 		"ADD filaInizio INT NOT NULL, " +
-				   		"filaFine INT NOT NULL"
+				 		"ADD filaInizio INT"
+	;
+	
+	static final String createPrezziOmbrelloni3 = 
+			 "ALTER " +
+				   		"TABLE PREZZI_OMBRELLONI " +
+				   		"ADD filaFine INT"
 	;
 	
 	static final String createPrezziServizi1 = 
-		    "CREATE TABLE PREZZI_SERVIZI LIKE PREZZI" 
+			"CREATE TABLE PREZZI_SERVIZI AS " + 
+				    "SELECT * " +
+				    "FROM PREZZI" 
 	;
 	
 	static final String createPrezziServizi2 = 
 			 "ALTER " +
 				   		"TABLE PREZZI_OMBRELLONI " +
-				 		"ADD nomeServizio VARCHAR(50) FOREIGN KEY REFERENCES SERVIZI(nome) )"
+				 		"ADD nomeServizio VARCHAR(50) REFERENCES SERVIZI(nome)"
 	
 	;
 
 	
 	public static void main(String[] args) {
     	
-    
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection("jdbc:sqlite:C:/Users/miche/Desktop/sample.db");
@@ -144,24 +154,37 @@ public class createDb {
 
             // creo la tabella
             stmt = conn.createStatement();
- 
-            // inserisco due record
             
- 
-            // recupero i dati
+            stmt.executeUpdate(createCliente);
+            stmt.executeUpdate(createOmbrellone);
+            stmt.executeUpdate(createPrenotazione);
+            stmt.executeUpdate(createPrenotazioniTerminate1);
+            stmt.executeUpdate(createPrenotazioniTerminate2);
+            stmt.executeUpdate(createServizi);
+            stmt.executeUpdate(createServiziPrenotazione);
+            stmt.executeUpdate(createFedeltà);
+            stmt.executeUpdate(createEntiTerzi);
+            stmt.executeUpdate(createConvenzioni);
+            stmt.executeUpdate(createStagioni);
+            stmt.executeUpdate(createPrezzi);
+            stmt.executeUpdate(createPrezziOmbrelloni1);
+            stmt.executeUpdate(createPrezziOmbrelloni2);
+            stmt.executeUpdate(createPrezziOmbrelloni3);
+            stmt.executeUpdate(createPrezziServizi1);
+            stmt.executeUpdate(createPrezziServizi2);
             
-            rs = stmt.executeQuery("SELECT * from students");
-            
+            /*
             while(rs.next()) {
             	
             	System.out.println("ID: " + rs.getInt("id"));
             	System.out.println("FIRSTNAME: " + rs.getString("firstName"));
             	System.out.println("LASTNAME: " + rs.getString("lastName"));
            }
+           
+           */
              
-            stmt.close(); // rilascio le risorse
-            pstmt.close(); // rilascio le risorse
-            conn.close(); // termino la connessione
+           stmt.close(); // rilascio le risorse
+           conn.close(); // termino la connessione
         }
         catch(ClassNotFoundException e)
         {
