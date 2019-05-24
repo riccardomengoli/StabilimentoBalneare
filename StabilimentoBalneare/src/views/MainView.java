@@ -17,7 +17,7 @@ public class MainView extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
-        stage.getIcons().add(new Image("/images/logoTransparent.png")); 
+        stage.getIcons().add(new Image(getClass().getResource("/images/logoTransparent.png").toExternalForm())); 
         stage.setTitle("Stabilimento Balneare");
         stage.setMinWidth(800);
         stage.setMinHeight(600);

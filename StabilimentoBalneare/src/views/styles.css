@@ -3,7 +3,7 @@
 }
 
 .container {
-	-fx-background-image: url("/images/backgroundSpiaggiaApp_opacity70.jpg");
+	-fx-background-image: url("../images/backgroundSpiaggiaApp_opacity70.jpg");
 	-fx-background-position: center;
 	-fx-background-repeat: no-repeat;
 	-fx-background-size: cover;
@@ -27,6 +27,10 @@
 	-fx-alignment: center;
 	-fx-cursor: hand;
 	-fx-pref-width: 400px;
+}
+
+VBox.marginButton {
+	-fx-pref-height: 20px;
 }
 
 .title {

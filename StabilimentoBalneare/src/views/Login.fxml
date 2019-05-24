@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.geometry.Insets?>
 
 <FlowPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.LoginEventsController" styleClass="container">
 	<VBox styleClass="loginBox">
@@ -23,6 +24,7 @@
 			<Label text="Password" GridPane.rowIndex="1" GridPane.columnIndex="0" />
 			<PasswordField fx:id="password" styleClass="inputText" GridPane.rowIndex="1" GridPane.columnIndex="1" />
 		</GridPane>
+		<VBox styleClass="marginButton"/> <!-- margine vuoto per bottone -->
 		<Button fx:id="loginButton" onAction="#handleLoginButtonClick" onMouseEntered="#handleHoverInButton"
 			onMouseExited="#handleHoverOutButton" text="Login" styleClass="mainButton" />
 	</VBox>
