@@ -160,7 +160,7 @@ public class createDb {
            }
              
             stmt.close(); // rilascio le risorse
-            pstmt.close(); // rilascio le risorse
+            //pstmt.close(); // rilascio le risorse
             conn.close(); // termino la connessione
         }
         catch(ClassNotFoundException e)

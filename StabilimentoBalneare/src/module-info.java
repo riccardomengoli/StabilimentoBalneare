@@ -1,4 +1,6 @@
 module stabilimentoBalneare {
+	requires java.sql;
+	
 	requires javafx.base;
 	requires transitive javafx.controls;
 	requires javafx.fxml;
