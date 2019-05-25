@@ -1,4 +1,4 @@
-package db;
+package ombrelloniani.model.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
  
-public class createDb {
+public class CreateDB {
 	
 	static final String createCliente = 
     	"CREATE " +
@@ -132,7 +132,7 @@ public class createDb {
 	;
 
 	
-	public static void main(String[] args) {
+	public static void createDB() {
     	
     
         try {

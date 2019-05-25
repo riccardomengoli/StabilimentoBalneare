@@ -1,4 +1,4 @@
-package modelStabilimento;
+package ombrelloniani.model;
 
 import java.util.List;
 

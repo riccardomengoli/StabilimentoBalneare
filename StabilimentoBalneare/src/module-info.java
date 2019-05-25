@@ -6,6 +6,6 @@ module stabilimentoBalneare {
 	requires javafx.fxml;
 	requires transitive javafx.graphics;
 	
-	opens views to javafx.fxml;
-	exports views;
+	opens ombrelloniani.view.fxmlControllers to javafx.fxml;
+	exports ombrelloniani.view;
 }

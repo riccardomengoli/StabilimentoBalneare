@@ -1,4 +1,4 @@
-package modelStabilimento;
+package ombrelloniani.model;
 
 public class Ombrellone {
 	

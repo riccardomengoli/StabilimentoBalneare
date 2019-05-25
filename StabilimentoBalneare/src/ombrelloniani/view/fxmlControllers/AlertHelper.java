@@ -1,4 +1,4 @@
-package views;
+package ombrelloniani.view.fxmlControllers;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;

@@ -1,4 +1,4 @@
-package views;
+package ombrelloniani.view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,12 +12,12 @@ public class MainView extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-    	Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+    	Parent root = FXMLLoader.load(getClass().getResource("fxml/Login.fxml"));
 
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());
 
-        stage.getIcons().add(new Image(getClass().getResource("/images/logoTransparent.png").toExternalForm())); 
+        stage.getIcons().add(new Image(getClass().getResource("images/logoTransparent.png").toExternalForm())); 
         stage.setTitle("Stabilimento Balneare");
         stage.setMinWidth(1024);
         stage.setMinHeight(600);
