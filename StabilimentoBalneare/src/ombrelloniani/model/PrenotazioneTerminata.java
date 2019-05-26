@@ -11,6 +11,11 @@ public class PrenotazioneTerminata extends Prenotazione {
 		super();
 	}
 
+	public PrenotazioneTerminata(Prenotazione prenotazione) {
+		super(prenotazione.getIdPrenotazione(), prenotazione.getDataInizio(), prenotazione.getDataFine(), 
+				prenotazione.getNumeroLettini(), prenotazione.getOmbrelloni(), prenotazione.getCliente(), prenotazione.getServizi());
+	}
+	
 	public PrenotazioneTerminata(int idPrenotazione, Date dataInizio, Date dataFine, int numeroLettini,
 			List<Ombrellone> ombrelloni, Cliente cliente, List<Servizio> servizi, float saldo) {
 		

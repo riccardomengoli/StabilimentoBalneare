@@ -68,7 +68,7 @@ public class Main {
 		   			"descrizione VARCHAR(100) NOT NULL )"
 	;
 	
-	static final String createFedeltà = 
+	static final String createFedelta = 
 		    "CREATE " +
 		   		"TABLE FEDELTA ( " +
 		 			"nome VARCHAR(40) NOT NULL PRIMARY KEY, " +
@@ -162,7 +162,7 @@ public class Main {
             stmt.executeUpdate(createPrenotazioniTerminate2);
             stmt.executeUpdate(createServizi);
             stmt.executeUpdate(createServiziPrenotazione);
-            stmt.executeUpdate(createFedeltà);
+            stmt.executeUpdate(createFedeltï¿½);
             stmt.executeUpdate(createEntiTerzi);
             stmt.executeUpdate(createConvenzioni);
             stmt.executeUpdate(createStagioni);

@@ -1,12 +1,12 @@
 package ombrelloniani.model;
 
-public class Fedeltà {
+public class Fedelta {
 	
 	private String nome;
 	private int giorni;
 	private double sconto;
 
-	public Fedeltà(String nome, int giorni, double sconto) {
+	public Fedelta(String nome, int giorni, double sconto) {
 		super();
 		this.nome = nome;
 		this.giorni = giorni;
