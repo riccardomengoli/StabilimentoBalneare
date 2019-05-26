@@ -8,6 +8,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Window;
+import ombrelloniani.view.VistaNavigator;
 
 
 public class LoginEventsController {
@@ -43,14 +44,24 @@ public class LoginEventsController {
 		
 		//Chiama login del controller
 		//controller.verificaCredenziali(username.getText(), password.getText());
+        //XXX TEMP
+        VistaNavigator.loadView(VistaNavigator.HOMEOPERATORE);
 		System.out.println("Chiamata a funzione login");
 	}
 	
+	/*
+	 * Evento all'entrata del mouse sopra il bottone di login.
+	 * Imposta il colore.
+	 */
 	@FXML
 	private void handleHoverInButton (MouseEvent event) {
 		loginButton.setStyle("-fx-background-color: #4449d9;");
 	}
 	
+	/*
+	 * Evento all'uscita del mouse dal bottone di login.
+	 * Resetta il colore principale.
+	 */
 	@FXML
 	private void handleHoverOutButton (MouseEvent event) {
 		loginButton.setStyle("");
