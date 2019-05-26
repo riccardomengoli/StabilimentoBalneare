@@ -1,6 +1,6 @@
 package ombrelloniani.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public class PrenotazioneTerminata extends Prenotazione {
@@ -11,7 +11,7 @@ public class PrenotazioneTerminata extends Prenotazione {
 		super();
 	}
 
-	public PrenotazioneTerminata(int idPrenotazione, LocalDate dataInizio, LocalDate dataFine, int numeroLettini,
+	public PrenotazioneTerminata(int idPrenotazione, Date dataInizio, Date dataFine, int numeroLettini,
 			List<Ombrellone> ombrelloni, Cliente cliente, List<Servizio> servizi, float saldo) {
 		
 		super(idPrenotazione, dataInizio, dataFine, numeroLettini, ombrelloni, cliente, servizi);

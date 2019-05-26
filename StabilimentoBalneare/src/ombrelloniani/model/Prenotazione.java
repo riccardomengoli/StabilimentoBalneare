@@ -1,13 +1,14 @@
 package ombrelloniani.model;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public class Prenotazione {
 	
 	private int idPrenotazione;
-	private LocalDate dataInizio;
-	private LocalDate dataFine;
+	private Date dataInizio;
+	private Date dataFine;
 	private int numeroLettini;
 	private List<Ombrellone> ombrelloni;
 	private Cliente cliente;
@@ -15,7 +16,7 @@ public class Prenotazione {
 	
 	public Prenotazione() {}
 	
-	public Prenotazione(int idPrenotazione, LocalDate dataInizio, LocalDate dataFine, int numeroLettini,
+	public Prenotazione(int idPrenotazione, Date dataInizio, Date dataFine, int numeroLettini,
 			List<Ombrellone> ombrelloni, Cliente cliente, List<Servizio> servizi) {
 		super();
 		this.idPrenotazione = idPrenotazione;
@@ -35,19 +36,19 @@ public class Prenotazione {
 		this.idPrenotazione = idPrenotazione;
 	}
 	
-	public LocalDate getDataInizio() {
+	public Date getDataInizio() {
 		return dataInizio;
 	}
 	
-	public void setDataInizio(LocalDate dataInizio) {
+	public void setDataInizio(Date dataInizio) {
 		this.dataInizio = dataInizio;
 	}
 	
-	public LocalDate getDataFine() {
+	public Date getDataFine() {
 		return dataFine;
 	}
 	
-	public void setDataFine(LocalDate dataFine) {
+	public void setDataFine(Date dataFine) {
 		this.dataFine = dataFine;
 	}
 	
@@ -82,4 +83,5 @@ public class Prenotazione {
 	public void setServizi(List<Servizio> servizi) {
 		this.servizi = servizi;
 	}
+
 }

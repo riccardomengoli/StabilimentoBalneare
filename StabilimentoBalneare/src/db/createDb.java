@@ -1,11 +1,13 @@
-package ombrelloniani.model.db;
+package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
  
-public class CreateDB {
+public class Main {
 		
 	static final String createCliente = 
     	"CREATE " +
@@ -36,14 +38,6 @@ public class CreateDB {
 		   			"FOREIGN KEY (idCliente) REFERENCES CLIENTI(documento) )"
 	;
 	
-	static final String createOmbrelloniPrenotazione = 
-			"CREATE " + 
-				"TABLE OMBRELLONIPRENOTAZIONE ( " +
-				"idPrenotazione INT NOT NULL, " +
-				"idOmbrellone VARCHAR(5) NOT NULL, " +
-				"PRIMARY KEY (idPrenotazione, idOmbrellone) )"
-	;
-				
 	static final String createPrenotazioniTerminate1 = 
 		    "CREATE TABLE PRENOTAZIONI_TERMINATE AS " + 
 		    "SELECT * " +
@@ -155,7 +149,9 @@ public class CreateDB {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection("jdbc:sqlite:C:/Users/miche/Desktop/sample.db");
             Statement stmt;
-            
+            PreparedStatement pstmt;
+            ResultSet rs;
+
             // creo la tabella
             stmt = conn.createStatement();
             
@@ -176,9 +172,17 @@ public class CreateDB {
             stmt.executeUpdate(createPrezziOmbrelloni3);
             stmt.executeUpdate(createPrezziServizi1);
             stmt.executeUpdate(createPrezziServizi2);
-           	stmt.executeUpdate(createOmbrelloniPrenotazione);
             
-            
+            /*
+            while(rs.next()) {
+            	
+            	System.out.println("ID: " + rs.getInt("id"));
+            	System.out.println("FIRSTNAME: " + rs.getString("firstName"));
+            	System.out.println("LASTNAME: " + rs.getString("lastName"));
+           }
+           
+           */
+             
            stmt.close(); // rilascio le risorse
            conn.close(); // termino la connessione
         }

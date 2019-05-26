@@ -17,6 +17,10 @@ public class Cliente {
 		this.idDocumento = idDocumento;
 	}
 
+	public Cliente() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getNome() {
 		return nome;
 	}
