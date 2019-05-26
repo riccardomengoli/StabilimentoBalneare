@@ -27,9 +27,12 @@ public class ControllerLogin {
 
 	
 	public String verificaCredenziali(String username,String password) {
-				
-		try {
 		
+		if(!sanitificazione(username + password)) {
+			return null;
+		}
+		
+		try {
 			openCredenziali();
 			StringTokenizer str;
 			String line;
@@ -37,7 +40,6 @@ public class ControllerLogin {
 			BufferedReader bf = new BufferedReader(this.reader);
 			
 			while((line = bf.readLine()) != null) {
-					
 				str = new StringTokenizer(line);
 				ruolo = str.nextToken();
 				if(username.equals(str.nextToken()) && password.equals(str.nextToken())) {
@@ -55,5 +57,15 @@ public class ControllerLogin {
 		return null;
 	}
 	
+	private boolean sanitificazione(String str) {
+		boolean result = false;
+		if(str.length() < 80)
+			result = true;
+		
+		if(str.contains("|") || str.contains("<") || str.contains(">") || str.contains(" ") || str.contains(";"))
+			return false;
+		
+		return result;
+	}
 
 }
