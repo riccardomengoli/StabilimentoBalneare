@@ -1,0 +1,12 @@
+.logoutButton {
+	-fx-background-color: #8bfbff;
+}
+
+.menuHome {
+	
+}
+
+.menuButton {
+	-fx-pref-height: 200px;
+	-fx-pref-width: 400px;
+}
