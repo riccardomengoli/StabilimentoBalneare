@@ -75,7 +75,7 @@ public class CreateDB {
 		   			"descrizione VARCHAR(100) NOT NULL )"
 	;
 	
-	static final String createFedelt� = 
+	static final String createFedelta = 
 		    "CREATE " +
 		   		"TABLE FEDELTA ( " +
 		 			"nome VARCHAR(40) NOT NULL PRIMARY KEY, " +
@@ -167,7 +167,7 @@ public class CreateDB {
             stmt.executeUpdate(createPrenotazioniTerminate2);
             stmt.executeUpdate(createServizi);
             stmt.executeUpdate(createServiziPrenotazione);
-            stmt.executeUpdate(createFedelt�);
+            stmt.executeUpdate(createFedelta);
             stmt.executeUpdate(createEntiTerzi);
             stmt.executeUpdate(createConvenzioni);
             stmt.executeUpdate(createStagioni);
