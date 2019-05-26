@@ -53,7 +53,8 @@ public class CreateDB {
 	static final String createPrenotazioniTerminate2 = 
 		    "ALTER " +
 		   		"TABLE PRENOTAZIONI_TERMINATE " +
-		 			"ADD saldo DOUBLE"
+		 			"ADD saldo DOUBLE " +
+		 			"ADD giorni DOUBLE"
 	;
 	
 	static final String createServiziPrenotazione = 
@@ -74,7 +75,7 @@ public class CreateDB {
 		   			"descrizione VARCHAR(100) NOT NULL )"
 	;
 	
-	static final String createFedeltà = 
+	static final String createFedelta = 
 		    "CREATE " +
 		   		"TABLE FEDELTA ( " +
 		 			"nome VARCHAR(40) NOT NULL PRIMARY KEY, " +
@@ -166,7 +167,7 @@ public class CreateDB {
             stmt.executeUpdate(createPrenotazioniTerminate2);
             stmt.executeUpdate(createServizi);
             stmt.executeUpdate(createServiziPrenotazione);
-            stmt.executeUpdate(createFedeltà);
+            stmt.executeUpdate(createFedelta);
             stmt.executeUpdate(createEntiTerzi);
             stmt.executeUpdate(createConvenzioni);
             stmt.executeUpdate(createStagioni);

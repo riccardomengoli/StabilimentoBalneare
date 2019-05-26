@@ -7,10 +7,10 @@ public class Convenzione {
 	private String nome;
 	private LocalDate dataInizio;
 	private LocalDate dataFine;
-	private double sconto;
+	private float sconto;
 	private EnteTerzo ente;
 	
-	public Convenzione(String nome, LocalDate dataInizio, LocalDate dataFine, double sconto) {
+	public Convenzione(String nome, LocalDate dataInizio, LocalDate dataFine, float sconto) {
 		super();
 		this.nome = nome;
 		this.dataInizio = dataInizio;
@@ -42,11 +42,11 @@ public class Convenzione {
 		this.dataFine = dataFine;
 	}
 
-	public double getSconto() {
+	public float getSconto() {
 		return sconto;
 	}
 
-	public void setSconto(double sconto) {
+	public void setSconto(float sconto) {
 		this.sconto = sconto;
 	}
 

@@ -15,6 +15,10 @@ public class EntryRicevuta {
 		this.totale = totale;
 	}
 
+	public EntryRicevuta() {
+		super();
+	}
+
 	public String getTipoPrezzo() {
 		return tipoPrezzo;
 	}
