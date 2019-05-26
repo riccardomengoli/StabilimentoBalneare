@@ -9,15 +9,20 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import ombrelloniani.model.EntryRicevuta;
+import ombrelloniani.model.Fedelta;
 import ombrelloniani.model.ListaConvenzioni;
 import ombrelloniani.model.ListaFedelta;
 import ombrelloniani.model.ListaPrezzi;
 import ombrelloniani.model.ListaServizi;
+import ombrelloniani.model.Ombrellone;
 import ombrelloniani.model.Prenotazione;
 import ombrelloniani.model.PrenotazioneTerminata;
 import ombrelloniani.model.Ricevuta;
+import ombrelloniani.model.Servizio;
 
 public class TerminaController {
 	
@@ -43,10 +48,15 @@ public class TerminaController {
 			+ "WHERE idPrenotazione = ?";
 	
 	private static String aggiornaPrenotazioniTerminate = 
-			"INSERT INTO PRENOTAZIONI_TERMINATE(idPrenotazione, dataInizio, dataFine, numeroLettini, idCliente, saldo)"
-			+ "VALUES (?, ?, ?, ?, ?, ?)";
+			"INSERT INTO PRENOTAZIONI_TERMINATE(idPrenotazione, dataInizio, dataFine, numeroLettini, idCliente, saldo, giorni)"
+			+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 	
-	public Ricevuta terminaPrenotazione() {
+	private static String giorniTotaliSoggiorno =
+			"SELECT SUM(giorni)"
+			+ "FROM PRENOTAZIONI_TERMINATE"
+			+ "WHERE idCliente = ?";
+
+	public void terminaPrenotazione() {
 		this.prenotazioneTerminata = new PrenotazioneTerminata(prenotazione);
 		
 		if(prenotazione.getDataFine() != Date.valueOf(LocalDate.now())) {
@@ -56,17 +66,15 @@ public class TerminaController {
 		ricevuta = creaRicevuta();
 		prenotazioneTerminata.setSaldo(calcolaSaldo());
 		
-		//se vogliamo prima la ricevuta e poi l'aggiornamento va chiamata dopo direttamente dalla view
+		mostraRicevuta();
+		
 		aggiornaDataBase();
 		controller.writeLog("prenotazione " + prenotazione.getIdPrenotazione()
 				+ "terminata alle " + Date.valueOf(LocalDate.now()));
-		
-		return ricevuta;
 	}
 	
 	public void aggiornaDataBase() {
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-		int queryResult;
 		Connection connection = controller.getConnection();
 		PreparedStatement delete;
 		PreparedStatement insert;
@@ -74,7 +82,7 @@ public class TerminaController {
 		try {
 			delete = connection.prepareStatement(terminaPrenotazione);
 			delete.setInt(1, prenotazione.getIdPrenotazione());
-			queryResult = delete.executeUpdate();
+			delete.executeUpdate();
 			
 			insert = connection.prepareStatement(aggiornaPrenotazioniTerminate);
 			insert.setInt(1, prenotazioneTerminata.getIdPrenotazione());
@@ -83,7 +91,8 @@ public class TerminaController {
 			insert.setInt(4, prenotazioneTerminata.getNumeroLettini());
 			insert.setString(5, prenotazioneTerminata.getCliente().getIdDocumento());
 			insert.setFloat(6, prenotazioneTerminata.getSaldo());
-			queryResult = insert.executeUpdate();
+			insert.setDouble(7, prenotazioneTerminata.getGiorni());
+			insert.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -102,30 +111,21 @@ public class TerminaController {
 		return prenotazioni.get(index);
 	}
 	
-	public double impostaConvenzione(String nome) {
+	public float impostaConvenzione(String nome) {
 		Connection connection = controller.getConnection();
 		PreparedStatement pstm;
-		double sconto = 0;
+		float sconto = 0;
 		try {
 			pstm = connection.prepareStatement(convenzione);
 			pstm.setString(1, nome);
 			ResultSet rs = pstm.executeQuery();
 			
-			sconto = rs.getDouble("sconto");
+			sconto = rs.getFloat("sconto");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return sconto;
-	}
-	
-	private void riempiCampiView() {
-		
-	}
-	
-	private Ricevuta creaRicevuta() {
-		
 	}
 	
 	private float calcolaSaldo() {
@@ -138,4 +138,75 @@ public class TerminaController {
 		return saldo;
 		
 	}
+
+
+	private void mostraRicevuta() {
+		//mostrare la ricevuta sulla view
+	}
+	
+	private Ricevuta creaRicevuta() {
+		ricevuta = new Ricevuta();
+		
+		ricevuta.setEntries(calcolaEntryRicevuta());
+		ricevuta.setPercentualeSconto(calcolaSconto());
+		//String conv = ViewTermina.scegliConvenzione(convenzioni);
+		ricevuta.setPercentualeConvenzione(impostaConvenzione("nomeConvenzione"));
+		ricevuta.setPrezzoTotale();
+		return ricevuta;
+	}
+
+	private float calcolaSconto() {
+		float sconto = 0;
+		double giorni = 0;
+		Connection connection = controller.getConnection();
+		PreparedStatement pstm;
+		
+		try {
+			//da chiedere conferma se va bene cosi per una SUM
+			pstm = connection.prepareStatement(giorniTotaliSoggiorno);
+			pstm.setString(1, prenotazioneTerminata.getCliente().getIdDocumento());
+			ResultSet rs = pstm.executeQuery();
+			giorni = rs.getDouble(1);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(giorni == 0)
+			return sconto;
+		else {
+			for(Fedelta f : fedelta.getFedelta()) {
+				if(giorni >= f.getGiorni()) {
+					if(f.getSconto() > sconto) {
+						sconto = f.getSconto();
+					}
+				}
+			}
+		}
+		
+		return sconto;
+	}
+
+	/*
+	* private String tipoPrezzo;
+	* private String descrizione;
+	* private int giorni;
+	* private float totale;
+	*/
+	
+	private List<EntryRicevuta> calcolaEntryRicevuta() {
+		List<EntryRicevuta> entries = new ArrayList();
+		EntryRicevuta entry = new EntryRicevuta();
+		for(Ombrellone o : prenotazioneTerminata.getOmbrelloni()) {
+			
+		}
+		
+		for(Servizio s : prenotazioneTerminata.getServizi()) {
+			
+		}
+		
+		return entries;
+	}
+	
+	
 }

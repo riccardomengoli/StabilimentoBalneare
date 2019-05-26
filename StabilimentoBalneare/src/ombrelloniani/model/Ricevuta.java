@@ -9,6 +9,10 @@ public class Ricevuta {
 	private float prezzoTotale;
 	private List<EntryRicevuta> entries;
 	
+	public Ricevuta() {
+		super();
+	}
+	
 	public Ricevuta(float percentualeSconto, float percentualeConvenzione, float prezzoTotale,
 			List<EntryRicevuta> entries) {
 		super();
@@ -40,6 +44,14 @@ public class Ricevuta {
 
 	public void setPrezzoTotale(float prezzoTotale) {
 		this.prezzoTotale = prezzoTotale;
+	}
+	
+	public void setPrezzoTotale() {
+		float tot = 0;
+		for(EntryRicevuta e : this.entries) {
+			tot += e.getTotale();
+		}
+		this.prezzoTotale = tot;
 	}
 
 	public List<EntryRicevuta> getEntries() {
