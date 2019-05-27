@@ -20,8 +20,7 @@ public class ControllerLogin implements IControllerLogin {
 		
 		try {
 			
-			if(this.reader == null)
-				this.reader = new FileReader(filePath);
+			this.reader = new FileReader(filePath);
 				
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -39,6 +38,7 @@ public class ControllerLogin implements IControllerLogin {
 			StringTokenizer str;
 			String line;
 			String ruolo = null;
+			boolean utenteTrovato = false;
 			BufferedReader bf = new BufferedReader(this.reader);
 			
 			while((line = bf.readLine()) != null) {
@@ -46,23 +46,27 @@ public class ControllerLogin implements IControllerLogin {
 				ruolo = str.nextToken();
 				if(username.equals(str.nextToken()) && password.equals(str.nextToken())) {
 					this.reader.close();
+					utenteTrovato = true;
 					break;
 				}
 			}
 			
-			if(ruolo.equals("gestore")) {
-				VistaNavigator.loadView(VistaNavigator.HOMEGESTORE);
-			}
+			this.reader.close();
 			
-			else if(ruolo.equals("operatore")) {
-				VistaNavigator.loadView(VistaNavigator.HOMEOPERATORE);
+			if(utenteTrovato) {
+			
+				if(ruolo.equals("gestore")) {
+					VistaNavigator.loadView(VistaNavigator.HOMEGESTORE);
+				}
+				
+				else if(ruolo.equals("operatore")) {
+					VistaNavigator.loadView(VistaNavigator.HOMEOPERATORE);
+				}
 			}
 			
 			else {
 				//throw new OperatoreNonTrovatoException()
 			}
-			
-			this.reader.close();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
