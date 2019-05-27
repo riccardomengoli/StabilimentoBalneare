@@ -1,4 +1,4 @@
-package ombrelloniani.view;
+package ombrelloniani.view.interfaces;
 
 import java.util.List;
 

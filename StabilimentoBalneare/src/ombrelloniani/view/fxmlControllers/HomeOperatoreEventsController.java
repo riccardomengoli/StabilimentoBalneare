@@ -2,12 +2,8 @@ package ombrelloniani.view.fxmlControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import ombrelloniani.view.VistaNavigator;
 
 public class HomeOperatoreEventsController {
@@ -15,9 +11,7 @@ public class HomeOperatoreEventsController {
 	@FXML private Button gestionePren;
 	@FXML private Button controlloDisp;
 
-	public HomeOperatoreEventsController() {
-		
-	}
+	public HomeOperatoreEventsController() {};
 	
 	/*
 	 * Evento al click di logout.
@@ -27,54 +21,30 @@ public class HomeOperatoreEventsController {
 	private void handleLogoutButtonClick (ActionEvent event) throws Exception {
 		
 		VistaNavigator.loadView(VistaNavigator.LOGIN);
-		
-		/*
-		Stage owner = (Stage) logoutButton.getScene().getWindow();
-		
-		Parent root = FXMLLoader.load(getClass().getResource("fxml/Login.fxml"));
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());
-        scene.getStylesheets().add(getClass().getResource("css/login.css").toExternalForm());
-		owner.setScene(scene);
-		
-		System.out.println("Cambio scena effettuato correttamente"); //XXX TEMP
-		*/
-	}
-	
-	@FXML
-	private void handleGestionePrenButtonClick (ActionEvent event) throws Exception {
-		
-		Stage owner = (Stage) gestionePren.getScene().getWindow();
-		
-		/*
-		Parent root = FXMLLoader.load(getClass().getResource("fxml/Login.fxml"));
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());
-        scene.getStylesheets().add(getClass().getResource("css/login.css").toExternalForm());
-		owner.setScene(scene);
-		
-		System.out.println("Cambio scena effettuato correttamente"); //XXX TEMP
-		*/
-	}
-	
-	@FXML
-	private void handleControlloDispButtonClick (ActionEvent event) throws Exception {
-		
-		Stage owner = (Stage) controlloDisp.getScene().getWindow();
-		
-		/*
-		Parent root = FXMLLoader.load(getClass().getResource("fxml/Login.fxml"));
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());
-        scene.getStylesheets().add(getClass().getResource("css/login.css").toExternalForm());
-		owner.setScene(scene);
-		
-		System.out.println("Cambio scena effettuato correttamente"); //XXX TEMP
-		*/
 	}
 	
 	/*
-	 * Evento all'entrata del mouse sopra il bottone di login.
+	 * Evento al click del bottone di gestione prenotazione.
+	 * Cambio scena.
+	 */
+	@FXML
+	private void handleGestionePrenButtonClick (ActionEvent event) throws Exception {
+		
+		//VistaNavigator.loadView(VistaNavigator.GESTIONEPRENOTAZIONE);
+	}
+	
+	/*
+	 * Evento al click del bottone di controllo disponibilità.
+	 * Cambio scena.
+	 */
+	@FXML
+	private void handleControlloDispButtonClick (ActionEvent event) throws Exception {
+		
+		//VistaNavigator.loadView(VistaNavigator.CONTROLLODISPONIBILITA);
+	}
+	
+	/*
+	 * Evento all'entrata del mouse sopra i bottoni del menu.
 	 * Imposta il colore.
 	 */
 	@FXML
@@ -83,7 +53,7 @@ public class HomeOperatoreEventsController {
 	}
 	
 	/*
-	 * Evento all'uscita del mouse dal bottone di login.
+	 * Evento all'uscita del mouse dai bottoni del menu.
 	 * Resetta il colore principale.
 	 */
 	@FXML

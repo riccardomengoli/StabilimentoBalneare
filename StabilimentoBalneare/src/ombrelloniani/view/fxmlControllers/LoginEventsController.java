@@ -8,17 +8,17 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Window;
-import ombrelloniani.view.VistaNavigator;
-
+import ombrelloniani.controller.interfaces.IControllerLogin;
+import ombrelloniani.model.db.ControllerLogin;
 
 public class LoginEventsController {
 	@FXML private TextField username;
 	@FXML private PasswordField password;
 	@FXML private Button loginButton;
-	//private ILoginController controller;
+	private IControllerLogin controller;
 
 	public LoginEventsController() {
-		//this.controller = new LoginController(this);
+		this.controller = new ControllerLogin();
 	}
 	
 	/*
@@ -41,12 +41,8 @@ public class LoginEventsController {
             return;
         }
 		
-		
 		//Chiama login del controller
-		//controller.verificaCredenziali(username.getText(), password.getText());
-        //XXX TEMP
-        VistaNavigator.loadView(VistaNavigator.HOMEOPERATORE);
-		System.out.println("Chiamata a funzione login");
+		controller.verificaCredenziali(username.getText(), password.getText());
 	}
 	
 	/*
@@ -66,4 +62,5 @@ public class LoginEventsController {
 	private void handleHoverOutButton (MouseEvent event) {
 		loginButton.setStyle("");
 	}
+	
 }

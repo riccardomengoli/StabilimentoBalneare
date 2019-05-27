@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -8,11 +8,14 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.control.Label?>
 
-<FlowPane xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="ombrelloniani.view.fxmlControllers.HomeOperatoreEventsController" styleClass="container">
+<Pane xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="ombrelloniani.view.fxmlControllers.HomeOperatoreEventsController"
+	styleClass="container">
 	<AnchorPane>
-		<Button fx:id="logoutButton" onAction="#handleLogoutButtonClick" text="Logout" styleClass="logoutButton"
-			AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+		<Button fx:id="logoutButton"
+			onAction="#handleLogoutButtonClick" text="Logout"
+			styleClass="logoutButton" AnchorPane.topAnchor="10.0"
+			AnchorPane.rightAnchor="10.0" />
 	</AnchorPane>
 	<GridPane>
 		<columnConstraints>
@@ -22,10 +25,16 @@
 		</columnConstraints>
 		<VBox styleClass="menuHome" GridPane.columnIndex="1">
 			<Label styleClass="title" text="HOME OPERATORE" />
-			<Button fx:id="gestionePren" onAction="#handleGestionePrenButtonClick" onMouseEntered="#handleHoverInButton"
-				onMouseExited="#handleHoverOutButton" text="Gestione Prenotazione" styleClass="button, mainButton, menuButton" />
-			<Button fx:id="controlloDisp" onAction="#handleGestionePrenButtonClick" onMouseEntered="#handleHoverInButton"
-				onMouseExited="#handleHoverOutButton" text="Controllo Disponibilità" styleClass="button, mainButton, menuButton" />
+			<Button fx:id="gestionePren"
+				onAction="#handleGestionePrenButtonClick"
+				onMouseEntered="#handleHoverInButton"
+				onMouseExited="#handleHoverOutButton" text="Gestione Prenotazione"
+				styleClass="button, mainButton, menuButton" />
+			<Button fx:id="controlloDisp"
+				onAction="#handleGestionePrenButtonClick"
+				onMouseEntered="#handleHoverInButton"
+				onMouseExited="#handleHoverOutButton" text="Controllo Disponibilità"
+				styleClass="button, mainButton, menuButton" />
 		</VBox>
 	</GridPane>
-</FlowPane>
+</Pane>

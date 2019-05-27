@@ -10,6 +10,8 @@ public class MainView extends Application {
     @Override
     public void start(Stage stage) throws Exception {
     	VistaNavigator.setStage(stage);
+    	
+    	//XXX TEMPORARY FOR DEBUG
     	VistaNavigator.loadView(VistaNavigator.LOGIN);
 
         stage.getIcons().add(new Image(getClass().getResource("images/logoTransparent.png").toExternalForm())); 
