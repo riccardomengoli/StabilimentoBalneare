@@ -1,21 +1,25 @@
 package ombrelloniani.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Convenzione {
 
 	private String nome;
-	private LocalDate dataInizio;
-	private LocalDate dataFine;
+	private Date dataInizio;
+	private Date dataFine;
 	private float sconto;
 	private EnteTerzo ente;
 	
-	public Convenzione(String nome, LocalDate dataInizio, LocalDate dataFine, float sconto) {
+	public Convenzione(String nome, Date dataInizio, Date dataFine, float sconto) {
 		super();
 		this.nome = nome;
 		this.dataInizio = dataInizio;
 		this.dataFine = dataFine;
 		this.sconto = sconto;
+	}
+
+	public Convenzione() {
+		super();
 	}
 
 	public String getNome() {
@@ -26,19 +30,19 @@ public class Convenzione {
 		this.nome = nome;
 	}
 
-	public LocalDate getDataInizio() {
+	public Date getDataInizio() {
 		return dataInizio;
 	}
 
-	public void setDataInizio(LocalDate dataInizio) {
+	public void setDataInizio(Date dataInizio) {
 		this.dataInizio = dataInizio;
 	}
 
-	public LocalDate getDataFine() {
+	public Date getDataFine() {
 		return dataFine;
 	}
 
-	public void setDataFine(LocalDate dataFine) {
+	public void setDataFine(Date dataFine) {
 		this.dataFine = dataFine;
 	}
 

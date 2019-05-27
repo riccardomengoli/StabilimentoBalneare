@@ -2,9 +2,9 @@ package ombrelloniani.model;
 
 public class EntryRicevuta {
 	
-	private String tipoPrezzo;
-	private String descrizione;
-	private int giorni;
+	private String tipoPrezzo;  //Ombrellone o Servizio
+	private String descrizione; //o nome servizio o idOmbrellone
+	private int giorni;         //null per servizi durata vacanza per Omrelloni
 	private float totale;
 	
 	public EntryRicevuta(String tipoPrezzo, String descrizione, int giorni, float totale) {

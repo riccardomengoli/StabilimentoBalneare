@@ -14,4 +14,14 @@ public interface IViewTermina {
 
 	void aggiornaTabellaRicevuta(List<String> ricevuta, int numeroEntry);
 
+	void setUtente(String nome, String cognome, String idDocumento);
+
+	void aggiornaListaConvenzioni(List<String[]> convenzioni);
+
+	void setNumeroLettini(String string);
+
+	void setOmbrelloni(int size, List<String> ombrelloni);
+
+	void setServizi(int size, List<String> servizi);
+
 }

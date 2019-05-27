@@ -8,7 +8,7 @@ import java.util.List;
 public class PrenotazioneTerminata extends Prenotazione {
 	
 	private float saldo;
-	private double giorni;
+	private int giorni;
 
 	public PrenotazioneTerminata() {
 		super();
@@ -47,7 +47,7 @@ public class PrenotazioneTerminata extends Prenotazione {
 		
 	}
 	
-	public double getGiorni() {
+	public int getGiorni() {
 		return this.giorni;
 	}
 }

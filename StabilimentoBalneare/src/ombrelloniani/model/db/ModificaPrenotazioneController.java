@@ -1,15 +1,15 @@
 package ombrelloniani.model.db;
 
-import java.sql.Date;
+import java.util.Date;
 
 import ombrelloniani.model.Prenotazione;
 
 public class ModificaPrenotazioneController extends Controller {
 
-	public Prenotazione modificaDataFine(Prenotazione prenotazione, Date valueOf) {
+	public Prenotazione modificaDataFine(Prenotazione prenotazione, Date date) {
 		
 		Prenotazione newPrenotazione = prenotazione;
-		newPrenotazione.setDataFine(valueOf);
+		newPrenotazione.setDataFine(date);
 		return newPrenotazione;
 	}
 }

@@ -17,7 +17,7 @@ import ombrelloniani.model.Prenotazione;
 
 
 
-public class Disponibilit‡Controller {
+public class DisponibilitaController {
 
 	private GestionePrenotazioneController controllerGestione = new GestionePrenotazioneController();
 	

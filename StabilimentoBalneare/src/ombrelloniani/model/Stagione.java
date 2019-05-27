@@ -1,14 +1,14 @@
 package ombrelloniani.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Stagione {
 
 	private String nomeStagione;
-	private LocalDate dataInizio;
-	private LocalDate dataFine;
+	private Date dataInizio;
+	private Date dataFine;
 	
-	public Stagione(String nomeStagione, LocalDate dataInizio, LocalDate dataFine) {
+	public Stagione(String nomeStagione, Date dataInizio, Date dataFine) {
 		super();
 		this.nomeStagione = nomeStagione;
 		this.dataInizio = dataInizio;
@@ -23,19 +23,19 @@ public class Stagione {
 		this.nomeStagione = nomeStagione;
 	}
 
-	public LocalDate getDataInizio() {
+	public Date getDataInizio() {
 		return dataInizio;
 	}
 
-	public void setDataInizio(LocalDate dataInizio) {
+	public void setDataInizio(Date dataInizio) {
 		this.dataInizio = dataInizio;
 	}
 
-	public LocalDate getDataFine() {
+	public Date getDataFine() {
 		return dataFine;
 	}
 
-	public void setDataFine(LocalDate dataFine) {
+	public void setDataFine(Date dataFine) {
 		this.dataFine = dataFine;
 	}
 
