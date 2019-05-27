@@ -6,18 +6,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import ombrelloniani.controller.interfaces.IControllerLogin;
 import ombrelloniani.view.VistaNavigator;
-import ombrelloniani.view.fxmlControllers.LoginEventsController;
 
-public class ControllerLogin {
+public class ControllerLogin implements IControllerLogin {
 	
-	private LoginEventsController viewLogin;
 	private FileReader reader;
 	private static String filePath = "C:/Users/miche/Desktop/filePassword.txt";
 	
-	public ControllerLogin(LoginEventsController viewLogin) {
-		this.viewLogin = viewLogin;
-	}
+	public ControllerLogin() {}
 	
 	private void openCredenziali() {
 		
@@ -30,9 +27,7 @@ public class ControllerLogin {
 			e.printStackTrace();
 		}
 	}
-	
-
-	
+		
 	public void verificaCredenziali(String username,String password) {
 		
 		if(!sanitificazione(username + password)) {
