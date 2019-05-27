@@ -3,10 +3,13 @@
 }
 
 .menuHome {
-	
+	-fx-padding: 50px 30px;
+	-fx-background-color: rgba(255, 255, 255, 0.8);
+	-fx-alignment: center;
 }
 
 .menuButton {
-	-fx-pref-height: 200px;
+	-fx-pref-height: 100px;
 	-fx-pref-width: 400px;
+	-fx-font-size: 2em;
 }

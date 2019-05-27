@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.control.Label?>
 
-<Pane xmlns:fx="http://javafx.com/fxml/1"
+<GridPane xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="ombrelloniani.view.fxmlControllers.HomeOperatoreEventsController"
-	styleClass="container">
+	styleClass="container" prefWidth="1024" prefHeight="600">
 	<AnchorPane>
 		<Button fx:id="logoutButton"
 			onAction="#handleLogoutButtonClick" text="Logout"
@@ -37,4 +37,4 @@
 				styleClass="button, mainButton, menuButton" />
 		</VBox>
 	</GridPane>
-</Pane>
+</GridPane>
