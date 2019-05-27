@@ -15,7 +15,8 @@
 }
 
 .title {
-	-fx-text-alignment: center;	
+	-fx-text-alignment: center;
+	-fx-alignment: center;
 	-fx-font-family: 'Berlin Sans FB'; /* cambiare se non installato */
 	-fx-font-size: 3.5em;
 	-fx-padding: 0 0 20px 0;
@@ -35,7 +36,6 @@
 	-fx-background-color: #2e3192;
 	-fx-text-fill: white;
 	-fx-padding: 5px 30px;
-	-fx-alignment: center;
 	-fx-pref-width: 400px;
 }
 

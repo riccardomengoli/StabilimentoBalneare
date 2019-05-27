@@ -6,33 +6,35 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import ombrelloniani.controller.exceptions.UserNotFoundException;
 import ombrelloniani.controller.interfaces.IControllerLogin;
 import ombrelloniani.view.VistaNavigator;
 
 public class ControllerLogin implements IControllerLogin {
-	
+
 	private FileReader reader;
 	private static String filePath = "C:/Users/miche/Desktop/filePassword.txt";
-	
-	public ControllerLogin() {}
-	
+
+	public ControllerLogin() {
+	}
+
 	private void openCredenziali() {
-		
+
 		try {
-			
+
 			this.reader = new FileReader(filePath);
-				
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-		
-	public void verificaCredenziali(String username,String password) {
-		
-		if(!sanitificazione(username + password)) {
-			//throw new CredenzialiNonCorretteException("")
+
+	public void verificaCredenziali(String username, String password) throws IllegalArgumentException, UserNotFoundException {
+
+		if (!sanitificazione(username + password)) {
+			throw new IllegalArgumentException("Presenti caratteri vietati");
 		}
-		
+
 		try {
 			openCredenziali();
 			StringTokenizer str;
@@ -40,48 +42,43 @@ public class ControllerLogin implements IControllerLogin {
 			String ruolo = null;
 			boolean utenteTrovato = false;
 			BufferedReader bf = new BufferedReader(this.reader);
-			
-			while((line = bf.readLine()) != null) {
+
+			while ((line = bf.readLine()) != null) {
 				str = new StringTokenizer(line);
 				ruolo = str.nextToken();
-				if(username.equals(str.nextToken()) && password.equals(str.nextToken())) {
+				if (username.equals(str.nextToken()) && password.equals(str.nextToken())) {
 					this.reader.close();
 					utenteTrovato = true;
 					break;
 				}
 			}
-			
+
 			this.reader.close();
-			
-			if(utenteTrovato) {
-			
-				if(ruolo.equals("gestore")) {
+
+			if (utenteTrovato) {
+				if (ruolo.equals("gestore")) {
 					VistaNavigator.loadView(VistaNavigator.HOMEGESTORE);
-				}
-				
-				else if(ruolo.equals("operatore")) {
+				} else if (ruolo.equals("operatore")) {
 					VistaNavigator.loadView(VistaNavigator.HOMEOPERATORE);
 				}
+			} else {
+				throw new UserNotFoundException("Credenziali non corrette");
 			}
-			
-			else {
-				//throw new OperatoreNonTrovatoException()
-			}
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
+
 	}
-	
+
 	private boolean sanitificazione(String str) {
 		boolean result = false;
-		if(str.length() < 80)
+		if (str.length() < 80)
 			result = true;
-		
-		if(str.contains("|") || str.contains("<") || str.contains(">") || str.contains(" ") || str.contains(";"))
+
+		if (str.contains("|") || str.contains("<") || str.contains(">") || str.contains(" ") || str.contains(";"))
 			return false;
-		
+
 		return result;
 	}
 
