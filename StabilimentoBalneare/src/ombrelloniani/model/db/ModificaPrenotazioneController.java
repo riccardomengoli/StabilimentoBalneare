@@ -6,9 +6,10 @@ import ombrelloniani.model.Prenotazione;
 
 public class ModificaPrenotazioneController extends Controller {
 
-	public void modificaDataFine(Prenotazione prenotazione, Date valueOf) {
-		// TODO Auto-generated method stub
+	public Prenotazione modificaDataFine(Prenotazione prenotazione, Date valueOf) {
 		
+		Prenotazione newPrenotazione = prenotazione;
+		newPrenotazione.setDataFine(valueOf);
+		return newPrenotazione;
 	}
-
 }

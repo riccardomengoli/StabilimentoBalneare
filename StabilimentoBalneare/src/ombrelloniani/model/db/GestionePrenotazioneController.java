@@ -50,8 +50,8 @@ public class GestionePrenotazioneController extends Controller {
 			"SELECT * " +
 			"FROM PRENOTAZIONI P JOIN CLIENTI C " +
 			"ON P.idCliente = C.documento " +
-			"WHERE P.dataInizio >= ? " +
-			"AND P.dataFine <= ?";
+			"WHERE P.dataFine <= ? " +
+			"AND P.dataInizio >= ?";
 	
 	static String join_prenotazioni_date = 
 			"SELECT * " +

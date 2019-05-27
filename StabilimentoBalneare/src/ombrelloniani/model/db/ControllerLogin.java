@@ -6,11 +6,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import ombrelloniani.view.VistaNavigator;
+import ombrelloniani.view.fxmlControllers.LoginEventsController;
+
 public class ControllerLogin {
 	
-	public ControllerLogin() {}
+	private LoginEventsController viewLogin;
 	private FileReader reader;
 	private static String filePath = "C:/Users/miche/Desktop/filePassword.txt";
+	
+	public ControllerLogin(LoginEventsController viewLogin) {
+		this.viewLogin = viewLogin;
+	}
 	
 	private void openCredenziali() {
 		
@@ -26,17 +33,17 @@ public class ControllerLogin {
 	
 
 	
-	public String verificaCredenziali(String username,String password) {
+	public void verificaCredenziali(String username,String password) {
 		
 		if(!sanitificazione(username + password)) {
-			return null;
+			//throw new CredenzialiNonCorretteException("")
 		}
 		
 		try {
 			openCredenziali();
 			StringTokenizer str;
 			String line;
-			String ruolo;
+			String ruolo = null;
 			BufferedReader bf = new BufferedReader(this.reader);
 			
 			while((line = bf.readLine()) != null) {
@@ -44,8 +51,20 @@ public class ControllerLogin {
 				ruolo = str.nextToken();
 				if(username.equals(str.nextToken()) && password.equals(str.nextToken())) {
 					this.reader.close();
-					return ruolo;
+					break;
 				}
+			}
+			
+			if(ruolo.equals("gestore")) {
+				VistaNavigator.loadView(VistaNavigator.HOMEGESTORE);
+			}
+			
+			else if(ruolo.equals("operatore")) {
+				VistaNavigator.loadView(VistaNavigator.HOMEOPERATORE);
+			}
+			
+			else {
+				//throw new OperatoreNonTrovatoException()
 			}
 			
 			this.reader.close();
@@ -53,8 +72,7 @@ public class ControllerLogin {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		return null;
+	
 	}
 	
 	private boolean sanitificazione(String str) {

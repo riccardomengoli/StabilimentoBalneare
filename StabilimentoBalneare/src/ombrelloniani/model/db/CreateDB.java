@@ -54,7 +54,7 @@ public class CreateDB {
 		    "ALTER " +
 		   		"TABLE PRENOTAZIONI_TERMINATE " +
 		 			"ADD saldo DOUBLE " +
-		 			"ADD giorni DOUBLE"
+		 			"ADD giorni INT NOT NULL"
 	;
 	
 	static final String createServiziPrenotazione = 
