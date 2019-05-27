@@ -8,6 +8,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Window;
+import ombrelloniani.controller.exceptions.UserNotFoundException;
 import ombrelloniani.controller.interfaces.IControllerLogin;
 import ombrelloniani.model.db.ControllerLogin;
 
@@ -22,7 +23,7 @@ public class LoginEventsController {
 	}
 	
 	/*
-	 * Evento al click di login.
+	 * Evento al click di login o invio nei due campi username e password.
 	 * Verifica delle credenziali di login su controller, se successo cambia view, se fallisce popup.
 	 */
 	@FXML
@@ -41,8 +42,17 @@ public class LoginEventsController {
             return;
         }
 		
-		//Chiama login del controller
-		controller.verificaCredenziali(username.getText(), password.getText());
+		//Chiama login del controller con gestione di eccezioni
+        try {
+        	controller.verificaCredenziali(username.getText(), password.getText());
+        } catch (IllegalArgumentException e) {
+        	//XXX POPUP con
+        	e.getMessage();
+        } catch (UserNotFoundException e) {
+			//XXX POPUP con
+        	e.getMessage();
+		}
+		
 	}
 	
 	/*

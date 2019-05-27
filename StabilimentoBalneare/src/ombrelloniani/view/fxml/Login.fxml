@@ -5,14 +5,13 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
 
-<FlowPane xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="ombrelloniani.view.fxmlControllers.LoginEventsController" styleClass="container, containerLogin">
+<FlowPane styleClass="container, containerLogin" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="ombrelloniani.view.fxmlControllers.LoginEventsController">
 	<VBox styleClass="loginBox">
 		<Label styleClass="title" text="STABILIMENTO BALNEARE" />
 		<GridPane styleClass="inputFields">
@@ -21,12 +20,14 @@
 				<ColumnConstraints halignment="LEFT" fillWidth="true" prefWidth="200" maxWidth="300" />
 			</columnConstraints>
 			<Label text="Username" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-			<TextField fx:id="username" styleClass="inputText" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+			<TextField fx:id="username" onAction="#handleLoginButtonClick" styleClass="inputText"
+				GridPane.rowIndex="0" GridPane.columnIndex="1" />
 			<Label text="Password" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-			<PasswordField fx:id="password" styleClass="inputText" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+			<PasswordField fx:id="password" onAction="#handleLoginButtonClick" styleClass="inputText"
+				GridPane.rowIndex="1" GridPane.columnIndex="1" />
 		</GridPane>
 		<VBox styleClass="marginTopForButton" /> <!-- margine vuoto per bottone -->
-		<Button fx:id="loginButton" onAction="#handleLoginButtonClick" onMouseEntered="#handleHoverInButton"
-			onMouseExited="#handleHoverOutButton" text="Login" styleClass="button, mainButton" />
+		<Button fx:id="loginButton" text="Login" onAction="#handleLoginButtonClick" onMouseEntered="#handleHoverInButton"
+			onMouseExited="#handleHoverOutButton" styleClass="button, mainButton" />
 	</VBox>
 </FlowPane>
