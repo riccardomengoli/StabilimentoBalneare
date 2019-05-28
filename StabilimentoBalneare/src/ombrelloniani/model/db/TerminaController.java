@@ -8,27 +8,22 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
-import ombrelloniani.model.Cliente;
 import ombrelloniani.model.Convenzione;
 import ombrelloniani.model.EnteTerzo;
 import ombrelloniani.model.EntryRicevuta;
 import ombrelloniani.model.Fedelta;
 import ombrelloniani.model.ListaConvenzioni;
 import ombrelloniani.model.ListaFedelta;
-import ombrelloniani.model.ListaPrezzi;
 import ombrelloniani.model.ListaPrezziOmbrelloni;
 import ombrelloniani.model.ListaPrezziServizi;
-import ombrelloniani.model.ListaServizi;
 import ombrelloniani.model.ListaStagioni;
 import ombrelloniani.model.Ombrellone;
 import ombrelloniani.model.Prenotazione;
 import ombrelloniani.model.PrenotazioneTerminata;
-import ombrelloniani.model.Prezzo;
 import ombrelloniani.model.PrezzoOmbrellone;
 import ombrelloniani.model.PrezzoServizio;
 import ombrelloniani.model.Ricevuta;
@@ -38,10 +33,8 @@ import ombrelloniani.view.interfaces.IViewTermina;
 
 public class TerminaController {
 	
-	private ListaPrezzi prezzi;
 	private ListaPrezziOmbrelloni prezziOmbrelloni;
 	private ListaPrezziServizi prezziServizi;
-	private ListaServizi servizi;
 	private ListaConvenzioni convenzioni;
 	private Convenzione convenzione;
 	private ListaFedelta fedelta;
