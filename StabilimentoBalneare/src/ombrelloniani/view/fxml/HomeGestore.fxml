@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 
 <GridPane styleClass="container" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="ombrelloniani.view.fxmlControllers.HomeOperatore">
+	fx:controller="ombrelloniani.view.fxmlControllers.HomeGestore">
 	<GridPane>
 		<VBox styleClass="menuHome" GridPane.columnIndex="1">
 			<AnchorPane>
-				<Label styleClass="title" text="HOME OPERATORE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0"
+				<Label styleClass="title" text="HOME GESTORE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0"
 					AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
 			</AnchorPane>
 			<VBox styleClass="menuButtonArea" VBox.vgrow="ALWAYS">
@@ -28,6 +28,20 @@
 				<Button fx:id="controlloDisp" onAction="#handleControlloDispButtonClick"
 					onMouseEntered="#handleHoverInButton" onMouseExited="#handleHoverOutButton"
 					styleClass="button, mainButton, menuButton" text="Controllo Disponibilità" VBox.vgrow="ALWAYS">
+					<VBox.margin>
+						<Insets left="60.0" right="60.0" />
+					</VBox.margin>
+				</Button>
+				<Button fx:id="impostazioniStab" onAction="#handleImpostazioniStabButtonClick"
+					onMouseEntered="#handleHoverInButton" onMouseExited="#handleHoverOutButton"
+					styleClass="button, mainButton, menuButton" text="Impostazioni Stabilimento" VBox.vgrow="ALWAYS">
+					<VBox.margin>
+						<Insets left="60.0" right="60.0" />
+					</VBox.margin>
+				</Button>
+				<Button fx:id="resocontoStag" onAction="#handleResocontoStagButtonClick"
+					onMouseEntered="#handleHoverInButton" onMouseExited="#handleHoverOutButton"
+					styleClass="button, mainButton, menuButton" text="Resoconto Stagionale" VBox.vgrow="ALWAYS">
 					<VBox.margin>
 						<Insets left="60.0" right="60.0" />
 					</VBox.margin>

@@ -10,24 +10,38 @@
 <?import javafx.scene.layout.VBox?>
 
 <GridPane styleClass="container" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="ombrelloniani.view.fxmlControllers.HomeOperatore">
+	fx:controller="ombrelloniani.view.fxmlControllers.GestionePrenotazione">
 	<GridPane>
 		<VBox styleClass="menuHome" GridPane.columnIndex="1">
 			<AnchorPane>
-				<Label styleClass="title" text="HOME OPERATORE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0"
+				<Label styleClass="title" text="GESTIONE PRENOTAZIONE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0"
 					AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
 			</AnchorPane>
 			<VBox styleClass="menuButtonArea" VBox.vgrow="ALWAYS">
-				<Button fx:id="gestionePren" onAction="#handleGestionePrenButtonClick" onMouseEntered="#handleHoverInButton"
-					onMouseExited="#handleHoverOutButton" styleClass="button, mainButton, menuButton" text="Gestione Prenotazione"
+				<Button fx:id="nuovaPren" onAction="#handleNuovaPrenButtonClick" onMouseEntered="#handleHoverInButton"
+					onMouseExited="#handleHoverOutButton" styleClass="button, mainButton, menuButton" text="Nuova Prenotazione"
 					VBox.vgrow="ALWAYS">
 					<VBox.margin>
 						<Insets left="60.0" right="60.0" />
 					</VBox.margin>
 				</Button>
-				<Button fx:id="controlloDisp" onAction="#handleControlloDispButtonClick"
+				<Button fx:id="modificaPren" onAction="#handleModificaPrenButtonClick"
 					onMouseEntered="#handleHoverInButton" onMouseExited="#handleHoverOutButton"
-					styleClass="button, mainButton, menuButton" text="Controllo Disponibilità" VBox.vgrow="ALWAYS">
+					styleClass="button, mainButton, menuButton" text="Modifica Prenotazione" VBox.vgrow="ALWAYS">
+					<VBox.margin>
+						<Insets left="60.0" right="60.0" />
+					</VBox.margin>
+				</Button>
+				<Button fx:id="terminaPren" onAction="#handleTerminaPrenButtonClick"
+					onMouseEntered="#handleHoverInButton" onMouseExited="#handleHoverOutButton"
+					styleClass="button, mainButton, menuButton" text="Termina Prenotazione" VBox.vgrow="ALWAYS">
+					<VBox.margin>
+						<Insets left="60.0" right="60.0" />
+					</VBox.margin>
+				</Button>
+				<Button fx:id="cancellaPren" onAction="#handleCancellaPrenButtonClick"
+					onMouseEntered="#handleHoverInButton" onMouseExited="#handleHoverOutButton"
+					styleClass="button, mainButton, menuButton" text="Cancella Prenotazione" VBox.vgrow="ALWAYS">
 					<VBox.margin>
 						<Insets left="60.0" right="60.0" />
 					</VBox.margin>
@@ -47,8 +61,8 @@
 		</columnConstraints>
 	</GridPane>
 	<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
-		<Button fx:id="logoutButton" onAction="#handleLogoutButtonClick" styleClass="button, logoutButton"
-			text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
+		<Button fx:id="logoutButton" onAction="#handleBackButtonClick" styleClass="button, logoutButton"
+			text="Indietro" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
 	</AnchorPane>
 	<rowConstraints>
 		<RowConstraints percentHeight="100.0" />
