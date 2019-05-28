@@ -1,12 +1,21 @@
-.logoutButton {
+Button.logoutButton {
 	-fx-background-color: #8bfbff;
+	-fx-border-size: 1px;
+	-fx-border-color: black;
+	-fx-border-style: solid;
+	-fx-padding: 5px 10px;
 }
 
-.menuHome {
-	
+VBox.menuHome {
+	-fx-background-color: #efb878;
 }
 
-.menuButton {
-	-fx-pref-height: 200px;
-	-fx-pref-width: 400px;
+VBox.menuButtonArea {
+	-fx-spacing: 30;
+	-fx-alignment: top-center;	
+}
+
+Button.menuButton {
+	-fx-pref-height: 70px;
+	-fx-font-size: 2.4em;
 }

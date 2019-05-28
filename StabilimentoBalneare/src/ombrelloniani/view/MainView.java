@@ -12,7 +12,7 @@ public class MainView extends Application {
     	VistaNavigator.setStage(stage);
     	
     	//XXX TEMPORARY FOR DEBUG
-    	VistaNavigator.loadView(VistaNavigator.LOGIN);
+    	VistaNavigator.loadView(VistaNavigator.HOMEOPERATORE);
 
         stage.getIcons().add(new Image(getClass().getResource("images/logoTransparent.png").toExternalForm())); 
         stage.setTitle("Stabilimento Balneare");
