@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ombrelloniani.view.fxmlControllers.FXMLController;
 
 /**
  * Utility class for controlling navigation between vistas.
@@ -14,7 +15,7 @@ import javafx.stage.Stage;
  * anywhere in the application.
  */
 public class VistaNavigator {
-	
+
 	private VistaNavigator() {};
 
 	/**
@@ -23,9 +24,10 @@ public class VistaNavigator {
 	public static final String LOGIN = "fxml/Login.fxml";
 	public static final String HOMEOPERATORE = "fxml/HomeOperatore.fxml";
 	public static final String HOMEGESTORE = "fxml/HomeGestore.fxml";
+	public static final String GESTIONEPRENOTAZIONE = "fxml/GestionePrenotazione.fxml";
 
 	private static Stage stage;
-	
+
 	public static void setStage(Stage stage) {
 		VistaNavigator.stage = stage;
 	}
@@ -37,6 +39,9 @@ public class VistaNavigator {
 	 * Previously loaded vista for the same fxml file are not cached. The fxml is
 	 * loaded anew and a new vista node hierarchy generated every time this method
 	 * is invoked.
+	 * 
+	 * However the calling scene gets injected into the new scene controller, in
+	 * order to go back to previous scenes.
 	 *
 	 * A more sophisticated load function could potentially add some enhancements or
 	 * optimizations, for example: cache FXMLLoaders cache loaded vista nodes, so
@@ -47,10 +52,16 @@ public class VistaNavigator {
 	 */
 	public static void loadView(String fxml) {
 		try {
-			Parent root = FXMLLoader.load(VistaNavigator.class.getResource(fxml));
-	        Scene scene = new Scene(root);
-	        scene.getStylesheets().add(VistaNavigator.class.getResource("css/styles.css").toExternalForm());
-	        
+			Scene currentScene = stage.getScene();
+
+			FXMLLoader loader = new FXMLLoader(VistaNavigator.class.getResource(fxml));
+			Parent root = loader.load();
+			FXMLController controller = loader.<FXMLController>getController();
+			controller.setCallingScene(currentScene);
+			
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(VistaNavigator.class.getResource("css/styles.css").toExternalForm());
+
 			switch (fxml) {
 			case LOGIN:
 				scene.getStylesheets().add(VistaNavigator.class.getResource("css/login.css").toExternalForm());
@@ -61,10 +72,13 @@ public class VistaNavigator {
 			case HOMEGESTORE:
 				scene.getStylesheets().add(VistaNavigator.class.getResource("css/home.css").toExternalForm());
 				break;
+			case GESTIONEPRENOTAZIONE:
+				scene.getStylesheets().add(VistaNavigator.class.getResource("css/home.css").toExternalForm());
+				break;
 			default:
 				break;
 			}
-			
+
 			stage.setScene(scene);
 			stage.show();
 		} catch (IOException e) {
@@ -72,4 +86,8 @@ public class VistaNavigator {
 		}
 	}
 
+	public static void loadView(Scene scene) {
+		stage.setScene(scene);
+		stage.show();
+	}
 }

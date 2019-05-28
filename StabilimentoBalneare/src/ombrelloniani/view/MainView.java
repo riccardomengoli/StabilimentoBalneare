@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-
 public class MainView extends Application {
 
     @Override
@@ -12,12 +11,14 @@ public class MainView extends Application {
     	VistaNavigator.setStage(stage);
     	
     	//XXX TEMPORARY FOR DEBUG
-    	VistaNavigator.loadView(VistaNavigator.HOMEOPERATORE);
+    	VistaNavigator.loadView(VistaNavigator.LOGIN);
 
         stage.getIcons().add(new Image(getClass().getResource("images/logoTransparent.png").toExternalForm())); 
         stage.setTitle("Stabilimento Balneare");
         stage.setMinWidth(1024);
         stage.setMinHeight(600);
+        stage.setWidth(1024);
+        stage.setHeight(600);
     }
 
     public static void main(String[] args) {

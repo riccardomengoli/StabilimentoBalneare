@@ -16,6 +16,9 @@ VBox.menuButtonArea {
 }
 
 Button.menuButton {
-	-fx-pref-height: 70px;
+	-fx-pref-width: 400px;
+	-fx-max-width: 700px;
+	-fx-pref-height: 60px;
+	-fx-max-height: 100px;
 	-fx-font-size: 2.4em;
 }

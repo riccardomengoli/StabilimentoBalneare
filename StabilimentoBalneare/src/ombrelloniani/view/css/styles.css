@@ -39,10 +39,6 @@
 	-fx-pref-width: 400px;
 }
 
-VBox.marginTopForButton {
-	-fx-pref-height: 20px;
-}
-
 .inputText {
 	-fx-font: 1.8em Calibri;
 }
