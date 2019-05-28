@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
+import ombrelloniani.controller.interfaces.IControllerTermina;
 import ombrelloniani.model.Convenzione;
 import ombrelloniani.model.EnteTerzo;
 import ombrelloniani.model.EntryRicevuta;
@@ -31,7 +32,7 @@ import ombrelloniani.model.Servizio;
 import ombrelloniani.model.Stagione;
 import ombrelloniani.view.interfaces.IViewTermina;
 
-public class TerminaController {
+public class TerminaController implements IControllerTermina{
 	
 	private ListaPrezziOmbrelloni prezziOmbrelloni;
 	private ListaPrezziServizi prezziServizi;
