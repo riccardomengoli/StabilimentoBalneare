@@ -1,9 +1,11 @@
 package ombrelloniani.controller;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.StringTokenizer;
 
 import ombrelloniani.controller.exceptions.UserNotFoundException;
@@ -13,23 +15,24 @@ import ombrelloniani.view.VistaNavigator;
 public class ControllerLogin implements IControllerLogin {
 
 	private FileReader reader;
-	private static String filePath = "C:/Users/miche/Desktop/filePassword.txt";
+	private File filePassword;
 
 	public ControllerLogin() {
-	}
+	};
 
 	private void openCredenziali() {
-
 		try {
-
-			this.reader = new FileReader(filePath);
-
+			filePassword = new File(getClass().getResource("/resources/password.txt").toURI());
+			this.reader = new FileReader(filePassword);
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void verificaCredenziali(String username, String password) throws IllegalArgumentException, UserNotFoundException {
+	public void verificaCredenziali(String username, String password)
+			throws IllegalArgumentException, UserNotFoundException {
 
 		if (!sanitificazione(username + password)) {
 			throw new IllegalArgumentException("Presenti caratteri vietati");
@@ -56,9 +59,9 @@ public class ControllerLogin implements IControllerLogin {
 			this.reader.close();
 
 			if (utenteTrovato) {
-				if (ruolo.equals("gestore")) {
+				if (ruolo.equalsIgnoreCase("gestore")) {
 					VistaNavigator.loadView(VistaNavigator.HOMEGESTORE);
-				} else if (ruolo.equals("operatore")) {
+				} else if (ruolo.equalsIgnoreCase("operatore")) {
 					VistaNavigator.loadView(VistaNavigator.HOMEOPERATORE);
 				}
 			} else {
