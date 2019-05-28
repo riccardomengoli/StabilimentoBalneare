@@ -1,4 +1,4 @@
-package ombrelloniani.model.db;
+package ombrelloniani.controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

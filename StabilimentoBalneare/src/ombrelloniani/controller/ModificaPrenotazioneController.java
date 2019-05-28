@@ -1,4 +1,4 @@
-package ombrelloniani.model.db;
+package ombrelloniani.controller;
 
 import java.util.Date;
 

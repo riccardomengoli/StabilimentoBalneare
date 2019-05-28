@@ -8,9 +8,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Window;
+import ombrelloniani.controller.ControllerLogin;
 import ombrelloniani.controller.exceptions.UserNotFoundException;
 import ombrelloniani.controller.interfaces.IControllerLogin;
-import ombrelloniani.model.db.ControllerLogin;
 
 public class Login extends FXMLController {
 	@FXML private TextField username;
