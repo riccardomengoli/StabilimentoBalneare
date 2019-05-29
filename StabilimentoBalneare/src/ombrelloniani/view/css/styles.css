@@ -39,6 +39,14 @@
 	-fx-pref-width: 400px;
 }
 
+Button.logoutButton {
+	-fx-background-color: #8bfbff;
+	-fx-border-size: 1px;
+	-fx-border-color: black;
+	-fx-border-style: solid;
+	-fx-padding: 5px 10px;
+}
+
 .inputText {
 	-fx-font: 1.8em Calibri;
 }
