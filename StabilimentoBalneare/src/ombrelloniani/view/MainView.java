@@ -6,23 +6,24 @@ import javafx.stage.Stage;
 
 public class MainView extends Application {
 
-    @Override
-    public void start(Stage stage) throws Exception {
-    	VistaNavigator.setStage(stage);
-    	
-    	//XXX TEMPORARY FOR DEBUG
-    	VistaNavigator.loadView(VistaNavigator.LOGIN);
+	@Override
+	public void start(Stage stage) throws Exception {
+		VistaNavigator.setStage(stage);
 
-        stage.getIcons().add(new Image(getClass().getResource("images/logoTransparent.png").toExternalForm())); 
-        stage.setTitle("Stabilimento Balneare");
-        stage.setMinWidth(1024);
-        stage.setMinHeight(600);
-        stage.setWidth(1024);
-        stage.setHeight(600);
-    }
+		stage.getIcons().add(new Image(getClass().getResource("images/logoTransparent.png").toExternalForm()));
+		stage.setTitle("Stabilimento Balneare");
+		stage.setMinWidth(1024);
+		stage.setMinHeight(600);
+		stage.setWidth(1024);
+		stage.setHeight(600);
+		stage.centerOnScreen();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+		// XXX TEMPORARY FOR DEBUG
+		VistaNavigator.loadView(VistaNavigator.LOGIN);
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 }
