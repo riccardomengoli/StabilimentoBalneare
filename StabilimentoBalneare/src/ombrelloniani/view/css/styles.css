@@ -14,45 +14,88 @@
 	-fx-background-image: url("../images/backgroundSpiaggiaApp_opacity70.jpg");
 }
 
+.subsectionColor {
+	-fx-background-color: #efdbc5;
+	-fx-border-size: 1.0px;
+	-fx-border-color: black;
+	-fx-border-style: solid;
+}
+
 .title {
 	-fx-text-alignment: center;
 	-fx-alignment: center;
 	-fx-font-family: 'Berlin Sans FB'; /* cambiare se non installato */
 	-fx-font-size: 3.5em;
-	-fx-padding: 0 0 20px 0;
+	-fx-padding: 0.0 0.0 20.0px 0.0;
 }
 
-.button {
+Button {
 	-fx-text-alignment: center;	
 	-fx-font-family: 'Myriad Pro'; /* cambiare se non installato */
 	-fx-font-size: 1.8em;
 	-fx-font-weight: bold;
-	-fx-padding: 10px;
+	-fx-padding: 10.0px;
 	-fx-cursor: hand;
+	-fx-background-insets: 1.0px;
+	-fx-background-radius: 0.0;
 }
 
 .mainButton {
-	-fx-font-size: 3em;
+	-fx-font-size: 3.0em;
 	-fx-background-color: #2e3192;
 	-fx-text-fill: white;
-	-fx-padding: 5px 30px;
-	-fx-pref-width: 400px;
+	-fx-padding: 5.0px 30.0px;
+	-fx-pref-width: 400.0px;
+}
+
+.mainButtonCentered {
+	-fx-font-size: 3.0em;
+	-fx-background-color: #2e3192;
+	-fx-text-fill: white;
+	-fx-padding: 10.0px 40.0px;
 }
 
 Button.logoutButton {
 	-fx-background-color: #8bfbff;
-	-fx-border-size: 1px;
+	-fx-border-size: 1.0px;
 	-fx-border-color: black;
 	-fx-border-style: solid;
-	-fx-padding: 5px 10px;
+	-fx-padding: 5.0px 10.0px;
+}
+
+Button.standardButton {
+	-fx-background-color: #44df5a;
+	-fx-font-family: 'Roboto Condensed'; /* cambiare se non installato */
+	-fx-font-weight: normal;
+	-fx-border-size: 1.0px;
+	-fx-border-color: black;
+	-fx-border-style: solid;
+	-fx-padding: 3.0px 10.0px;
+}
+
+Button#controlloDisp {
+	-fx-background-color: #2e3192;
+	-fx-font-family: 'Roboto Condensed'; /* cambiare se non installato */
+	-fx-font-size: 1.4em;
+	-fx-font-weight: normal;
+	-fx-text-fill: white;
+	-fx-padding: 5.0px;
 }
 
 .inputText {
-	-fx-font: 1.8em Calibri;
+	-fx-font-family: Calibri;
+	-fx-font-size: 1.8em;
+	/* -fx-background-radius: 0; per TextArea rettangolari non arrotondate*/
 }
 
 Label {
 	-fx-font-family: 'Roboto Condensed'; /* cambiare se non installato */
 	-fx-font-size: 1.8em;
 	-fx-text-fill: black;
+}
+
+GridPane.inputsGrid {
+	-fx-hgap: 15.0px;
+	-fx-vgap: 15.0px;
+	-fx-alignment: top-left;
 }

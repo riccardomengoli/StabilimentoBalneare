@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ombrelloniani.controller.interfaces.IControllerCrea;
 import ombrelloniani.model.Cliente;
 import ombrelloniani.model.Ombrellone;
 
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class CreaPrenotazioneController extends Controller {
+public class CreaPrenotazioneController extends Controller implements IControllerCrea {
 	
 	private Cliente cliente;
 	private List<Ombrellone> ombrelloni = new ArrayList<Ombrellone>();
@@ -58,7 +59,7 @@ public class CreaPrenotazioneController extends Controller {
 	
 	public CreaPrenotazioneController() { super();};
 	
-	
+	@Override
 	public int getLastIdPrenotazione() {
 		
 		int result = 0;
@@ -79,7 +80,7 @@ public class CreaPrenotazioneController extends Controller {
 		return result;
 	}
 	
-		
+	@Override
 	public Cliente cercaCliente(String idDocumento) {
 		
 		Connection connection = this.getConnection();
@@ -113,6 +114,7 @@ public class CreaPrenotazioneController extends Controller {
 		return result;
 	}
 	
+	@Override
 	public String creaPrenotazioneNuovoCliente(String nome, String cognome, String email, String telefono,
 			String documento, Date dataInizio, Date dataFine, int numeroLettini) {
 		
@@ -170,6 +172,7 @@ public class CreaPrenotazioneController extends Controller {
 		
 	}
 	
+	@Override
 	public String creaPrenotazioneClienteEsistente(Date dataInizio, Date dataFine, int numeroLettini) {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
@@ -219,6 +222,7 @@ public class CreaPrenotazioneController extends Controller {
 		
 	}
 	
+	@Override
 	// il metodo restituisce -1 se l'ombrellone cercato non esiste
 	public int aggiungiOmbrellone(String idOmbrellone) {
 		
@@ -252,6 +256,7 @@ public class CreaPrenotazioneController extends Controller {
 		
 	}
 	
+	@Override
 	public void rimuoviOmbrellone(String idOmbrellone) {
 		
 		

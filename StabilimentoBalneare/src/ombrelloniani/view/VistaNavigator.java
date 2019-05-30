@@ -25,6 +25,11 @@ public class VistaNavigator {
 	public static final String HOMEOPERATORE = "fxml/HomeOperatore.fxml";
 	public static final String HOMEGESTORE = "fxml/HomeGestore.fxml";
 	public static final String GESTIONEPRENOTAZIONE = "fxml/GestionePrenotazione.fxml";
+	public static final String CREAPRENOTAZIONE ="fxml/CreaPrenotazione.fxml";
+	public static final String MODIFICAPRENOTAZIONE ="fxml/ModificaPrenotazione.fxml";
+	public static final String TERMINAPRENOTAZIONE ="fxml/TerminaPrenotazione.fxml";
+	public static final String CANCELLAPRENOTAZIONE ="fxml/CancellaPrenotazione.fxml";
+	public static final String CONTROLLODISPONIBILITA ="fxml/ControlloDisponibilita.fxml";
 
 	private static Stage stage;
 
