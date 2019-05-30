@@ -73,7 +73,7 @@ Button.standardButton {
 	-fx-padding: 3.0px 10.0px;
 }
 
-Button#controlloDisp {
+Button#controlloDispButton {
 	-fx-background-color: #2e3192;
 	-fx-font-family: 'Roboto Condensed'; /* cambiare se non installato */
 	-fx-font-size: 1.4em;

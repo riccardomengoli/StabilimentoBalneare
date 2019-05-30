@@ -28,7 +28,7 @@ public class Login extends FXMLController {
 	 * fallisce popup.
 	 */
 	@FXML
-	private void handleLoginButtonClick(ActionEvent event) {
+	private void handleLogin(ActionEvent event) {
 
 		// Controlli se valori presenti
 		Window owner = loginButton.getScene().getWindow();

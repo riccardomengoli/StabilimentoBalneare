@@ -21,15 +21,15 @@
 				<ColumnConstraints fillWidth="true" halignment="LEFT" maxWidth="300" prefWidth="200" />
 			</columnConstraints>
 			<Label text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-			<TextField fx:id="username" onAction="#handleLoginButtonClick" styleClass="inputText"
+			<TextField fx:id="username" onAction="#handleLogin" styleClass="inputText"
 				GridPane.columnIndex="1" GridPane.rowIndex="0" />
 			<Label text="Password" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-			<PasswordField fx:id="password" onAction="#handleLoginButtonClick" styleClass="inputText"
+			<PasswordField fx:id="password" onAction="#handleLogin" styleClass="inputText"
 				GridPane.columnIndex="1" GridPane.rowIndex="1" />
 		</GridPane>
 
-		<Button fx:id="loginButton" onAction="#handleLoginButtonClick" onMouseEntered="#handleHoverInButton"
-			onMouseExited="#handleHoverOutButton" styleClass="button, mainButton" text="Login">
+		<Button fx:id="loginButton" onAction="#handleLogin" onMouseEntered="#handleHoverInButton"
+			onMouseExited="#handleHoverOutButton" styleClass="mainButton" text="Login">
 			<VBox.margin>
 				<Insets top="20.0" />
 			</VBox.margin>

@@ -10,7 +10,7 @@ import javafx.scene.shape.Line;
 import ombrelloniani.view.VistaNavigator;
 
 public class GestionePrenotazione extends FXMLController {
-	@FXML private Button logoutButton;
+	@FXML private Button backButton;
 	@FXML private Button nuovaPren;
 	@FXML private Button modificaPren;
 	@FXML private Button terminaPren;
@@ -41,16 +41,16 @@ public class GestionePrenotazione extends FXMLController {
 	 * Evento al click del bottone di nuova prenotazione. Cambio scena.
 	 */
 	@FXML
-	private void handleNuovaPrenButtonClick(ActionEvent event) throws Exception {
+	private void handleNuovaPren(ActionEvent event) throws Exception {
 
-		// VistaNavigator.loadView(VistaNavigator.CREAPRENOTAZIONE);
+		VistaNavigator.loadView(VistaNavigator.CREAPRENOTAZIONE);
 	}
 
 	/**
 	 * Evento al click del bottone di modifica prenotazione. Cambio scena.
 	 */
 	@FXML
-	private void handleModificaPrenButtonClick(ActionEvent event) throws Exception {
+	private void handleModificaPren(ActionEvent event) throws Exception {
 
 		// VistaNavigator.loadView(VistaNavigator.MODIFICAPRENOTAZIONE);
 	}
@@ -59,7 +59,7 @@ public class GestionePrenotazione extends FXMLController {
 	 * Evento al click del bottone di termina prenotazione. Cambio scena.
 	 */
 	@FXML
-	private void handleTerminaPrenButtonClick(ActionEvent event) throws Exception {
+	private void handleTerminaPren(ActionEvent event) throws Exception {
 
 		// VistaNavigator.loadView(VistaNavigator.TERMINAPRENOTAZIONE);
 	}
@@ -68,7 +68,7 @@ public class GestionePrenotazione extends FXMLController {
 	 * Evento al click del bottone di cancella prenotazione. Cambio scena.
 	 */
 	@FXML
-	private void handleCancellaPrenButtonClick(ActionEvent event) throws Exception {
+	private void handleCancellaPren(ActionEvent event) throws Exception {
 
 		// VistaNavigator.loadView(VistaNavigator.CANCELLAPRENOTAZIONE);
 	}
@@ -94,7 +94,7 @@ public class GestionePrenotazione extends FXMLController {
 	 * Evento al click di indietro. Ritorno alla view precedente.
 	 */
 	@FXML
-	private void handleBackButtonClick(ActionEvent event) throws Exception {
+	private void handleBack(ActionEvent event) throws Exception {
 		if (getCallingScene() != null) {
 			VistaNavigator.loadView(getCallingScene());
 		}

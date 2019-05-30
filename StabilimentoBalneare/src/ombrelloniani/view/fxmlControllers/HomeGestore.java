@@ -20,7 +20,7 @@ public class HomeGestore extends FXMLController {
 	 * Ritorno alla view di login.
 	 */
 	@FXML
-	private void handleLogoutButtonClick (ActionEvent event) throws Exception {
+	private void handleLogout (ActionEvent event) throws Exception {
 		
 		VistaNavigator.loadView(VistaNavigator.LOGIN);
 	}
@@ -30,7 +30,7 @@ public class HomeGestore extends FXMLController {
 	 * Cambio scena.
 	 */
 	@FXML
-	private void handleGestionePrenButtonClick (ActionEvent event) throws Exception {
+	private void handleGestionePren (ActionEvent event) throws Exception {
 		
 		VistaNavigator.loadView(VistaNavigator.GESTIONEPRENOTAZIONE);
 	}
@@ -40,7 +40,7 @@ public class HomeGestore extends FXMLController {
 	 * Cambio scena.
 	 */
 	@FXML
-	private void handleControlloDispButtonClick (ActionEvent event) throws Exception {
+	private void handleControlloDisp (ActionEvent event) throws Exception {
 		
 		//VistaNavigator.loadView(VistaNavigator.CONTROLLODISPONIBILITA);
 	}
@@ -50,7 +50,7 @@ public class HomeGestore extends FXMLController {
 	 * Cambio scena.
 	 */
 	@FXML
-	private void handleImpostazioniStabButtonClick (ActionEvent event) throws Exception {
+	private void handleImpostazioniStab (ActionEvent event) throws Exception {
 		
 		//VistaNavigator.loadView(VistaNavigator.IMPOSTAZIONISTABILIMENTO);
 	}
@@ -60,7 +60,7 @@ public class HomeGestore extends FXMLController {
 	 * Cambio scena.
 	 */
 	@FXML
-	private void handleResocontoStagButtonClick (ActionEvent event) throws Exception {
+	private void handleResocontoStag (ActionEvent event) throws Exception {
 		
 		//VistaNavigator.loadView(VistaNavigator.RESOCONTOSTAGIONALE);
 	}

@@ -20,22 +20,22 @@
 					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
 			</AnchorPane>
 			<VBox styleClass="menuButtonArea" VBox.vgrow="ALWAYS">
-				<Button fx:id="nuovaPren" onAction="#handleNuovaPrenButtonClick" onMouseEntered="#handleHoverInButton"
-					onMouseExited="#handleHoverOutButton" styleClass="button, mainButton, menuButton" text="Nuova Prenotazione"
+				<Button fx:id="nuovaPren" onAction="#handleNuovaPren" onMouseEntered="#handleHoverInButton"
+					onMouseExited="#handleHoverOutButton" styleClass="mainButton, menuButton" text="Nuova Prenotazione"
 					VBox.vgrow="ALWAYS">
 					<VBox.margin>
 						<Insets left="60.0" right="60.0" />
 					</VBox.margin>
 				</Button>
-				<Button fx:id="modificaPren" onAction="#handleModificaPrenButtonClick" onMouseEntered="#handleHoverInButton"
-					onMouseExited="#handleHoverOutButton" styleClass="button, mainButton, menuButton" text="Modifica Prenotazione"
+				<Button fx:id="modificaPren" onAction="#handleModificaPren" onMouseEntered="#handleHoverInButton"
+					onMouseExited="#handleHoverOutButton" styleClass="mainButton, menuButton" text="Modifica Prenotazione"
 					VBox.vgrow="ALWAYS">
 					<VBox.margin>
 						<Insets left="60.0" right="60.0" />
 					</VBox.margin>
 				</Button>
-				<Button fx:id="terminaPren" onAction="#handleTerminaPrenButtonClick" onMouseEntered="#handleHoverInButton"
-					onMouseExited="#handleHoverOutButton" styleClass="button, mainButton, menuButton" text="Termina Prenotazione"
+				<Button fx:id="terminaPren" onAction="#handleTerminaPren" onMouseEntered="#handleHoverInButton"
+					onMouseExited="#handleHoverOutButton" styleClass="mainButton, menuButton" text="Termina Prenotazione"
 					VBox.vgrow="ALWAYS">
 					<VBox.margin>
 						<Insets left="60.0" right="60.0" />
@@ -44,8 +44,8 @@
 				<Pane>
 					<Line fx:id="hr1" />
 				</Pane>
-				<Button fx:id="cancellaPren" onAction="#handleCancellaPrenButtonClick" onMouseEntered="#handleHoverInButton"
-					onMouseExited="#handleHoverOutButton" styleClass="button, mainButton, menuButton, cancellaButton" text="Cancella Prenotazione"
+				<Button fx:id="cancellaPren" onAction="#handleCancellaPren" onMouseEntered="#handleHoverInButton"
+					onMouseExited="#handleHoverOutButton" styleClass="mainButton, menuButton, cancellaButton" text="Cancella Prenotazione"
 					VBox.vgrow="ALWAYS">
 					<VBox.margin>
 						<Insets left="60.0" right="60.0" />
@@ -66,7 +66,7 @@
 		</columnConstraints>
 	</GridPane>
 	<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
-		<Button fx:id="logoutButton" onAction="#handleBackButtonClick" styleClass="button, logoutButton"
+		<Button fx:id="backButton" onAction="#handleBack" styleClass="logoutButton"
 			text="Indietro" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
 	</AnchorPane>
 	<rowConstraints>

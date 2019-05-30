@@ -18,16 +18,16 @@
 					AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
 			</AnchorPane>
 			<VBox styleClass="menuButtonArea" VBox.vgrow="ALWAYS">
-				<Button fx:id="gestionePren" onAction="#handleGestionePrenButtonClick" onMouseEntered="#handleHoverInButton"
-					onMouseExited="#handleHoverOutButton" styleClass="button, mainButton, menuButton" text="Gestione Prenotazione"
+				<Button fx:id="gestionePren" onAction="#handleGestionePren" onMouseEntered="#handleHoverInButton"
+					onMouseExited="#handleHoverOutButton" styleClass="mainButton, menuButton" text="Gestione Prenotazione"
 					VBox.vgrow="ALWAYS">
 					<VBox.margin>
 						<Insets left="60.0" right="60.0" />
 					</VBox.margin>
 				</Button>
-				<Button fx:id="controlloDisp" onAction="#handleControlloDispButtonClick"
+				<Button fx:id="controlloDisp" onAction="#handleControlloDisp"
 					onMouseEntered="#handleHoverInButton" onMouseExited="#handleHoverOutButton"
-					styleClass="button, mainButton, menuButton" text="Controllo Disponibilità" VBox.vgrow="ALWAYS">
+					styleClass="mainButton, menuButton" text="Controllo Disponibilità" VBox.vgrow="ALWAYS">
 					<VBox.margin>
 						<Insets left="60.0" right="60.0" />
 					</VBox.margin>
@@ -47,7 +47,7 @@
 		</columnConstraints>
 	</GridPane>
 	<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
-		<Button fx:id="logoutButton" onAction="#handleLogoutButtonClick" styleClass="button, logoutButton"
+		<Button fx:id="logoutButton" onAction="#handleLogout" styleClass="logoutButton"
 			text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
 	</AnchorPane>
 	<rowConstraints>

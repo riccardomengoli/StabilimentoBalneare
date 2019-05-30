@@ -103,7 +103,7 @@
 									</VBox.margin>
 								</Label>
 								<Button onAction="#handleControlloDisp" onMouseEntered="#handleHoverInButton"
-									onMouseExited="#handleHoverOutButton" id="controlloDisp" text="Controlla Disponibilità" wrapText="true" />
+									onMouseExited="#handleHoverOutButton" id="controlloDispButton" text="Controlla Disponibilità" wrapText="true" />
 							</VBox>
 
 							<!-- Colonna 1 -->
