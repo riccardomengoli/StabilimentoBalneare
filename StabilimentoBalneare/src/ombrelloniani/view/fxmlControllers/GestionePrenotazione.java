@@ -41,7 +41,7 @@ public class GestionePrenotazione extends FXMLController {
 	 * Evento al click del bottone di nuova prenotazione. Cambio scena.
 	 */
 	@FXML
-	private void handleNuovaPren(ActionEvent event) throws Exception {
+	private void handleNuovaPren(ActionEvent event) {
 
 		VistaNavigator.loadView(VistaNavigator.CREAPRENOTAZIONE);
 	}
@@ -50,7 +50,7 @@ public class GestionePrenotazione extends FXMLController {
 	 * Evento al click del bottone di modifica prenotazione. Cambio scena.
 	 */
 	@FXML
-	private void handleModificaPren(ActionEvent event) throws Exception {
+	private void handleModificaPren(ActionEvent event) {
 
 		// VistaNavigator.loadView(VistaNavigator.MODIFICAPRENOTAZIONE);
 	}
@@ -59,16 +59,16 @@ public class GestionePrenotazione extends FXMLController {
 	 * Evento al click del bottone di termina prenotazione. Cambio scena.
 	 */
 	@FXML
-	private void handleTerminaPren(ActionEvent event) throws Exception {
+	private void handleTerminaPren(ActionEvent event) {
 
-		// VistaNavigator.loadView(VistaNavigator.TERMINAPRENOTAZIONE);
+		VistaNavigator.loadView(VistaNavigator.TERMINAPRENOTAZIONE);
 	}
 
 	/**
 	 * Evento al click del bottone di cancella prenotazione. Cambio scena.
 	 */
 	@FXML
-	private void handleCancellaPren(ActionEvent event) throws Exception {
+	private void handleCancellaPren(ActionEvent event) {
 
 		// VistaNavigator.loadView(VistaNavigator.CANCELLAPRENOTAZIONE);
 	}
@@ -94,7 +94,7 @@ public class GestionePrenotazione extends FXMLController {
 	 * Evento al click di indietro. Ritorno alla view precedente.
 	 */
 	@FXML
-	private void handleBack(ActionEvent event) throws Exception {
+	private void handleBack(ActionEvent event) {
 		if (getCallingScene() != null) {
 			VistaNavigator.loadView(getCallingScene());
 		}

@@ -18,7 +18,7 @@ public class HomeOperatore extends FXMLController {
 	 * Ritorno alla view di login.
 	 */
 	@FXML
-	private void handleLogout (ActionEvent event) throws Exception {
+	private void handleLogout (ActionEvent event) {
 		
 		VistaNavigator.loadView(VistaNavigator.LOGIN);
 	}
@@ -28,7 +28,7 @@ public class HomeOperatore extends FXMLController {
 	 * Cambio scena.
 	 */
 	@FXML
-	private void handleGestionePren (ActionEvent event) throws Exception {
+	private void handleGestionePren (ActionEvent event) {
 		
 		VistaNavigator.loadView(VistaNavigator.GESTIONEPRENOTAZIONE);
 	}
@@ -38,7 +38,7 @@ public class HomeOperatore extends FXMLController {
 	 * Cambio scena.
 	 */
 	@FXML
-	private void handleControlloDisp (ActionEvent event) throws Exception {
+	private void handleControlloDisp (ActionEvent event) {
 		
 		//VistaNavigator.loadView(VistaNavigator.CONTROLLODISPONIBILITA);
 	}

@@ -164,7 +164,7 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 	 * Evento al click di indietro. Ritorno alla view precedente.
 	 */
 	@FXML
-	private void handleBack(ActionEvent event) throws Exception {
+	private void handleBack(ActionEvent event) {
 		if (getCallingScene() != null) {
 			VistaNavigator.loadView(getCallingScene());
 		}
