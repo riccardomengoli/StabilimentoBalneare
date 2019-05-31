@@ -243,7 +243,7 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire data fine prenotazione");
 			return false;
 		}
-		if (getNumeroLettini() == null) {
+		if (getNumeroLettini() < 0) {
 			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire numero lettini");
 			return false;
 		}
@@ -307,11 +307,19 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 		return dataFine.getValue();
 	}
 
-	public String getNumeroLettini() {
+	public int getNumeroLettini() {
 		if (numeroLettini.textProperty().isEmpty().get()) {
-			return null;
+			return -1;
 		}
-		return numeroLettini.getText();
+		
+		int num = 0;
+		try {
+			num = Integer.parseInt(numeroLettini.getText());
+		} catch (NumberFormatException e) {
+			return -1;
+		}
+		
+		return num;
 	}
 
 	public String getInputOmbrellone() {

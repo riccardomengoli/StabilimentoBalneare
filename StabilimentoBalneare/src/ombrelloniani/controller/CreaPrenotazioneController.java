@@ -139,7 +139,6 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		
 		LocalDate dataInizio = viewCreazione.getDataInizio();
 		LocalDate dataFine = viewCreazione.getDataFine();
-		int numeroLettini = Integer.parseInt(viewCreazione.getNumeroLettini());
 		
 		Connection connection = this.getConnection();
 		List<String> ombrelloniOccupati = new ArrayList<String>();
@@ -180,7 +179,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			pstm = connection.prepareStatement(createPrenotazione);
 			pstm.setString(1, formatter.format(dataInizio));
 			pstm.setString(2, formatter.format(dataFine));
-			pstm.setInt(3, numeroLettini);
+			pstm.setInt(3, viewCreazione.getNumeroLettini());
 			if(this.cliente == null) pstm.setString(4, viewCreazione.getIdDocumento());
 			else pstm.setString(4, this.cliente.getIdDocumento());
 			

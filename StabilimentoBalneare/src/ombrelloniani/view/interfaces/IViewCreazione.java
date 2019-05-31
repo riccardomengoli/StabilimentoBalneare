@@ -11,7 +11,7 @@ public interface IViewCreazione {
 	public String getEmail();
 	public LocalDate getDataInizio();
 	public LocalDate getDataFine();
-	public String getNumeroLettini();
+	public int getNumeroLettini();
 	public String getInputOmbrellone();
 	public String getOmbrelloneSelezionato();
 	public void setNome(String nome);
