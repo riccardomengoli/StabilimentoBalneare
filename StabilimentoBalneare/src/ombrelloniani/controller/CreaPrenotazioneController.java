@@ -220,6 +220,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				o.setNumeroRiga(rs.getInt("numeroRiga"));
 				
 				this.ombrelloni.add(o);
+				this.viewCreazione.addOmbrelloneToList(idOmbrellone);
 			}
 			
 			else throw new OmbrelloneNotFoundException(idOmbrellone);
@@ -242,6 +243,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				
 				trovato = true;
 				this.ombrelloni.remove(o);
+				this.viewCreazione.removeOmbrelloneFromList(idOmbrellone);
 				break;
 			}
 		}
