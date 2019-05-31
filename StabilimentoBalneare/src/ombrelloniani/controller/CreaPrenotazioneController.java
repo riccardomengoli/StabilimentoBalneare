@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ombrelloniani.controller.exceptions.ClienteNotFoundException;
-import ombrelloniani.controller.exceptions.OmbrelloneNotFoundException;
-import ombrelloniani.controller.exceptions.OmbrelloneOccupatoException;
 import ombrelloniani.controller.interfaces.IController;
 import ombrelloniani.controller.interfaces.IControllerCrea;
 import ombrelloniani.model.Cliente;
@@ -94,7 +91,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		return result;
 	}
 	
-	public void cercaCliente() throws ClienteNotFoundException {
+	public void cercaCliente() {
 		
 		String idDocumento = viewCreazione.getIdDocumento();
 		Connection connection = this.getConnection();
@@ -124,7 +121,8 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				this.viewCreazione.setEmail(cliente.getEmail());
 			}
 			
-			else throw new ClienteNotFoundException(idDocumento);
+			else this.viewCreazione.showError("CliNotFound",
+					"Non è stato trovato alcun cliente associato al documento: " + idDocumento.toUpperCase());
 			
 			pstm.close();
 			//connection.close();
@@ -134,7 +132,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		}
 	}
 	
-	public void creaPrenotazione() throws OmbrelloneOccupatoException {
+	public void creaPrenotazione() {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -163,7 +161,8 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			}
 			
 			if(ombrelloniOccupati.size() > 0 ) {
-				throw new OmbrelloneOccupatoException(ombrelloniOccupati.get(0));
+				this.viewCreazione.showError("OmbrOccEx", 
+						"L'ombrellone (ID = " + ombrelloniOccupati.get(0) + ") non è disponibile nei giorni selezionati");
 			}
 			
 			if(this.cliente == null) {
@@ -195,6 +194,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			}
 			
 			System.out.println("Creazione avvenuta correttamente");
+			this.viewCreazione.confermaCreazione(this.getLastIdPrenotazione());
 			pstm.close();
 			connection.close();
 			
@@ -203,7 +203,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		}
 	}
 	
-	public void aggiungiOmbrellone() throws OmbrelloneNotFoundException {
+	public void aggiungiOmbrellone() {
 		
 		String idOmbrellone = viewCreazione.getInputOmbrellone();
 		Connection connection = this.getConnection();
@@ -236,7 +236,8 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 					this.viewCreazione.addOmbrelloneToList(rs.getString("idOmbrellone"));
 				}
 				
-				else throw new OmbrelloneNotFoundException(idOmbrellone);
+				else this.viewCreazione.showError("OmbrNotFound",
+						"Non è stato trovato nessun ombrellone con ID: " + idOmbrellone.toUpperCase());
 				
 				pstm.close();
 				
@@ -244,9 +245,12 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				e.printStackTrace();
 			}
 		}
+		
+		else this.viewCreazione.showError("OmbrGiaInserito",
+				"L'ombrellone con ID è gia stato inserito nella prenotazione: " + idOmbrellone.toUpperCase());
 	}
 	
-	public void rimuoviOmbrellone() throws OmbrelloneNotFoundException {
+	public void rimuoviOmbrellone() {
 		
 		String idOmbrellone;
 		boolean trovato = false;
@@ -257,7 +261,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		
 		for(Ombrellone o: this.ombrelloni) {
 			
-			if(o.getIdOmbrellone().equals(idOmbrellone.toLowerCase())) {
+			if(o.getIdOmbrellone().equalsIgnoreCase(idOmbrellone)) {
 				
 				trovato = true;
 				this.ombrelloni.remove(o);
@@ -266,7 +270,8 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			}
 		}
 		
-		if(trovato == false) throw new OmbrelloneNotFoundException(idOmbrellone);
+		if(trovato == false) this.viewCreazione.showError("OmbrNotFound",
+				"Non è stato trovato nessun ombrellone con ID: " + idOmbrellone.toUpperCase());
 		
 	}
 
