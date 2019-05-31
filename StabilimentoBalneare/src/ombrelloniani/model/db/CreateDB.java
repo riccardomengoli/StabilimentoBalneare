@@ -154,7 +154,7 @@ public class CreateDB {
     	
         try {
             Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:C:/Users/miche/Desktop/sample.db");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DriverManager.class.getResource("/resources/database.db").toExternalForm());
             Statement stmt;
             
             // creo la tabella
