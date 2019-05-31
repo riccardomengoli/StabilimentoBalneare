@@ -108,7 +108,7 @@
 
 							<!-- Colonna 1 -->
 							<VBox GridPane.rowIndex="0" GridPane.columnIndex="1">
-								<ListView fx:id="listaOmbrelloni" prefHeight="120" />
+								<ListView fx:id="listaOmbrelloni" maxHeight="182" id="right"/>
 							</VBox>
 
 							<!-- Colonna 2 -->
@@ -151,7 +151,7 @@
 			<Button onAction="#handleCreaPrenotazione" onMouseEntered="#handleHoverInButton"
 				onMouseExited="#handleHoverOutButton" styleClass="mainButtonCentered" text="Crea nuova prenotazione">
 				<VBox.margin>
-					<Insets top="30"/>
+					<Insets top="30" bottom="20"/>
 				</VBox.margin>
 			</Button>
 		</VBox>

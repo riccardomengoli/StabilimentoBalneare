@@ -15,7 +15,7 @@ public class MainView extends Application {
 		stage.setMinWidth(1024);
 		stage.setMinHeight(600);
 		stage.setWidth(1024);
-		stage.setHeight(600);
+		stage.setHeight(650);
 		stage.centerOnScreen();
 
 		// XXX TEMPORARY FOR DEBUG

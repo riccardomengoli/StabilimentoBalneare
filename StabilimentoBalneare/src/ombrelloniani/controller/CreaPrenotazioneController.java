@@ -3,7 +3,7 @@ package ombrelloniani.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import ombrelloniani.controller.exceptions.ClientNotFoundException;
+import ombrelloniani.controller.exceptions.ClienteNotFoundException;
 import ombrelloniani.controller.exceptions.OmbrelloneNotFoundException;
 import ombrelloniani.controller.exceptions.OmbrelloneOccupatoException;
 import ombrelloniani.controller.interfaces.IController;
@@ -93,7 +93,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		return result;
 	}
 	
-	public void cercaCliente() throws ClientNotFoundException {
+	public void cercaCliente() throws ClienteNotFoundException {
 		
 		String idDocumento = viewCreazione.getIdDocumento();
 		Connection connection = this.getConnection();
@@ -123,7 +123,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				this.viewCreazione.setEmail(cliente.getEmail());
 			}
 			
-			else throw new ClientNotFoundException(idDocumento);
+			else throw new ClienteNotFoundException(idDocumento);
 			
 			pstm.close();
 			//connection.close();
@@ -234,8 +234,12 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 	
 	public void rimuoviOmbrellone() throws OmbrelloneNotFoundException {
 		
-		String idOmbrellone = viewCreazione.getInputOmbrellone();
+		String idOmbrellone;
 		boolean trovato = false;
+		
+		idOmbrellone = viewCreazione.getInputOmbrellone();
+		if (idOmbrellone == null)
+			idOmbrellone = viewCreazione.getOmbrelloneSelezionato();
 		
 		for(Ombrellone o: this.ombrelloni) {
 			

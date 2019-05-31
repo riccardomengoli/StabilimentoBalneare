@@ -88,10 +88,14 @@ Button#controlloDispButton {
 	/* -fx-background-radius: 0; per TextArea rettangolari non arrotondate*/
 }
 
-Label {
+Label, ListView {
 	-fx-font-family: 'Roboto Condensed'; /* cambiare se non installato */
 	-fx-font-size: 1.8em;
 	-fx-text-fill: black;
+}
+
+ListView#right .list-cell {
+	-fx-alignment: top-right;
 }
 
 GridPane.inputsGrid {

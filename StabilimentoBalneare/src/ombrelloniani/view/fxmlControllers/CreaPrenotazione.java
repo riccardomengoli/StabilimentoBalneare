@@ -3,20 +3,28 @@ package ombrelloniani.view.fxmlControllers;
 import java.time.LocalDate;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import javafx.stage.Window;
 import ombrelloniani.controller.CreaPrenotazioneController;
+import ombrelloniani.controller.exceptions.ClienteNotFoundException;
+import ombrelloniani.controller.exceptions.OmbrelloneNotFoundException;
+import ombrelloniani.controller.exceptions.OmbrelloneOccupatoException;
 import ombrelloniani.controller.interfaces.IControllerCrea;
 import ombrelloniani.view.VistaNavigator;
+import ombrelloniani.view.interfaces.IViewCreazione;
 
-public class CreaPrenotazione extends FXMLController {
+public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 	@FXML private Button backButton;
 	@FXML private Button cercaButton;
 	@FXML private TextField idDocumento;
@@ -31,9 +39,10 @@ public class CreaPrenotazione extends FXMLController {
 	@FXML private ListView<String> listaOmbrelloni;
 	@FXML private Line hr1, hr2, hr3;
 	private IControllerCrea controller;
+	private ObservableList<String> ombrelloni = FXCollections.observableArrayList();
 
 	public CreaPrenotazione() {
-		this.controller = new CreaPrenotazioneController();
+		this.controller = new CreaPrenotazioneController(this);
 	};
 
 	/**
@@ -48,6 +57,7 @@ public class CreaPrenotazione extends FXMLController {
 		setFullParentWidthLine(hr1);
 		setDynamicWidthLine(hr2, hr1.startXProperty(), null);
 		setDynamicWidthLine(hr3, hr1.startXProperty(), null);
+		listaOmbrelloni.setItems(ombrelloni);
 	}
 
 	/**
@@ -56,9 +66,19 @@ public class CreaPrenotazione extends FXMLController {
 	 */
 	@FXML
 	private void handleRicercaUtente(ActionEvent event) {
-		controller.cercaCliente(idDocumento.getText());
+		if (getIdDocumento() != null) {
+			try {
+				controller.cercaCliente();
+			} catch (ClienteNotFoundException e) {
+				AlertHelper.showAlert(AlertType.ERROR, idDocumento.getScene().getWindow(), "Cliente non trovato",
+						e.getMessage());
+			}
+		} else {
+			AlertHelper.showAlert(AlertType.ERROR, idDocumento.getScene().getWindow(), "Campi mancanti",
+					"Inserire un ID documento");
+		}
 	}
-	
+
 	/**
 	 * Cambio di view verso Controllo Disponibilità.
 	 */
@@ -66,28 +86,63 @@ public class CreaPrenotazione extends FXMLController {
 	private void handleControlloDisp(ActionEvent event) {
 		VistaNavigator.loadView(VistaNavigator.CONTROLLODISPONIBILITA);
 	}
-	
+
 	/**
 	 * Richiama l'aggiunta di un ombrellone sul controller.
 	 */
 	@FXML
 	private void handleAggiungiOmbrellone(ActionEvent event) {
-		///TODO controller.aggiungiOmbrellone( );
+		if (getInputOmbrellone() != null) {
+			try {
+				controller.aggiungiOmbrellone();
+			} catch (OmbrelloneNotFoundException e) {
+				AlertHelper.showAlert(AlertType.ERROR, inputOmbrellone.getScene().getWindow(), "Ombrellone inesistente",
+						e.getMessage());
+			}
+
+			inputOmbrellone.clear();
+
+		} else {
+			AlertHelper.showAlert(AlertType.ERROR, inputOmbrellone.getScene().getWindow(), "Campi mancanti",
+					"Inserire un ombrellone");
+		}
 	}
-	
+
 	/**
 	 * Richiama la rimozione di un ombrellone sul controller.
 	 */
 	@FXML
 	private void handleRimuoviOmbrellone(ActionEvent event) {
-		///TODO controller.rimuoviOmbrellone( );
-	}
-	
-	@FXML
-	private void handleCreaPrenotazione(ActionEvent event) {
-		//TODO FIX INTERFACE controller.creaPrenotazione();
+		if (getInputOmbrellone() != null || getOmbrelloneSelezionato() != null) {
+			try {
+				controller.rimuoviOmbrellone();
+			} catch (OmbrelloneNotFoundException e) {
+				AlertHelper.showAlert(AlertType.ERROR, inputOmbrellone.getScene().getWindow(), "Ombrellone inesistente",
+						e.getMessage());
+			}
+
+			inputOmbrellone.clear();
+
+		} else {
+			AlertHelper.showAlert(AlertType.ERROR, inputOmbrellone.getScene().getWindow(), "Campi mancanti",
+					"Inserire o selezionare un ombrellone");
+		}
 	}
 
+	/**
+	 * Richiesta di creazione di una prenotazione al controller.
+	 */
+	@FXML
+	private void handleCreaPrenotazione(ActionEvent event) {
+		if (allFieldsFull()) {
+			try {
+				controller.creaPrenotazione();
+			} catch (OmbrelloneOccupatoException e) {
+				AlertHelper.showAlert(AlertType.ERROR, inputOmbrellone.getScene().getWindow(), "Ombrelloni non validi",
+						e.getMessage());
+			}
+		}
+	}
 
 	/**
 	 * Evento all'entrata del mouse sopra i bottoni. Imposta il colore.
@@ -159,43 +214,118 @@ public class CreaPrenotazione extends FXMLController {
 		l.setEndY(0.5);
 	}
 
+	/**
+	 * Controlla se tutti i campi sono stati riempiti.
+	 */
+	private boolean allFieldsFull() {
+		Window w = idDocumento.getScene().getWindow();
+		if (getIdDocumento() == null) {
+			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire ID documento");
+			return false;
+		}
+		if (getNome() == null) {
+			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire nome cliente");
+			return false;
+		}
+		if (getCognome() == null) {
+			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire cognome cliente");
+			return false;
+		}
+		if (getTelefono() == null && getEmail() == null) {
+			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire telefono o email");
+			return false;
+		}
+		if (getDataInizio() == null) {
+			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire data inizio prenotazione");
+			return false;
+		}
+		if (getDataFine() == null) {
+			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire data fine prenotazione");
+			return false;
+		}
+		if (getNumeroLettini() == null) {
+			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire numero lettini");
+			return false;
+		}
+		if (listaOmbrelloni.getItems().size() == 0) {
+			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire almeno un ombrellone");
+			return false;
+		}
+
+		return true;
+	}
+
 	/*
 	 * GETTERS
 	 */
 	public String getIdDocumento() {
+		if (idDocumento.textProperty().isEmpty().get()) {
+			return null;
+		}
 		return idDocumento.getText();
 	}
 
 	public String getNome() {
+		if (nome.textProperty().isEmpty().get()) {
+			return null;
+		}
 		return nome.getText();
 	}
 
 	public String getCognome() {
+		if (cognome.textProperty().isEmpty().get()) {
+			return null;
+		}
 		return cognome.getText();
 	}
 
 	public String getTelefono() {
+		if (telefono.textProperty().isEmpty().get()) {
+			return null;
+		}
 		return telefono.getText();
 	}
 
 	public String getEmail() {
+		if (email.textProperty().isEmpty().get()) {
+			return null;
+		}
 		return email.getText();
 	}
 
 	public LocalDate getDataInizio() {
+		if (dataInizio.valueProperty().isNull().get()) {
+			return null;
+		}
 		return dataInizio.getValue();
 	}
 
 	public LocalDate getDataFine() {
+		if (dataFine.valueProperty().isNull().get()) {
+			return null;
+		}
 		return dataFine.getValue();
 	}
 
 	public String getNumeroLettini() {
+		if (numeroLettini.textProperty().isEmpty().get()) {
+			return null;
+		}
 		return numeroLettini.getText();
 	}
-	
+
 	public String getInputOmbrellone() {
+		if (inputOmbrellone.textProperty().isEmpty().get()) {
+			return null;
+		}
 		return inputOmbrellone.getText();
+	}
+
+	public String getOmbrelloneSelezionato() {
+		if (listaOmbrelloni.getSelectionModel().selectedItemProperty().isNull().get()) {
+			return null;
+		}
+		return listaOmbrelloni.getSelectionModel().getSelectedItem();
 	}
 
 	/*
@@ -215,5 +345,13 @@ public class CreaPrenotazione extends FXMLController {
 
 	public void setEmail(String email) {
 		this.email.setText(email);
+	}
+
+	public void addOmbrelloneToList(String idOmbrellone) {
+		this.ombrelloni.add(idOmbrellone);
+	}
+
+	public void removeOmbrelloneFromList(String idOmbrellone) {
+		this.ombrelloni.remove(idOmbrellone);
 	}
 }
