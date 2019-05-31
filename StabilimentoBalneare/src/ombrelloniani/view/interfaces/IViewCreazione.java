@@ -20,4 +20,6 @@ public interface IViewCreazione {
 	public void setEmail(String email);
 	public void addOmbrelloneToList(String idOmbrellone);
 	public void removeOmbrelloneFromList(String idOmbrellone);
+	public void showError(String titolo, String descrizione);
+	public void confermaCreazione(int idPrenotazioneCreata);
 }

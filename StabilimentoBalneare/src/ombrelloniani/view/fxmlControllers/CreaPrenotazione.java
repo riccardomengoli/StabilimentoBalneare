@@ -15,11 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
-import javafx.stage.Window;
 import ombrelloniani.controller.CreaPrenotazioneController;
-import ombrelloniani.controller.exceptions.ClienteNotFoundException;
-import ombrelloniani.controller.exceptions.OmbrelloneNotFoundException;
-import ombrelloniani.controller.exceptions.OmbrelloneOccupatoException;
 import ombrelloniani.controller.interfaces.IControllerCrea;
 import ombrelloniani.view.VistaNavigator;
 import ombrelloniani.view.interfaces.IViewCreazione;
@@ -67,15 +63,9 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 	@FXML
 	private void handleRicercaUtente(ActionEvent event) {
 		if (getIdDocumento() != null) {
-			try {
-				controller.cercaCliente();
-			} catch (ClienteNotFoundException e) {
-				AlertHelper.showAlert(AlertType.ERROR, idDocumento.getScene().getWindow(), "Cliente non trovato",
-						e.getMessage());
-			}
+			controller.cercaCliente();
 		} else {
-			AlertHelper.showAlert(AlertType.ERROR, idDocumento.getScene().getWindow(), "Campi mancanti",
-					"Inserire un ID documento");
+			showError("Campi mancanti", "Inserire un ID documento");
 		}
 	}
 
@@ -93,18 +83,10 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 	@FXML
 	private void handleAggiungiOmbrellone(ActionEvent event) {
 		if (getInputOmbrellone() != null) {
-			try {
-				controller.aggiungiOmbrellone();
-			} catch (OmbrelloneNotFoundException e) {
-				AlertHelper.showAlert(AlertType.ERROR, inputOmbrellone.getScene().getWindow(), "Ombrellone inesistente",
-						e.getMessage());
-			}
-
+			controller.aggiungiOmbrellone();
 			inputOmbrellone.clear();
-
 		} else {
-			AlertHelper.showAlert(AlertType.ERROR, inputOmbrellone.getScene().getWindow(), "Campi mancanti",
-					"Inserire un ombrellone");
+			showError("Campi mancanti", "Inserire un ombrellone");
 		}
 	}
 
@@ -114,18 +96,10 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 	@FXML
 	private void handleRimuoviOmbrellone(ActionEvent event) {
 		if (getInputOmbrellone() != null || getOmbrelloneSelezionato() != null) {
-			try {
-				controller.rimuoviOmbrellone();
-			} catch (OmbrelloneNotFoundException e) {
-				AlertHelper.showAlert(AlertType.ERROR, inputOmbrellone.getScene().getWindow(), "Ombrellone inesistente",
-						e.getMessage());
-			}
-
+			controller.rimuoviOmbrellone();
 			inputOmbrellone.clear();
-
 		} else {
-			AlertHelper.showAlert(AlertType.ERROR, inputOmbrellone.getScene().getWindow(), "Campi mancanti",
-					"Inserire o selezionare un ombrellone");
+			showError("Campi mancanti", "Inserire o selezionare un ombrellone");
 		}
 	}
 
@@ -135,12 +109,7 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 	@FXML
 	private void handleCreaPrenotazione(ActionEvent event) {
 		if (allFieldsFull()) {
-			try {
-				controller.creaPrenotazione();
-			} catch (OmbrelloneOccupatoException e) {
-				AlertHelper.showAlert(AlertType.ERROR, inputOmbrellone.getScene().getWindow(), "Ombrelloni non validi",
-						e.getMessage());
-			}
+			controller.creaPrenotazione();
 		}
 	}
 
@@ -218,41 +187,59 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 	 * Controlla se tutti i campi sono stati riempiti.
 	 */
 	private boolean allFieldsFull() {
-		Window w = idDocumento.getScene().getWindow();
 		if (getIdDocumento() == null) {
-			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire ID documento");
+			showError("Campi mancanti", "Inserire ID documento");
 			return false;
 		}
 		if (getNome() == null) {
-			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire nome cliente");
+			showError("Campi mancanti", "Inserire nome cliente");
 			return false;
 		}
 		if (getCognome() == null) {
-			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire cognome cliente");
+			showError("Campi mancanti", "Inserire cognome cliente");
 			return false;
 		}
 		if (getTelefono() == null && getEmail() == null) {
-			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire telefono o email");
+			showError("Campi mancanti", "Inserire telefono o email");
 			return false;
 		}
 		if (getDataInizio() == null) {
-			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire data inizio prenotazione");
+			showError("Campi mancanti", "Inserire data inizio prenotazione");
 			return false;
 		}
 		if (getDataFine() == null) {
-			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire data fine prenotazione");
+			showError("Campi mancanti", "Inserire data fine prenotazione");
 			return false;
 		}
 		if (getNumeroLettini() < 0) {
-			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire numero lettini");
+			showError("Campi mancanti", "Inserire numero lettini");
 			return false;
 		}
 		if (listaOmbrelloni.getItems().size() == 0) {
-			AlertHelper.showAlert(AlertType.ERROR, w, "Campi mancanti", "Inserire almeno un ombrellone");
+			showError("Campi mancanti", "Inserire almeno un ombrellone");
 			return false;
 		}
 
 		return true;
+	}
+
+	public void showError(String titolo, String descrizione) {
+		AlertHelper.showAlert(AlertType.ERROR, idDocumento.getScene().getWindow(), titolo, descrizione);
+	}
+
+	public void confermaCreazione(int idPrenotazioneCreata) {
+		AlertHelper.showAlert(AlertType.CONFIRMATION, idDocumento.getScene().getWindow(), "Creazione completata",
+				"Creazione prenotazione eseguita con successo. ID PRENOTAZIONE: " + idPrenotazioneCreata);
+		idDocumento.clear();
+		nome.clear();
+		cognome.clear();
+		telefono.clear();
+		email.clear();
+		dataInizio.setValue(null);
+		dataFine.setValue(null);
+		numeroLettini.clear();
+		inputOmbrellone.clear();
+		ombrelloni.clear();
 	}
 
 	/*
@@ -311,14 +298,14 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 		if (numeroLettini.textProperty().isEmpty().get()) {
 			return -1;
 		}
-		
+
 		int num = 0;
 		try {
 			num = Integer.parseInt(numeroLettini.getText());
 		} catch (NumberFormatException e) {
 			return -1;
 		}
-		
+
 		return num;
 	}
 

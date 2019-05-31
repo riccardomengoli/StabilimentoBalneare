@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 public class MainView extends Application {
 
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage) {
 		VistaNavigator.setStage(stage);
 
 		stage.getIcons().add(new Image(getClass().getResource("images/logoTransparent.png").toExternalForm()));
@@ -15,7 +15,7 @@ public class MainView extends Application {
 		stage.setMinWidth(1024);
 		stage.setMinHeight(600);
 		stage.setWidth(1024);
-		stage.setHeight(650);
+		stage.setHeight(700);
 		stage.centerOnScreen();
 
 		// XXX TEMPORARY FOR DEBUG
