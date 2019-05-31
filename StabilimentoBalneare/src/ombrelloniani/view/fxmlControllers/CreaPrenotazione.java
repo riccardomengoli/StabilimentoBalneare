@@ -228,7 +228,7 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 	}
 
 	public void confermaCreazione(int idPrenotazioneCreata) {
-		AlertHelper.showAlert(AlertType.CONFIRMATION, idDocumento.getScene().getWindow(), "Creazione completata",
+		AlertHelper.showAlert(AlertType.INFORMATION, idDocumento.getScene().getWindow(), "Creazione completata",
 				"Creazione prenotazione eseguita con successo. ID PRENOTAZIONE: " + idPrenotazioneCreata);
 		idDocumento.clear();
 		nome.clear();

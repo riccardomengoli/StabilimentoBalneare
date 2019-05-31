@@ -121,7 +121,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				this.viewCreazione.setEmail(cliente.getEmail());
 			}
 			
-			else this.viewCreazione.showError("CliNotFound",
+			else this.viewCreazione.showError("Cliente non trovato",
 					"Non è stato trovato alcun cliente associato al documento: " + idDocumento.toUpperCase());
 			
 			pstm.close();
@@ -161,7 +161,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			}
 			
 			if(ombrelloniOccupati.size() > 0 ) {
-				this.viewCreazione.showError("OmbrOccEx", 
+				this.viewCreazione.showError("Ombrellone occupato", 
 						"L'ombrellone (ID = " + ombrelloniOccupati.get(0) + ") non è disponibile nei giorni selezionati");
 			}
 			
@@ -236,7 +236,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 					this.viewCreazione.addOmbrelloneToList(rs.getString("idOmbrellone"));
 				}
 				
-				else this.viewCreazione.showError("OmbrNotFound",
+				else this.viewCreazione.showError("Ombrellone inesistente",
 						"Non è stato trovato nessun ombrellone con ID: " + idOmbrellone.toUpperCase());
 				
 				pstm.close();
@@ -246,8 +246,8 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			}
 		}
 		
-		else this.viewCreazione.showError("OmbrGiaInserito",
-				"L'ombrellone con ID è gia stato inserito nella prenotazione: " + idOmbrellone.toUpperCase());
+		else this.viewCreazione.showError("Ombrellone già inserito",
+				"L'ombrellone con ID " + idOmbrellone.toUpperCase() + " è gia stato inserito nella prenotazione");
 	}
 	
 	public void rimuoviOmbrellone() {
@@ -270,7 +270,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			}
 		}
 		
-		if(trovato == false) this.viewCreazione.showError("OmbrNotFound",
+		if(trovato == false) this.viewCreazione.showError("Ombrellone inesistente",
 				"Non è stato trovato nessun ombrellone con ID: " + idOmbrellone.toUpperCase());
 		
 	}
