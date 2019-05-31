@@ -32,7 +32,7 @@ public class Controller {
 		
 		try {
 			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:C:/Users/miche/Desktop/sample.db");
+			conn = DriverManager.getConnection("jdbc:sqlite:/resources/sample.db");
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
