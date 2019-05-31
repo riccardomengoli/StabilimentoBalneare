@@ -1,6 +1,7 @@
 package ombrelloniani.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ombrelloniani.controller.exceptions.ClienteNotFoundException;
@@ -18,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class CreaPrenotazioneController extends Controller implements IController,IControllerCrea{
 	
@@ -38,12 +39,12 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 	
 	static String find_client = 
 			"SELECT * FROM CLIENTI " +
-			"WHERE documento = ?"
+			"WHERE lower(documento) = ?"
 			;
 	
 	static String find_ombrellone = 
 			"SELECT * FROM OMBRELLONI " +
-			"WHERE idOmbrellone = ?"
+			"WHERE lower(idOmbrellone) = ?"
 			;
 	
 	static String aggiungiOmbrellonePrenotazione = 
@@ -101,7 +102,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		try {
 			
 			PreparedStatement pstm = connection.prepareStatement(find_client);
-			pstm.setString(1, idDocumento);
+			pstm.setString(1, idDocumento.toLowerCase());
 			ResultSet rs = pstm.executeQuery();
 			
 			if(rs.next()) {
@@ -137,8 +138,8 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
-		LocalDate dataInizio = viewCreazione.getDataInizio();
-		LocalDate dataFine = viewCreazione.getDataFine();
+		Date dataInizio = Date.from(viewCreazione.getDataInizio().atStartOfDay(ZoneId.systemDefault()).toInstant());
+		Date dataFine = Date.from(viewCreazione.getDataFine().atStartOfDay(ZoneId.systemDefault()).toInstant());
 		
 		Connection connection = this.getConnection();
 		List<String> ombrelloniOccupati = new ArrayList<String>();
@@ -192,7 +193,8 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				pstm.setString(2, o.getIdOmbrellone());
 				pstm.executeUpdate();
 			}
-				
+			
+			System.out.println("Creazione avvenuta correttamente");
 			pstm.close();
 			connection.close();
 			
@@ -205,29 +207,42 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		
 		String idOmbrellone = viewCreazione.getInputOmbrellone();
 		Connection connection = this.getConnection();
-		try {
+		boolean trovato = false;
+		
+		for(Ombrellone ombrellone: this.ombrelloni) {
 			
-			PreparedStatement pstm = connection.prepareStatement(find_ombrellone);
-			pstm.setString(1, idOmbrellone);
-			ResultSet rs = pstm.executeQuery();
-			
-			if(rs.next()) {
-				
-				Ombrellone o = new Ombrellone();
-				o.setIdOmbrellone(idOmbrellone);
-				o.setNumeroColonna(rs.getInt("numeroColonna"));
-				o.setNumeroRiga(rs.getInt("numeroRiga"));
-				
-				this.ombrelloni.add(o);
-				this.viewCreazione.addOmbrelloneToList(idOmbrellone);
+			if(ombrellone.getIdOmbrellone().equalsIgnoreCase(idOmbrellone)) {
+				trovato = true;
+				break;
 			}
-			
-			else throw new OmbrelloneNotFoundException(idOmbrellone);
-			
-			pstm.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
+		}
+		
+		if(trovato == false) {
+	
+			try {
+				
+				PreparedStatement pstm = connection.prepareStatement(find_ombrellone);
+				pstm.setString(1, idOmbrellone.toLowerCase());
+				ResultSet rs = pstm.executeQuery();
+				
+				if(rs.next()) {
+					
+					Ombrellone o = new Ombrellone();
+					o.setIdOmbrellone(rs.getString("idOmbrellone"));
+					o.setNumeroColonna(rs.getInt("numeroColonna"));
+					o.setNumeroRiga(rs.getInt("numeroRiga"));
+					
+					this.ombrelloni.add(o);
+					this.viewCreazione.addOmbrelloneToList(rs.getString("idOmbrellone"));
+				}
+				
+				else throw new OmbrelloneNotFoundException(idOmbrellone);
+				
+				pstm.close();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -242,7 +257,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		
 		for(Ombrellone o: this.ombrelloni) {
 			
-			if(o.getIdOmbrellone().equals(idOmbrellone)) {
+			if(o.getIdOmbrellone().equals(idOmbrellone.toLowerCase())) {
 				
 				trovato = true;
 				this.ombrelloni.remove(o);
