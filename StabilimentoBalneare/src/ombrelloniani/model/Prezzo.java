@@ -11,6 +11,10 @@ public class Prezzo {
 		this.stagione = stagione;
 	}
 
+	public Prezzo() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public float getPrezzo() {
 		return prezzo;
 	}

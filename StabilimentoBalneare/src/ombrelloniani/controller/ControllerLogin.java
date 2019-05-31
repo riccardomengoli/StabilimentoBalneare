@@ -9,10 +9,11 @@ import java.net.URISyntaxException;
 import java.util.StringTokenizer;
 
 import ombrelloniani.controller.exceptions.UserNotFoundException;
+import ombrelloniani.controller.interfaces.IController;
 import ombrelloniani.controller.interfaces.IControllerLogin;
 import ombrelloniani.view.VistaNavigator;
 
-public class ControllerLogin implements IControllerLogin {
+public class ControllerLogin implements IControllerLogin,IController {
 
 	private FileReader reader;
 	private File filePassword;

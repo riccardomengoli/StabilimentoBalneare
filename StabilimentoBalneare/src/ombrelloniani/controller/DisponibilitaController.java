@@ -1,49 +1,49 @@
 package ombrelloniani.controller;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import ombrelloniani.model.Ombrellone;
-import ombrelloniani.model.Prenotazione;
+import ombrelloniani.controller.interfaces.IController;
+import ombrelloniani.controller.interfaces.IControllerDisponibilita;
 
-
-
-public class DisponibilitaController {
+public class DisponibilitaController implements IController,IControllerDisponibilita{
 
 	private GestionePrenotazioneController controllerGestione = new GestionePrenotazioneController();
 	
 	static String get_ombrelloni = 
-			"SELECT * FROM OMBRELLONI";
+			"SELECT numeroRiga,numeroColonna FROM OMBRELLONI";
 	
 	static String check_ombrellone = 
-			"SELECT OP.idOmbrellone " + 
-			"FROM PRENOTAZIONI P JOIN OMBRELLONIPRENOTAZIONE OP " +
-			"ON P.idPrenotazione = OP.idPrenotazione " +
-			"WHERE P.dataInizio <= ? " +
-			"AND P.dataFine >= ? "
+			"SELECT O.numeroRiga, O.numeroColonna " + 
+			"FROM PRENOTAZIONI P JOIN OMBRELLONIPRENOTAZIONE OP JOIN OMBRELLONI O " +
+			"ON P.idPrenotazione = OP.idPrenotazione AND OP.idOmbrellone = O.idOmbrellone " +
+			"WHERE ? BETWEEN P.dataInizio AND P.dataFine  OR " +
+			"? BETWEEN P.dataInizio AND P.dataFine OR " +
+			"(P.dataInizio >= ? AND P.dataFine <= ?) "
 			;
 	
 	static String stato_ombrellone = 
-			"SELECT * " + 
-			"FROM PRENOTAZIONI P JOIN OMBRELLONIPRENOTAZIONE OP " +
-			"ON P.idPrenotazione = OP.idPrenotazione " +
-			"WHERE P.dataInizio <= ? " +
-			"AND P.dataFine >= ? " +
-			"AND OP.idOmbrellone = ? "
+			"SELECT P.*, C.* " + 
+			"FROM PRENOTAZIONI P JOIN OMBRELLONIPRENOTAZIONE OP JOIN OMBRELLONI O JOIN CLIENTI C " +
+			"ON P.idPrenotazione = OP.idPrenotazione AND OP.idOmbrellone = O.idOmbrellone AND C.documento = P.idCliente " +
+			"WHERE O.numeroRiga = ? AND O.numeroColonna = ? " +
+			"AND (? BETWEEN P.dataInizio AND P.dataFine OR " +
+			"? BETWEEN P.dataInizio AND P.dataFine OR " +
+			"(P.dataInizio >= ? AND P.dataFine <= ?)) "
 			;
 	
-	public List<Ombrellone> getOmbrelloni() {
+	//metodo restituisce per ogni ombrellone un array con (in ordine): numeroRiga, numeroColonna
+	public List<Integer[]> getOmbrelloni() {
 		
-		List<Ombrellone> result = new ArrayList<Ombrellone>();
+		List<Integer[]> result = new ArrayList<Integer[]>();
 		Connection connection = controllerGestione.getConnection();
 		
 		try {
@@ -53,11 +53,10 @@ public class DisponibilitaController {
 			
 			while(rs.next()) {
 				
-				Ombrellone o = new Ombrellone();
-				o.setIdOmbrellone(rs.getString("idOmbrellone"));
-				o.setNumeroColonna(rs.getInt("numeroColonna"));
-				o.setNumeroRiga(rs.getInt("numeroRiga"));
-				result.add(o);
+				Integer[] infOmbrellone = new Integer[3];
+				infOmbrellone[0] = rs.getInt("numeroRiga");
+				infOmbrellone[1] = rs.getInt("numeroColonna");
+				result.add(infOmbrellone);
 			}
 			
 			stm.close();
@@ -69,23 +68,44 @@ public class DisponibilitaController {
 		return result;
 	}
 	
-	
-	public List<String> mostraStatoSpiaggia(Date dataInizio, Date dataFine) {
+	//restituisce numeroRiga, numeroColonna ombrelloni occupati(caso singola Data mettere la data inserita nei due campi)
+	public List<Integer[]> mostraStatoSpiaggia(Date dataInizio, Date dataFine) {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-		List<String> result = new ArrayList<String>();
+		List<Integer[]> result = new ArrayList<Integer[]>();
 		Connection connection = controllerGestione.getConnection();
+		int fila,colonna;
+		boolean trovato;
 		
 		try {
 			
 			PreparedStatement stm = connection.prepareStatement(check_ombrellone);
-			stm.setString(1, formatter.format(dataInizio));
-			stm.setString(2, formatter.format(dataFine));
+			stm.setString(1, formatter.format(dataFine));
+			stm.setString(2, formatter.format(dataInizio));
+			stm.setString(3, formatter.format(dataInizio));
+			stm.setString(4, formatter.format(dataFine));
 			ResultSet rs = stm.executeQuery();
 			
 			while(rs.next()) {
 				
-				result.add(rs.getString("idOmbrellone"));
+				trovato = false;
+				Integer[] infOmbrellone = new Integer[3];
+				fila = rs.getInt("numeroRiga");
+				colonna = rs.getInt("numeroColonna");
+				
+				for(Integer[] arrInt: result) {
+					
+					if(arrInt[0] == fila && arrInt[1] == colonna) {
+						trovato = true;
+						break;
+					}
+				}
+				
+				if(trovato == false) {
+					infOmbrellone[0] = fila;
+					infOmbrellone[1] = colonna;
+					result.add(infOmbrellone);
+				}
 			}
 			
 			stm.close();
@@ -97,36 +117,38 @@ public class DisponibilitaController {
 		return result;
 	}
 	
-	public List<Prenotazione> mostraStatoOmbrellone(Date dataInizio, Date dataFine, String idOmbrellone) {
+	public List<String[]> mostraStatoOmbrellone(Date dataInizio, Date dataFine, int numeroRiga, int numeroColonna) {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-		List<Prenotazione> result = new ArrayList<Prenotazione>();
+		List<String[]> result = new ArrayList<String[]>();
 		Connection connection = controllerGestione.getConnection();
 		
 		try {
 			
-			PreparedStatement stm = connection.prepareStatement(check_ombrellone);
-			stm.setString(1, formatter.format(dataInizio));
-			stm.setString(2, formatter.format(dataFine));
-			stm.setString(3, idOmbrellone);
+			PreparedStatement stm = connection.prepareStatement(stato_ombrellone);
+			stm.setInt(1, numeroRiga);
+			stm.setInt(2, numeroColonna);
+			stm.setString(3, formatter.format(dataFine));
+			stm.setString(4, formatter.format(dataInizio));
+			stm.setString(5, formatter.format(dataInizio));
+			stm.setString(6, formatter.format(dataFine));
 			ResultSet rs = stm.executeQuery();
 			
 			while(rs.next()) {
 				
-				Prenotazione p = new Prenotazione();
-				p.setIdPrenotazione(rs.getInt("idPrenotazione"));
-				p.setDataInizio(formatter.parse(rs.getString("dataInizio")));
-				p.setDataFine(formatter.parse(rs.getString("dataFine")));
-				p.setNumeroLettini(rs.getInt("numeroLettini"));
-				result.add(p);
+				String[] infoPrenotazione = new String[5];
+				infoPrenotazione[0] = rs.getString("idPrenotazione");
+				infoPrenotazione[1] = rs.getString("dataInizio");
+				infoPrenotazione[2] = rs.getString("dataFine");
+				infoPrenotazione[3] = rs.getString("nome");
+				infoPrenotazione[4] = rs.getString("cognome");
+				
+				result.add(infoPrenotazione);
 			}
 			
 			stm.close();
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
-		catch (ParseException e) {
 			e.printStackTrace();
 		}
 

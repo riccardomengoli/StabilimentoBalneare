@@ -1,5 +1,8 @@
 package ombrelloniani.model;
 
+import ombrelloniani.model.Prezzo;
+import ombrelloniani.model.Stagione;
+
 public class PrezzoOmbrellone extends Prezzo {
 	
 	private int filaInizio;
@@ -9,6 +12,10 @@ public class PrezzoOmbrellone extends Prezzo {
 		super(prezzo, stagione);
 		this.filaInizio = filaInizio;
 		this.filaFine = filaFine;
+	}
+
+	public PrezzoOmbrellone() {
+		super();
 	}
 
 	public int getFilaInizio() {

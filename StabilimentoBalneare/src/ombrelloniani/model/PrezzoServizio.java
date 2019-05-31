@@ -8,6 +8,10 @@ public class PrezzoServizio extends Prezzo {
 		super(prezzo, stagione);
 		this.servizio = servizio;
 	}
+	
+	public PrezzoServizio() {
+		super();
+	}
 
 	public Servizio getServizio() {
 		return servizio;

@@ -11,6 +11,10 @@ public class Servizio {
 		this.descrizione = descrizione;
 	}
 
+	public Servizio() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getNome() {
 		return nome;
 	}

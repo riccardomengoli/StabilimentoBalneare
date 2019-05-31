@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Ricevuta {
 
-	private float percentualeSconto;
-	private float percentualeConvenzione;
+	private double percentualeSconto;
+	private double percentualeConvenzione;
 	private float prezzoTotale;
 	private List<EntryRicevuta> entries;
 	
@@ -13,7 +13,7 @@ public class Ricevuta {
 		super();
 	}
 	
-	public Ricevuta(float percentualeSconto, float percentualeConvenzione, float prezzoTotale,
+	public Ricevuta(double percentualeSconto, double percentualeConvenzione, float prezzoTotale,
 			List<EntryRicevuta> entries) {
 		super();
 		this.percentualeSconto = percentualeSconto;
@@ -22,19 +22,19 @@ public class Ricevuta {
 		this.entries = entries;
 	}
 	
-	public float getPercentualeSconto() {
+	public double getPercentualeSconto() {
 		return percentualeSconto;
 	}
 
-	public void setPercentualeSconto(float percentualeSconto) {
+	public void setPercentualeSconto(double percentualeSconto) {
 		this.percentualeSconto = percentualeSconto;
 	}
 
-	public float getPercentualeConvenzione() {
+	public double getPercentualeConvenzione() {
 		return percentualeConvenzione;
 	}
 
-	public void setPercentualeConvenzione(float percentualeConvenzione) {
+	public void setPercentualeConvenzione(double percentualeConvenzione) {
 		this.percentualeConvenzione = percentualeConvenzione;
 	}
 
@@ -61,5 +61,6 @@ public class Ricevuta {
 	public void setEntries(List<EntryRicevuta> entries) {
 		this.entries = entries;
 	}
+
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ombrelloniani.controller.interfaces.IController;
 import ombrelloniani.controller.interfaces.IControllerCrea;
 import ombrelloniani.model.Cliente;
 import ombrelloniani.model.Ombrellone;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class CreaPrenotazioneController extends Controller implements IControllerCrea {
+public class CreaPrenotazioneController extends Controller implements IController,IControllerCrea{
 	
 	private Cliente cliente;
 	private List<Ombrellone> ombrelloni = new ArrayList<Ombrellone>();
@@ -30,7 +31,6 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			"values (?,?,?,?)"
 			;
 	
-		
 	static String find_client = 
 			"SELECT * FROM CLIENTI " +
 			"WHERE documento = ?"
@@ -53,14 +53,20 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			"SELECT OP.idOmbrellone " + 
 			"FROM PRENOTAZIONI P JOIN OMBRELLONIPRENOTAZIONE OP " +
 			"ON P.idPrenotazione = OP.idPrenotazione " +
-			"WHERE P.dataInizio <= ? " +
-			"AND P.dataFine >= ? "
+			"WHERE ? BETWEEN P.dataInizio AND P.dataFine OR " +
+			"? BETWEEN P.dataInizio AND P.dataFine OR " +
+			"(P.dataInizio >= ? AND P.dataFine <= ?) "
 			;
+	
+	static String eliminate_prenotazione = 
+			"DELETE FROM PRENOTAZIONI " +
+			"WHERE idPrenotazione = ? "
+	;
+		
 	
 	public CreaPrenotazioneController() { super();};
 	
-	@Override
-	public int getLastIdPrenotazione() {
+	private int getLastIdPrenotazione() {
 		
 		int result = 0;
 		Connection connection = this.getConnection();
@@ -80,7 +86,6 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		return result;
 	}
 	
-	@Override
 	public Cliente cercaCliente(String idDocumento) {
 		
 		Connection connection = this.getConnection();
@@ -114,35 +119,52 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		return result;
 	}
 	
-	@Override
-	public String creaPrenotazioneNuovoCliente(String nome, String cognome, String email, String telefono,
+	public List<String> creaPrenotazioneNuovoCliente(String nome, String cognome, String email, String telefono,
 			String documento, Date dataInizio, Date dataFine, int numeroLettini) {
+		
+		if(nome == null || cognome == null || (email == null && telefono == null) || documento == null || 
+				dataInizio == null || dataFine == null || numeroLettini == 0 ) {
+			
+			System.out.print("Per creare la prenotazione è necessario riempire tutti i campi");
+			return null; // null value solo a scopo di test
+		}
+		
+		if(this.ombrelloni.size() == 0) {
+			
+			System.out.println("Per creare la prenotazione è necessario aggiungere almeno un ombrellone!");
+			return null; // null value solo a scopo di test
+		}
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 		Connection connection = this.getConnection();
-		String result = null;
+		List<String> result = new ArrayList<String>();
 		try {
 			
 			PreparedStatement pstm = connection.prepareStatement(check_ombrellone);
-			pstm.setString(1, formatter.format(dataInizio));
-			pstm.setString(2, formatter.format(dataFine));
+			pstm.setString(1, formatter.format(dataFine));
+			pstm.setString(2, formatter.format(dataInizio));
+			pstm.setString(3, formatter.format(dataInizio));
+			pstm.setString(4, formatter.format(dataFine));
 			ResultSet rs = pstm.executeQuery();
 			
 			while(rs.next()) {
 				
 				for(Ombrellone o: this.ombrelloni) {
 					if(rs.getString("idOmbrellone").equals(o.getIdOmbrellone())) {
-						result = o.getIdOmbrellone();
-						return result;
+						result.add(o.getIdOmbrellone());
 					}
 				}
 			}
+			
+			if(result.size() > 0) return result;
 			
 			pstm = connection.prepareStatement(createCliente);
 			pstm.setString(1, documento);
 			pstm.setString(2, nome);
 			pstm.setString(3, cognome);
+			if(email == null) email = ""; //per evitare eccezioni Null Pointer
 			pstm.setString(4, email);
+			if(telefono == null) telefono = "";
 			pstm.setString(5, telefono);
 			pstm.executeUpdate();
 			
@@ -172,29 +194,46 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		
 	}
 	
-	@Override
-	public String creaPrenotazioneClienteEsistente(Date dataInizio, Date dataFine, int numeroLettini) {
+	public List<String> creaPrenotazioneClienteEsistente(Date dataInizio, Date dataFine, int numeroLettini) {
+		
+		if(this.cliente == null) { System.out.println("Cliente non inserito");
+			return null; } //in questo caso mandare una eccezzione inserire i dati del cliente nella view
+		
+		if( dataInizio == null || dataFine == null || numeroLettini == 0 ) {
+			
+			System.out.print("Per creare la prenotazione è necessario riempire tutti i campi");
+			return null; // null value solo a scopo di test
+		}
+		
+		if(this.ombrelloni.size() == 0) {
+			
+			System.out.println("Per creare la prenotazione è necessario aggiungere almeno un ombrellone!");
+			return null; // null value solo a scopo di test
+		}
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 		Connection connection = this.getConnection();
-		String result = null;
+		List<String> result = new ArrayList<String>();
+		
 		try {
 			
 			PreparedStatement pstm = connection.prepareStatement(check_ombrellone);
-			pstm.setString(1, formatter.format(dataInizio));
-			pstm.setString(2, formatter.format(dataFine));
+			pstm.setString(1, formatter.format(dataFine));
+			pstm.setString(2, formatter.format(dataInizio));
+			pstm.setString(3, formatter.format(dataInizio));
+			pstm.setString(4, formatter.format(dataFine));
 			ResultSet rs = pstm.executeQuery();
 			
 			while(rs.next()) {
 				
 				for(Ombrellone o: this.ombrelloni) {
 					if(rs.getString("idOmbrellone").equals(o.getIdOmbrellone())) {
-						result = o.getIdOmbrellone();
-						return result;
+						result.add(o.getIdOmbrellone());
 					}
 				}
 			}
 			
+			if(result.size() > 0) return result;
 			
 			pstm = connection.prepareStatement(createPrenotazione);
 			pstm.setString(1, formatter.format(dataInizio));
@@ -222,7 +261,6 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		
 	}
 	
-	@Override
 	// il metodo restituisce -1 se l'ombrellone cercato non esiste
 	public int aggiungiOmbrellone(String idOmbrellone) {
 		
@@ -256,7 +294,6 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		
 	}
 	
-	@Override
 	public void rimuoviOmbrellone(String idOmbrellone) {
 		
 		
@@ -269,4 +306,5 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			}
 		}
 	}
+
 }

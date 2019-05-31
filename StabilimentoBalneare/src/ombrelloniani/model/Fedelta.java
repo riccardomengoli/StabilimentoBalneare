@@ -4,13 +4,17 @@ public class Fedelta {
 	
 	private String nome;
 	private int giorni;
-	private float sconto;
+	private double sconto;
 
 	public Fedelta(String nome, int giorni, float sconto) {
 		super();
 		this.nome = nome;
 		this.giorni = giorni;
 		this.sconto = sconto;
+	}
+
+	public Fedelta() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getNome() {
@@ -29,12 +33,12 @@ public class Fedelta {
 		this.giorni = giorni;
 	}
 	
-	public float getSconto() {
+	public double getSconto() {
 		return sconto;
 	}
 	
-	public void setSconto(float sconto) {
-		this.sconto = sconto;
+	public void setSconto(double d) {
+		this.sconto = d;
 	}
 
 }

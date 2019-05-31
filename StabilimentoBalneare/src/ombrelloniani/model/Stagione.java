@@ -15,6 +15,10 @@ public class Stagione {
 		this.dataFine = dataFine;
 	}
 
+	public Stagione() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getNomeStagione() {
 		return nomeStagione;
 	}

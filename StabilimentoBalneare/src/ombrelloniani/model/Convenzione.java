@@ -7,7 +7,7 @@ public class Convenzione {
 	private String nome;
 	private Date dataInizio;
 	private Date dataFine;
-	private float sconto;
+	private double sconto;
 	private EnteTerzo ente;
 	
 	public Convenzione(String nome, Date dataInizio, Date dataFine, float sconto) {
@@ -46,12 +46,12 @@ public class Convenzione {
 		this.dataFine = dataFine;
 	}
 
-	public float getSconto() {
+	public double getSconto() {
 		return sconto;
 	}
 
-	public void setSconto(float sconto) {
-		this.sconto = sconto;
+	public void setSconto(double d) {
+		this.sconto = d;
 	}
 
 	public EnteTerzo getEnte() {

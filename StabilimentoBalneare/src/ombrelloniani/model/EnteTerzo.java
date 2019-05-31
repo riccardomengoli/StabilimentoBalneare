@@ -11,6 +11,10 @@ public class EnteTerzo {
 		this.tipologia = tipologia;
 	}
 
+	public EnteTerzo() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getNomeEnte() {
 		return nomeEnte;
 	}
