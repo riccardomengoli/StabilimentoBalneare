@@ -1,20 +1,16 @@
 package ombrelloniani.controller.interfaces;
 
-import java.util.Date;
-import java.util.List;
-
-import ombrelloniani.model.Cliente;
+import ombrelloniani.controller.exceptions.ClientNotFoundException;
+import ombrelloniani.controller.exceptions.OmbrelloneNotFoundException;
+import ombrelloniani.controller.exceptions.OmbrelloneOccupatoException;
 
 public interface IControllerCrea {
 	
-	public Cliente cercaCliente(String idDocumento);
+	public void cercaCliente() throws ClientNotFoundException;
 	
-	public List<String> creaPrenotazioneNuovoCliente(String nome, String cognome, String email, String telefono,
-			String documento, Date dataInizio, Date dataFine, int numeroLettini);
+	public void creaPrenotazione() throws OmbrelloneOccupatoException; 
 	
-	public List<String> creaPrenotazioneClienteEsistente(Date dataInizio, Date dataFine, int numeroLettini);
+	public void aggiungiOmbrellone() throws OmbrelloneNotFoundException;
 	
-	public int aggiungiOmbrellone(String idOmbrellone);
-	
-	public void rimuoviOmbrellone(String idOmbrellone);
+	public void rimuoviOmbrellone() throws OmbrelloneNotFoundException;
 }
