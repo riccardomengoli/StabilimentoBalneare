@@ -11,44 +11,43 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Controller {
-	
+
 	private Connection dbConnection;
 	private Writer logWriter;
-	private static String path = "C:/Users/miche/Desktop/fileLog";
-	
+	private String dbPath = getClass().getResource("/resources/database.db").toExternalForm();
+	private String logPath = getClass().getResource("/resources/log.txt").toExternalForm();
+
 	public Controller() {};
-	
+
 	public synchronized Connection getConnection() {
-		
-		if(this.dbConnection == null)
+
+		if (this.dbConnection == null)
 			this.dbConnection = openConnection();
-		
+
 		return this.dbConnection;
 	}
 
 	private Connection openConnection() {
-		
+
 		Connection conn = null;
-		
+
 		try {
 			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:/resources/sample.db");
-		} 
-		catch (SQLException e) {
+			conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
+
 		return conn;
 	}
-	
+
 	public synchronized void writeLog(String string) {
-		
-		if(this.logWriter == null)
-			this.logWriter = openLogOperation(path);
-		
+
+		if (this.logWriter == null)
+			this.logWriter = openLogOperation(logPath);
+
 		try {
 			this.logWriter.append(string);
 		} catch (IOException e) {
@@ -57,30 +56,29 @@ public class Controller {
 	}
 
 	private Writer openLogOperation(String string) {
-		
+
 		FileWriter fw = null;
-		
+
 		try {
 			fw = new FileWriter(string);
-		
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return fw;
-		
+
 	}
-	
+
 	public synchronized Reader getLogReader() {
-		
+
 		FileReader fr = null;
 		try {
-			fr = new FileReader(path);
+			fr = new FileReader(logPath);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		return fr;
 	}
-	
-	
+
 }
