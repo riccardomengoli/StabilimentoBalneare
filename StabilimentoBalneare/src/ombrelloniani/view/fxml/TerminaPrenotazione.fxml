@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableView?>
+
+<GridPane styleClass="container" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="ombrelloniani.view.fxmlControllers.TerminaPrenotazione">
+	<!-- 3 COLUMN SPLITTER -->
+	<GridPane>
+		<VBox GridPane.columnIndex="1" alignment="TOP_CENTER">
+			<!-- TITLE -->
+			<AnchorPane>
+				<Label styleClass="title" text="TERMINA PRENOTAZIONE" AnchorPane.bottomAnchor="30.0"
+					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+			</AnchorPane>
+
+			<!-- MAIN CONTENT -->
+			<!-- Sezione 1 -->
+			<VBox spacing="7">
+				<Pane prefHeight="1">
+					<Label fx:id="label_g1" styleClass="sectionHeader" text="Ricerca prenotazione" />
+					<Line fx:id="hr_g1" />
+				</Pane>
+				<HBox spacing="20">
+					<Button onAction="#handleRicercaPerIdPren" styleClass="standardButton" text="Cerca per ID prenotazione" />
+					<Button onAction="#handleRicercaPerCliente" styleClass="standardButton" text="Cerca per nome cliente" />
+				</HBox>
+				<Pane>
+					<Line fx:id="hr1" />
+				</Pane>
+				<VBox.margin>
+					<Insets bottom="40" />
+				</VBox.margin>
+			</VBox>
+
+			<!-- Sezione 2 -->
+			<VBox>
+				<Pane prefHeight="1">
+					<Label fx:id="label_g2" styleClass="sectionHeader" text="Riepilogo prenotazione" />
+					<Line fx:id="hr_g2" />
+					<VBox.margin>
+						<Insets bottom="10" />
+					</VBox.margin>
+				</Pane>
+
+				<!-- GRID 2 COLONNE -->
+				<GridPane hgap="20">
+
+					<!-- Colonna 1 -->
+					<GridPane styleClass="inputsGridSmall" GridPane.rowIndex="0" GridPane.columnIndex="0">
+						<Label text="Data inizio" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+						<DatePicker fx:id="dataInizio" styleClass="inputText" GridPane.rowIndex="0" GridPane.columnIndex="1"
+							prefWidth="200" maxWidth="Infinity" />
+						<Label text="Data fine" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+						<DatePicker fx:id="dataFine" styleClass="inputText" GridPane.rowIndex="1" GridPane.columnIndex="1"
+							prefWidth="200" maxWidth="Infinity" />
+						<Label text="N. di lettini" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+						<TextField fx:id="numeroLettini" styleClass="inputText" GridPane.rowIndex="2" GridPane.columnIndex="1"
+							maxWidth="100" alignment="CENTER_RIGHT" />
+						<Label text="Ombrelloni" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+						<ListView fx:id="listaOmbrelloni" prefHeight="120" maxWidth="200" id="right" GridPane.rowIndex="3"
+							GridPane.columnIndex="1" />
+						<Label text="Servizi" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+						<ListView fx:id="listaServizi" prefHeight="120" maxWidth="200" GridPane.rowIndex="4"
+							GridPane.columnIndex="1" />
+						<columnConstraints>
+							<ColumnConstraints percentWidth="35" halignment="RIGHT" />
+							<ColumnConstraints percentWidth="65" />
+						</columnConstraints>
+					</GridPane>
+
+					<!-- Colonna 2 -->
+					<VBox GridPane.rowIndex="0" GridPane.columnIndex="1">
+						<VBox styleClass="subsectionColor" alignment="TOP_CENTER">
+
+							<!-- Sottobox dentro il colore -->
+							<VBox>
+								<!-- Barra totale da pagare -->
+								<Pane prefHeight="1">
+									<Label fx:id="label_g3" styleClass="sectionHeader" text="Totale da pagare" />
+									<Line fx:id="hr_g3" />
+									<Button fx:id="btn_g3" styleClass="standardButton" id="convenzioneButton" text="Seleziona convenzione" />
+									<VBox.margin>
+										<Insets top="35" bottom="10" />
+									</VBox.margin>
+								</Pane>
+
+								<!-- Tabella ricevuta -->
+								<TableView >
+									<!-- TODO -->
+								</TableView>
+
+
+								<VBox.margin>
+									<Insets right="10" bottom="20" left="10" />
+								</VBox.margin>
+							</VBox>
+						</VBox>
+
+
+					</VBox>
+
+
+					<columnConstraints>
+						<ColumnConstraints percentWidth="45.0" />
+						<ColumnConstraints percentWidth="55.0" />
+					</columnConstraints>
+				</GridPane>
+			</VBox>
+
+
+			<!-- Bottone finale basso centrale -->
+			<Button onAction="#handleTerminaPrenotazione" onMouseEntered="#handleHoverInButton"
+				onMouseExited="#handleHoverOutButton" styleClass="mainButtonCentered" id="mainButtonCenteredSmaller"
+				text="Stampa ricevuta e termina prenotazione">
+				<VBox.margin>
+					<Insets top="30" bottom="20" />
+				</VBox.margin>
+			</Button>
+		</VBox>
+		<rowConstraints>
+			<RowConstraints percentHeight="100.0" />
+		</rowConstraints>
+		<columnConstraints>
+			<ColumnConstraints percentWidth="28.0" />
+			<ColumnConstraints percentWidth="65.0" />
+			<ColumnConstraints percentWidth="7.0" />
+		</columnConstraints>
+	</GridPane>
+	<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+		<Button onAction="#handleBack" styleClass="logoutButton" text="Indietro" AnchorPane.rightAnchor="15.0"
+			AnchorPane.topAnchor="15.0" />
+	</AnchorPane>
+	<rowConstraints>
+		<RowConstraints percentHeight="100.0" />
+	</rowConstraints>
+	<columnConstraints>
+		<ColumnConstraints percentWidth="100.0" />
+	</columnConstraints>
+</GridPane>

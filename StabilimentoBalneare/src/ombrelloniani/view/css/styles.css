@@ -55,6 +55,10 @@ Button {
 	-fx-padding: 10.0px 40.0px;
 }
 
+#mainButtonCenteredSmaller {
+	-fx-font-size: 2.4em;
+}
+
 Button.logoutButton {
 	-fx-background-color: #8bfbff;
 	-fx-border-size: 1.0px;
@@ -71,6 +75,11 @@ Button.standardButton {
 	-fx-border-color: black;
 	-fx-border-style: solid;
 	-fx-padding: 3.0px 10.0px;
+}
+
+Button#convenzioneButton {
+	-fx-font-size: 1.2em;
+	-fx-padding: 1px 10px;
 }
 
 Button#controlloDispButton {
@@ -94,6 +103,11 @@ Label, ListView {
 	-fx-text-fill: black;
 }
 
+Label.sectionHeader {
+	-fx-font-size: 1.4em;
+	-fx-text-fill: blue;
+}
+
 ListView#right .list-cell {
 	-fx-alignment: top-right;
 }
@@ -101,5 +115,11 @@ ListView#right .list-cell {
 GridPane.inputsGrid {
 	-fx-hgap: 15.0px;
 	-fx-vgap: 15.0px;
+	-fx-alignment: top-left;
+}
+
+GridPane.inputsGridSmall {
+	-fx-hgap: 10.0px;
+	-fx-vgap: 10.0px;
 	-fx-alignment: top-left;
 }
