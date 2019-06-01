@@ -27,6 +27,7 @@ import ombrelloniani.model.PrezzoOmbrellone;
 import ombrelloniani.model.PrezzoServizio;
 import ombrelloniani.model.Ricevuta;
 import ombrelloniani.model.Servizio;
+import ombrelloniani.view.interfaces.IViewTermina;
 
 import java.util.Date;
 
@@ -37,6 +38,7 @@ public class TerminaController implements IController, IControllerTermina{
 	private List<String[]> convenzioniString = new ArrayList<String[]>();
 	private ListaFedelta fedelta = ListaFedelta.getListaFedelta();
 	private Ricevuta ricevuta;
+	private Convenzione convenzione;
 	private PrenotazioneTerminata prenotazioneTerminata;
 	private Prenotazione prenotazione;
 	private List<Prenotazione> prenotazioni;
@@ -48,9 +50,10 @@ public class TerminaController implements IController, IControllerTermina{
 	private float prezzoBaseOmbrelloni = 10;
 	private float prezzoBaseServizi = 10;
 	//View
-
-	//Query
 	
+	private IViewTermina viewTermina;
+	
+	//Query
 	private static String terminaPrenotazione = 
 			"DELETE FROM PRENOTAZIONI "
 			+ "WHERE idPrenotazione = ?";
@@ -83,12 +86,13 @@ public class TerminaController implements IController, IControllerTermina{
 			;
 	
 	//Costruttore deve prendere in ingresso la view sulla quale richiamare i metodi
-	public TerminaController() {
+	public TerminaController(IViewTermina viewTermina) {
+		this.viewTermina = viewTermina;
 	}
 	
 	//Metodi della classe
 	
-	public void cercaPrenotazione(int idPren) throws ParseException {
+	public void cercaPrenotazione(int idPren) {
 		prenotazione = controller.cercaPrenotazione(idPren);
 		
 		if(prenotazione.getDataFine().compareTo(Date.from(Instant.now())) == 1) {
@@ -100,7 +104,7 @@ public class TerminaController implements IController, IControllerTermina{
 	
 	//cerco tutte le prenotazioni con nome e cognome dati
 	
-	public void cercaPrenotazioni(String nome, String cognome) throws ParseException{
+	public void cercaPrenotazioni(String nome, String cognome) {
 		prenotazioni =  controller.cercaPrenotazioni(nome, cognome);
 		mostraPrenotazioni();
 	}
@@ -120,10 +124,10 @@ public class TerminaController implements IController, IControllerTermina{
 			prenotazioni.add(prenotazione);
 		}
 		
-		//viewTermina.aggiornaListaPrenotazioniDisponibili(prenotazioni);
+		viewTermina.aggiornaListaPrenotazioniDisponibili(prenotazioni);
 	}
 
-	public void prenotazioneSelezionata(int index) throws ParseException {
+	public void prenotazioneSelezionata(int index) {
 		prenotazione = prenotazioni.get(index);
 		
 		if(prenotazione.getDataFine().compareTo(Date.from(Instant.now())) == 1) {
@@ -133,23 +137,19 @@ public class TerminaController implements IController, IControllerTermina{
 		mostraPrenotazione();
 	}
 	
-	private void mostraPrenotazione() throws ParseException {
+	private void mostraPrenotazione() {
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		List<String> ombrelloni = new ArrayList<String>();
-		List<String> servizi = new ArrayList<String>();
 		
-		//viewTermina.setId(Integer.toString(prenotazione.getIdPrenotazione()));
-		//viewTermina.setDataInizio(formatter.format(this.prenotazione.getDataInizio()));
-		//viewTermina.setDataFine(formatter.format(this.prenotazione.getDataFine()));
-		//viewTermina.setNumeroLettini(Integer.toString(prenotazione.getNumeroLettini()));
+		viewTermina.setDataInizio(formatter.format(this.prenotazione.getDataInizio()));
+		viewTermina.setDataFine(formatter.format(this.prenotazione.getDataFine()));
+		viewTermina.setNumeroLettini(prenotazione.getNumeroLettini());
 		for(Ombrellone o : prenotazione.getOmbrelloni()) {
-			ombrelloni.add(o.getIdOmbrellone());
+			viewTermina.addOmbrelloneToList(o.getIdOmbrellone());
 		}
-		//viewTermina.setOmbrelloni(prenotazione.getOmbrelloni().size(), ombrelloni);
+		
 		for(Servizio s : prenotazione.getServizi()) {
-			servizi.add(s.getNome());
+			viewTermina.addServizioToList(s.getNome());
 		}
-		//viewTermina.setServizi(prenotazione.getServizi().size(), servizi);
 		
 		mostraRicevuta(); //ancora non contiene la convenzione
 	}
@@ -202,7 +202,7 @@ public class TerminaController implements IController, IControllerTermina{
 		
 	}
 	
-	private void creaRicevuta() throws ParseException {
+	private void creaRicevuta() {
 		ricevuta = new Ricevuta();
 		
 		ricevuta.setEntries(calcolaEntryRicevuta());
@@ -212,54 +212,99 @@ public class TerminaController implements IController, IControllerTermina{
 	}
 
 	//funzione manca al controllo
-	private void mostraRicevuta() throws ParseException {
+	private void mostraRicevuta() {
 		creaRicevuta();
 		List<String[]> entriesRicevuta = new ArrayList<String[]>();
+		String[] entry;
 		
 		for(EntryRicevuta e: this.ricevuta.getEntries()) {
 			
-			String[] entry = new String[4];
-			entry[0] = e.getTipoPrezzo();
-			entry[1] = e.getDescrizione();
-			entry[2] = Integer.toString(e.getGiorni());
-			entry[3] = Float.toString(e.getTotale());
+			entry = new String[3];
+			entry[0] = e.getTipoPrezzo() + " " + e.getDescrizione();
+			if(e.getTipoPrezzo().equalsIgnoreCase("Servizio")) entry[1] = "";
+			else entry[1] = Integer.toString(e.getGiorni());
+			entry[2] = Float.toString(e.getTotale());
 			
 			entriesRicevuta.add(entry);
 		}
 		
-		//viewTermina.aggiornaTabellaRicevuta(entriesRicevuta, this.ricevuta.getPercentualeConvenzione(),
-		//		this.ricevuta.getPercentualeSconto(), this.ricevuta.getPrezzoTotale());
+		//Stringa vuota di intermezzo 
+		entry = new String[3];
+		entry[0] = "";
+		entry[1] = "";
+		entry[2] = "";
+		
+		entriesRicevuta.add(entry);
+		
+		entry = new String[3];
+		entry[1] = "";
+		if(this.ricevuta.getPercentualeSconto() == 0) {
+			entry[0] = "Sconto - non presente";
+			entry[2] = "";
+		}
+		else {
+			entry[0] = "Sconto";
+			entry[2] = Double.toString(this.ricevuta.getPercentualeSconto());
+		}
+		
+		entriesRicevuta.add(entry);
+		
+		entry = new String[3];
+		entry[1] = "";
+		if(this.ricevuta.getPercentualeConvenzione() == 0) {
+			entry[0] = "Convenzione - non presente";
+			entry[2] = "";
+		}
+		else {
+			entry[0] = "Convenzione - " + this.convenzione.getNome() + " - " + Double.toString(this.convenzione.getSconto()*100) + "%";
+			entry[2] = "- " + Double.toString(this.ricevuta.getPrezzoTotale()*this.convenzione.getSconto());
+		}
+		
+		entriesRicevuta.add(entry);
+		
+		entry = new String[3];
+		
+		entry[0] = "TOTALE";
+		entry[1] = "";
+		entry[2] = Float.toString(this.calcolaSaldo());
+		
+		entriesRicevuta.add(entry);
+		
+		viewTermina.aggiornaTabellaRicevuta(entriesRicevuta);
 	}
 
 	//mostraConvenzioni mostra solo le convenzioni attualmente disponibili confrontandole con la data odierna
 	public void mostraConvenzioni() {
-		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		
 		convenzioniString = new ArrayList<String[]>();
 		String[] convenzione;
 		Date dNow = new Date();
 		
 		for(Convenzione c : this.convenzioni.getConvenzioni()) {
 			if(c.getDataInizio().compareTo(dNow) <= 0 && c.getDataFine().compareTo(dNow) >= 0) {
-				convenzione = new String[6];
-				convenzione[0] = c.getNome();
-				convenzione[1] = formatter.format(c.getDataInizio());
-				convenzione[2] = formatter.format(c.getDataFine());
-				convenzione[3] = Double.toString(c.getSconto());
-				convenzione[4] = c.getEnte().getNomeEnte();
-				convenzione[5] = c.getEnte().getTipologia();
+				convenzione = new String[3];
+				convenzione[0] = c.getEnte().getNomeEnte();
+				convenzione[1] = c.getNome();
+				convenzione[2] = Double.toString(c.getSconto());
 					
 				convenzioniString.add(convenzione);
 			}
-	
 		}
 
-		//viewTermina.aggiornaListaConvenzioni(convenzioni);
+		viewTermina.aggiornaListaConvenzioni(convenzioniString);
 	}
 
 	//index fa riferimento alla posizione nella lista di convenzioniString
-	public void convenzioneSelezionata(int index) throws ParseException {
+	public void convenzioneSelezionata(int index) {
 		
+		String nomeConvenzione = (convenzioniString.get(index))[0];
 		ricevuta.setPercentualeConvenzione(Double.parseDouble((convenzioniString.get(index))[3]));
+		for(Convenzione c: this.convenzioni.getConvenzioni())
+			if(c.getNome().equals(nomeConvenzione)) {
+				this.convenzione = c;
+				break;
+			}
+		
 		mostraRicevuta(); //seleziono la ricevuta e riaggiorno la tabella
 	}
 	
@@ -313,7 +358,7 @@ public class TerminaController implements IController, IControllerTermina{
 	}
 	
 	//attenzione nella entry relativa al prezzo del servizio il giorno è a 0!
-	private List<EntryRicevuta> calcolaEntryRicevuta() throws ParseException {
+	private List<EntryRicevuta> calcolaEntryRicevuta() {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -373,7 +418,7 @@ public class TerminaController implements IController, IControllerTermina{
 		return entries;
 	}
 	
-	private float calcolaTotaleServizio(Servizio servizio) throws ParseException {
+	private float calcolaTotaleServizio(Servizio servizio) {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Connection connection = controller.getConnection();
@@ -414,7 +459,9 @@ public class TerminaController implements IController, IControllerTermina{
 			}
 			
 		} catch (SQLException e) {
-		e.printStackTrace();
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 		
 		if(totaleServizio == 0) return numeroServizi* this.prezzoBaseServizi;
