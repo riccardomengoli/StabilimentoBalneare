@@ -1,11 +1,13 @@
 package ombrelloniani.controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,7 +17,6 @@ public class Controller {
 	private Connection dbConnection;
 	private Writer logWriter;
 	private String dbPath = getClass().getResource("/resources/database.db").toExternalForm();
-	private String logPath = getClass().getResource("/resources/log.txt").toExternalForm();
 
 	public Controller() {};
 
@@ -46,7 +47,7 @@ public class Controller {
 	public synchronized void writeLog(String string) {
 
 		if (this.logWriter == null)
-			this.logWriter = openLogOperation(logPath);
+			this.logWriter = openLogOperation();
 
 		try {
 			this.logWriter.append(string);
@@ -55,14 +56,18 @@ public class Controller {
 		}
 	}
 
-	private Writer openLogOperation(String string) {
+	private Writer openLogOperation() {
 
+		File f = null;
 		FileWriter fw = null;
 
 		try {
-			fw = new FileWriter(string);
+			f = new File(getClass().getResource("/resources/log.txt").toURI());
+			fw = new FileWriter(f);
 
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
@@ -72,10 +77,15 @@ public class Controller {
 
 	public synchronized Reader getLogReader() {
 
+		File f = null;
 		FileReader fr = null;
+		
 		try {
-			fr = new FileReader(logPath);
+			f = new File(getClass().getResource("/resources/log.txt").toURI());
+			fr = new FileReader(f);
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 		return fr;
