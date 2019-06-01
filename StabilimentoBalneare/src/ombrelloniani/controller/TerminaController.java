@@ -30,7 +30,7 @@ import ombrelloniani.model.Servizio;
 
 import java.util.Date;
 
-public class TerminaController implements IController,IControllerTermina{
+public class TerminaController implements IController, IControllerTermina{
 	
 	private ListaPrezzi prezzi = ListaPrezzi.getListaPrezzi();
 	private ListaConvenzioni convenzioni = ListaConvenzioni.getListaConvenzioni();

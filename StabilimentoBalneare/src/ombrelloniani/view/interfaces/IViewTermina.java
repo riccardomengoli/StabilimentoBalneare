@@ -1,6 +1,5 @@
 package ombrelloniani.view.interfaces;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface IViewTermina {
@@ -42,7 +41,10 @@ public interface IViewTermina {
 	public void addOmbrelloneToList(String idOmbrellone);
 	public void addServizioToList(String nomeServizio);
 	
-	public void setDataInizio(LocalDate dataInizio);
-	public void setDataFine(LocalDate dataFine);
+	public void setDataInizio(String dataInizio);
+	public void setDataFine(String dataFine);
 	public void setNumeroLettini(int numeroLettini);
+	
+	public void showError(String titolo, String descrizione);
+	public void confermaTerminazione();
 }

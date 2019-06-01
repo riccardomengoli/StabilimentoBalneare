@@ -19,7 +19,7 @@ public class MainView extends Application {
 		stage.centerOnScreen();
 
 		// XXX TEMPORARY FOR DEBUG
-		VistaNavigator.loadView(VistaNavigator.LOGIN);
+		VistaNavigator.loadView(VistaNavigator.TERMINAPRENOTAZIONE);
 	}
 
 	public static void main(String[] args) {
