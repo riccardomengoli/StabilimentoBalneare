@@ -144,6 +144,10 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		
 		try {
 			
+			if(viewCreazione.getNumeroLettini() > 4*this.ombrelloni.size()) {
+				viewCreazione.showError("NumLettiniError", "Per ogni ombrellone si possono avere al più 4 lettini");
+			}
+			
 			PreparedStatement pstm = connection.prepareStatement(check_ombrellone);
 			pstm.setString(1, formatter.format(dataFine));
 			pstm.setString(2, formatter.format(dataInizio));
@@ -196,7 +200,6 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			System.out.println("Creazione avvenuta correttamente");
 			this.viewCreazione.confermaCreazione(this.getLastIdPrenotazione());
 			pstm.close();
-			connection.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -274,5 +277,4 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				"Non è stato trovato nessun ombrellone con ID: " + idOmbrellone.toUpperCase());
 		
 	}
-
 }
