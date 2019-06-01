@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+
+<fx:root type="VBox" xmlns:fx="http://javafx.com/fxml/1" styleClass="containerPlain">
+	<VBox alignment="TOP_RIGHT" spacing="10">
+		<HBox spacing="10" alignment="CENTER_LEFT">
+			<Label text="ID Prenotazione" />
+			<TextField fx:id="idPrenotazione" styleClass="inputText" maxWidth="200" />
+		</HBox>
+		<Button onAction="#handleRicerca" styleClass="standardButton" text="Cerca" />
+
+		<VBox.margin>
+			<Insets top="20" right="20" bottom="20" left="20" />
+		</VBox.margin>
+	</VBox>
+</fx:root>

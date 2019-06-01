@@ -14,6 +14,10 @@
 	-fx-background-image: url("../images/backgroundSpiaggiaApp_opacity70.jpg");
 }
 
+.containerPlain {
+	-fx-background-color: #efe2d3;
+}
+
 .subsectionColor {
 	-fx-background-color: #efdbc5;
 	-fx-border-size: 1.0px;
@@ -79,7 +83,7 @@ Button.standardButton {
 
 Button#convenzioneButton {
 	-fx-font-size: 1.2em;
-	-fx-padding: 1px 10px;
+	-fx-padding: 1.0px 10.0px;
 }
 
 Button#controlloDispButton {
@@ -122,4 +126,35 @@ GridPane.inputsGridSmall {
 	-fx-hgap: 10.0px;
 	-fx-vgap: 10.0px;
 	-fx-alignment: top-left;
+}
+
+TableView {
+    -fx-table-cell-border-color: #f2f2f2;
+}
+
+TableView .column-header {
+	-fx-background-color: #0072bc;
+}
+
+TableView .column-header-background .label {
+	-fx-text-fill: white;
+	-fx-font-size: 1.4em;
+	-fx-font-weight: normal;
+}
+
+TableView .table-cell {
+	-fx-background-color: white;
+	-fx-text-fill: black;
+	-fx-font-size: 1.4em;
+	-fx-font-weight: normal;
+	-fx-padding: 1.0px 6.0px;
+}
+
+TableView .table-row-cell:last-row {
+	-fx-font-size: 1.6em;
+	-fx-font-weight: bold;
+}
+
+TableView .columnRight {
+	-fx-alignment: center-right;
 }
