@@ -145,7 +145,8 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		try {
 			
 			if(viewCreazione.getNumeroLettini() > 4*this.ombrelloni.size()) {
-				viewCreazione.showError("NumLettiniError", "Per ogni ombrellone si possono avere al più 4 lettini");
+				viewCreazione.showError("Troppi lettini", "Per ogni ombrellone si possono avere al più 4 lettini");
+				return;
 			}
 			
 			PreparedStatement pstm = connection.prepareStatement(check_ombrellone);

@@ -228,6 +228,12 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 	public void confermaTerminazione() {
 		AlertHelper.showAlert(AlertType.INFORMATION, dataInizio.getScene().getWindow(), "Terminazione completata",
 				"Terminazione prenotazione eseguita con successo.");
+		dataInizio.clear();
+		dataFine.clear();
+		numeroLettini.clear();
+		ombrelloni.clear();
+		servizi.clear();
+		ricevuta.clear();
 	}
 
 	/*
