@@ -3,6 +3,8 @@ package ombrelloniani.view.fxmlControllers;
 import java.time.LocalDate;
 import java.util.List;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,10 +13,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import javafx.util.Callback;
 import ombrelloniani.controller.interfaces.IControllerTermina;
 import ombrelloniani.view.VistaNavigator;
 import ombrelloniani.view.interfaces.IViewTermina;
@@ -28,9 +34,11 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 	@FXML private Line hr_g1, hr1, hr_g2, hr_g3;
 	@FXML private Label label_g1, label_g2, label_g3;
 	@FXML private Button btn_g3;
+	@FXML private TableView<String[]> tableRicevuta;
 	private IControllerTermina controller;
 	private ObservableList<String> ombrelloni = FXCollections.observableArrayList();
 	private ObservableList<String> servizi = FXCollections.observableArrayList();
+	private ObservableList<String[]> ricevuta = FXCollections.observableArrayList();
 
 	public TerminaPrenotazione() {
 		// this.controller = new TerminaController(this);
@@ -56,10 +64,12 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 		label_g3.layoutXProperty().bind(hr_g3.startXProperty());
 		label_g3.layoutYProperty().bind(hr_g3.startYProperty().subtract(25));
 		btn_g3.layoutXProperty().bind(hr_g3.endXProperty().subtract(btn_g3.widthProperty()));
-		btn_g3.layoutYProperty().bind(hr_g3.endYProperty().subtract(27));
+		btn_g3.layoutYProperty().bind(hr_g3.endYProperty().subtract(27.5));
 
 		listaOmbrelloni.setItems(ombrelloni);
 		listaServizi.setItems(servizi);
+		
+		tableSetup();
 	}
 
 	/**
@@ -67,7 +77,7 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 	 */
 	@FXML
 	private void handleRicercaPerIdPren(ActionEvent event) {
-
+		// controller.cercaPrenotazione();
 	}
 
 	/**
@@ -75,7 +85,7 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 	 */
 	@FXML
 	private void handleRicercaPerCliente(ActionEvent event) {
-
+		// controller.cercaPrenotazioni();
 	}
 
 	/**
@@ -128,24 +138,25 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 		l.setStartY(0.5);
 		l.setEndY(0.5);
 	}
-
-	/*
-	 * GETTERS
-	 */
-	@Override
-	public String getOmbrelloneSelezionato() {
-		if (listaOmbrelloni.getSelectionModel().selectedItemProperty().isNull().get()) {
-			return null;
-		}
-		return listaOmbrelloni.getSelectionModel().getSelectedItem();
-	}
-
-	@Override
-	public String getServizioSelezionato() {
-		if (listaServizi.getSelectionModel().selectedItemProperty().isNull().get()) {
-			return null;
-		}
-		return listaServizi.getSelectionModel().getSelectedItem();
+	
+	@SuppressWarnings("unchecked")
+	private void tableSetup() {
+		tableRicevuta.setItems(ricevuta);
+		TableColumn<String[], String> colDescrizione = new TableColumn<String[], String>("Descrizione");
+		TableColumn<String[], String> colGiorni = new TableColumn<String[], String>("Giorni");
+		TableColumn<String[], String> colEuro = new TableColumn<String[], String>("Euro");
+		colDescrizione.setCellValueFactory(new Callback<CellDataFeatures<String[], String>, ObservableValue<String>>() {
+		     public ObservableValue<String> call(CellDataFeatures<String[], String> entry) {
+		         return new ReadOnlyStringWrapper(entry.getValue()[0]);
+		     }
+		});
+		colGiorni.setCellValueFactory(s -> new ReadOnlyStringWrapper(s.getValue()[1])); //XXX TEST LAMBDA
+		colEuro.setCellValueFactory(s -> new ReadOnlyStringWrapper(s.getValue()[2]));
+		
+		//TODO larghezza colonne
+		//TODO style table
+		
+		tableRicevuta.getColumns().setAll(colDescrizione, colGiorni, colEuro);
 	}
 
 	/*
@@ -173,7 +184,7 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 
 	@Override
 	public void addServizioToList(String nomeServizio) {
-		// TODO Auto-generated method stub
+		this.servizi.add(nomeServizio);
 
 	}
 
@@ -184,9 +195,10 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 	}
 
 	@Override
-	public void aggiornaTabellaRicevuta(List<String> ricevuta, int numeroEntry) {
-		// TODO Auto-generated method stub
-
+	public void aggiornaTabellaRicevuta(List<String[]> ricevuta) {
+		for (String[] entryRicevuta : ricevuta) {
+			this.ricevuta.add(entryRicevuta);
+		}
 	}
 
 	@Override

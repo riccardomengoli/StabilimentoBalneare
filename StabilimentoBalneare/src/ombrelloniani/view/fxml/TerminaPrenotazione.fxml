@@ -99,11 +99,8 @@
 								</Pane>
 
 								<!-- Tabella ricevuta -->
-								<TableView >
-									<!-- TODO -->
-								</TableView>
-
-
+								<TableView fx:id="tableRicevuta" />
+								
 								<VBox.margin>
 									<Insets right="10" bottom="20" left="10" />
 								</VBox.margin>
@@ -127,7 +124,7 @@
 				onMouseExited="#handleHoverOutButton" styleClass="mainButtonCentered" id="mainButtonCenteredSmaller"
 				text="Stampa ricevuta e termina prenotazione">
 				<VBox.margin>
-					<Insets top="30" bottom="20" />
+					<Insets top="20" bottom="30" />
 				</VBox.margin>
 			</Button>
 		</VBox>

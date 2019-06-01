@@ -5,38 +5,44 @@ import java.util.List;
 
 public interface IViewTermina {
 
+	/**
+	 * 'prenotazioni' formata da array di stringhe di lunghezza 3.
+	 * I campi sono i seguenti:
+	 * [0] = idPrenotazione
+	 * [1] = dataInizio
+	 * [2] = dataFine
+	 * 
+	 * @param prenotazioni
+	 */
 	public void aggiornaListaPrenotazioniDisponibili(List<String[]> prenotazioni);
+	
+	/**
+	 * 'convenzioni' formata da array di stringhe di lunghezza 3.
+	 * I campi sono i seguenti:
+	 * string[0] = nomeEnte
+	 * string[1] = nomeConvenzione
+	 * string[2] = sconto
+	 * 
+	 * @param convenzioni
+	 */
+	public void aggiornaListaConvenzioni(List<String[]> convenzioni);
+	
+	/**
+	 * 'ricevuta' formata da array di stringhe di lunghezza 3.
+	 * I campi sono i seguenti:
+	 * [0] = descrizione
+	 * [1] = giorni
+	 * [2] = euro
+	 * Utilizzare come in interfaccia jpeg di progettazione.
+	 * 
+	 * @param ricevuta
+	 */
+	public void aggiornaTabellaRicevuta(List<String[]> ricevuta);
+	
 	public void addOmbrelloneToList(String idOmbrellone);
 	public void addServizioToList(String nomeServizio);
-	public void aggiornaTabellaRicevuta(List<String> ricevuta, int numeroEntry);
-	public void aggiornaListaConvenzioni(List<String[]> convenzioni);
-
-	public String getOmbrelloneSelezionato();
-	public String getServizioSelezionato();
 	
 	public void setDataInizio(LocalDate dataInizio);
 	public void setDataFine(LocalDate dataFine);
 	public void setNumeroLettini(int numeroLettini);
-	
-	/*
-	public void aggiornaListaPrenotazioniDisponibili(List<String[]> prenotazioni);
-	
-	void setId(String string);
-
-	void setDataInizio(String format);
-
-	void setDataFine(String format);
-
-	void aggiornaTabellaRicevuta(List<String> ricevuta, int numeroEntry);
-
-	void setUtente(String nome, String cognome, String idDocumento);
-
-	void aggiornaListaConvenzioni(List<String[]> convenzioni);
-
-	void setNumeroLettini(String string);
-
-	void setOmbrelloni(int size, List<String> ombrelloni);
-
-	void setServizi(int size, List<String> servizi);
-	*/
 }

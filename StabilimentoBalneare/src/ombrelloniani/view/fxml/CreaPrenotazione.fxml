@@ -151,7 +151,7 @@
 			<Button onAction="#handleCreaPrenotazione" onMouseEntered="#handleHoverInButton"
 				onMouseExited="#handleHoverOutButton" styleClass="mainButtonCentered" text="Crea nuova prenotazione">
 				<VBox.margin>
-					<Insets top="30" bottom="20"/>
+					<Insets top="20" bottom="30"/>
 				</VBox.margin>
 			</Button>
 		</VBox>
