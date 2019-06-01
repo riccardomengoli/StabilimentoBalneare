@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ombrelloniani.view.fxmlControllers.*;
 
@@ -108,6 +109,7 @@ public class VistaNavigator {
 		stage.setTitle(title);
 		stage.getIcons().add(new Image(VistaNavigator.class.getResource("images/logoTransparent.png").toExternalForm()));
 		stage.initOwner(VistaNavigator.stage);
+		stage.initModality(Modality.WINDOW_MODAL);
 		stage.setScene(scene);
 		stage.show();
 	}
