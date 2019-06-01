@@ -11,9 +11,9 @@ public class AlertHelper {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-        //alert.initOwner(owner);
-        //DialogPane dialogPane = alert.getDialogPane();
-        //dialogPane.getStylesheets().add(MainView.class.getClass().getResource("dialog.css").toExternalForm());
+        alert.initOwner(owner);
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(AlertHelper.class.getResource("/ombrelloniani/view/css/dialog.css").toExternalForm());
         alert.show();
     }
 }

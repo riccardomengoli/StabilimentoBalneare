@@ -1,3 +1,25 @@
-.root {
-	-fx-background-color: red;
+.dialog-pane {
+    -fx-background-color: #efe2d3;
+}
+
+.dialog-pane Label {
+	-fx-font-size: 1.4em;
+	-fx-font-family: 'Calibri';
+	-fx-font-weight: normal;
+    -fx-text-fill: black;
+}
+
+.dialog-pane > .button-bar > .container {
+	-fx-background-image: null;
+	-fx-background-color: #efe2d3;
+}
+
+.dialog-pane > .button-bar > .container .button {
+	-fx-background-color: #44df5a;
+	-fx-font-family: 'Roboto Condensed'; /* cambiare se non installato */
+	-fx-font-weight: normal;
+	-fx-border-size: 1.0px;
+	-fx-border-color: black;
+	-fx-border-style: solid;
+	-fx-padding: 3.0px 10.0px;
 }
