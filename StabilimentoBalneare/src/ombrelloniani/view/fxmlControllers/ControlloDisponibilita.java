@@ -157,12 +157,25 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 	}
 
 	/**
+	 * Controlla che la data di fine sia dopo la data di inizio.
+	 */
+	private boolean dateOK() {
+		if (getDataFine().compareTo(getDataInizio()) < 0) {
+			showError("Date non valide", "Data fine precedente data inizio");
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Ottiene gli ombrelloni occupati per le date selezionate e li mostra a video.
 	 */
 	@FXML
 	private void handleRicerca(ActionEvent event) {
-		List<int[]> ombOccupati = controller.mostraStatoSpiaggia();
-		aggiornaMappa(ombOccupati);
+		if (dateOK()) {
+			List<int[]> ombOccupati = controller.mostraStatoSpiaggia();
+			aggiornaMappa(ombOccupati);
+		}
 	}
 
 	/**

@@ -108,7 +108,7 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 	 */
 	@FXML
 	private void handleCreaPrenotazione(ActionEvent event) {
-		if (allFieldsFull()) {
+		if (allFieldsFull() && dateOK()) {
 			controller.creaPrenotazione();
 		}
 	}
@@ -223,6 +223,17 @@ public class CreaPrenotazione extends FXMLController implements IViewCreazione {
 		return true;
 	}
 
+	/**
+	 * Controlla che la data di fine sia dopo la data di inizio.
+	 */
+	private boolean dateOK() {
+		if (getDataFine().compareTo(getDataInizio()) < 0) {
+			showError("Date non valide", "Data fine precedente data inizio");
+			return false;
+		}
+		return true;
+	}
+	
 	public void showError(String titolo, String descrizione) {
 		AlertHelper.showAlert(AlertType.ERROR, idDocumento.getScene().getWindow(), titolo, descrizione);
 	}
