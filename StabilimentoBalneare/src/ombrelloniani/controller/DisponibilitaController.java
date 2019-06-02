@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import ombrelloniani.controller.interfaces.IController;
@@ -41,9 +41,10 @@ public class DisponibilitaController implements IController,IControllerDisponibi
 			;
 	
 	//metodo restituisce per ogni ombrellone un array con (in ordine): numeroRiga, numeroColonna
-	public List<Integer[]> getOmbrelloni() {
+	@Override
+	public List<int[]> getOmbrelloni() {
 		
-		List<Integer[]> result = new ArrayList<Integer[]>();
+		List<int[]> result = new ArrayList<int[]>();
 		Connection connection = controllerGestione.getConnection();
 		
 		try {
@@ -53,7 +54,7 @@ public class DisponibilitaController implements IController,IControllerDisponibi
 			
 			while(rs.next()) {
 				
-				Integer[] infOmbrellone = new Integer[3];
+				int[] infOmbrellone = new int[2];
 				infOmbrellone[0] = rs.getInt("numeroRiga");
 				infOmbrellone[1] = rs.getInt("numeroColonna");
 				result.add(infOmbrellone);
@@ -69,10 +70,11 @@ public class DisponibilitaController implements IController,IControllerDisponibi
 	}
 	
 	//restituisce numeroRiga, numeroColonna ombrelloni occupati(caso singola Data mettere la data inserita nei due campi)
-	public List<Integer[]> mostraStatoSpiaggia(Date dataInizio, Date dataFine) {
+	@Override
+	public List<int[]> mostraStatoSpiaggia(LocalDate dataInizio, LocalDate dataFine) {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-		List<Integer[]> result = new ArrayList<Integer[]>();
+		List<int[]> result = new ArrayList<int[]>();
 		Connection connection = controllerGestione.getConnection();
 		int fila,colonna;
 		boolean trovato;
@@ -89,11 +91,11 @@ public class DisponibilitaController implements IController,IControllerDisponibi
 			while(rs.next()) {
 				
 				trovato = false;
-				Integer[] infOmbrellone = new Integer[3];
+				int[] infOmbrellone = new int[3];
 				fila = rs.getInt("numeroRiga");
 				colonna = rs.getInt("numeroColonna");
 				
-				for(Integer[] arrInt: result) {
+				for(int[] arrInt: result) {
 					
 					if(arrInt[0] == fila && arrInt[1] == colonna) {
 						trovato = true;
@@ -117,7 +119,8 @@ public class DisponibilitaController implements IController,IControllerDisponibi
 		return result;
 	}
 	
-	public List<String[]> mostraStatoOmbrellone(Date dataInizio, Date dataFine, int numeroRiga, int numeroColonna) {
+	@Override
+	public List<String[]> mostraStatoOmbrellone(LocalDate dataInizio, LocalDate dataFine, int numeroRiga, int numeroColonna) {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 		List<String[]> result = new ArrayList<String[]>();
