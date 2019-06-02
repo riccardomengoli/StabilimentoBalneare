@@ -95,6 +95,12 @@ Button#controlloDispButton {
 	-fx-padding: 5.0px;
 }
 
+Button#cercaButton {
+	-fx-background-color: #2e3192;
+	-fx-text-fill: white;
+	-fx-padding: 2.0px 20.0px;
+}
+
 .inputText {
 	-fx-font-family: Calibri;
 	-fx-font-size: 1.8em;
@@ -126,6 +132,17 @@ GridPane.inputsGridSmall {
 	-fx-hgap: 10.0px;
 	-fx-vgap: 10.0px;
 	-fx-alignment: top-left;
+}
+
+.mappaOmbrelloni {
+	-fx-background-image: url("../images/background_contrDisp.jpg");
+	-fx-background-size: stretch;
+	-fx-minWidth: 200.0px;
+	-fx-minHeight: 100.0px;
+	-fx-border-size: 1.0px;
+	-fx-border-color: black;
+	-fx-border-style: solid;
+	-fx-padding: 15.0px;
 }
 
 TableView {

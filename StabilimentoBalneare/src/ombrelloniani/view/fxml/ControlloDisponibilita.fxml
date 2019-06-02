@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<GridPane styleClass="container" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="ombrelloniani.view.fxmlControllers.ControlloDisponibilita">
+
+	<!-- 3 COLUMN SPLITTER -->
+	<GridPane>
+		<VBox GridPane.columnIndex="1">
+			<!-- TITLE -->
+			<AnchorPane>
+				<Label styleClass="title" text="CONTROLLO DISPONIBILITÀ" AnchorPane.bottomAnchor="30.0"
+					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+			</AnchorPane>
+
+			<!-- INPUTS -->
+			<HBox spacing="10" alignment="CENTER">
+				<Label text="Data inizio" />
+				<DatePicker fx:id="dataInizio" styleClass="inputText" maxWidth="200">
+					<HBox.margin>
+						<Insets right="20" />
+					</HBox.margin>
+				</DatePicker>
+
+				<Label text="Data fine" />
+				<DatePicker fx:id="dataFine" styleClass="inputText" maxWidth="200">
+					<HBox.margin>
+						<Insets right="10" />
+					</HBox.margin>
+				</DatePicker>
+
+				<Button onAction="#handleRicerca" onMouseEntered="#handleHoverInButton" onMouseExited="#handleHoverOutButton"
+					id="cercaButton" text="Cerca" />
+			</HBox>
+		</VBox>
+		<columnConstraints>
+			<ColumnConstraints percentWidth="23.0" />
+			<ColumnConstraints percentWidth="75.0" />
+			<ColumnConstraints percentWidth="3.0" />
+		</columnConstraints>
+	</GridPane>
+
+	<!-- MAP -->
+	<VBox GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
+		<GridPane styleClass="mappaOmbrelloni" VBox.vgrow="ALWAYS">
+			<GridPane fx:id="mappaOmbrelloni" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" GridPane.rowIndex="1">
+				<!-- MAPPA DA RIEMPIRE IN CONTROLLER -->
+			</GridPane>
+
+			<VBox.margin>
+				<Insets top="30" right="40" bottom="30" left="40" />
+			</VBox.margin>
+
+			<rowConstraints>
+				<RowConstraints percentHeight="15" />
+				<RowConstraints percentHeight="85" />
+			</rowConstraints>
+		</GridPane>
+	</VBox>
+
+
+	<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+		<Button onAction="#handleBack" styleClass="logoutButton" text="Indietro" AnchorPane.rightAnchor="15.0"
+			AnchorPane.topAnchor="15.0" />
+	</AnchorPane>
+	<rowConstraints>
+		<RowConstraints />
+		<RowConstraints />
+	</rowConstraints>
+	<columnConstraints>
+		<ColumnConstraints percentWidth="100.0" />
+	</columnConstraints>
+</GridPane>

@@ -42,7 +42,7 @@ public class HomeGestore extends FXMLController {
 	@FXML
 	private void handleControlloDisp (ActionEvent event) {
 		
-		//VistaNavigator.loadView(VistaNavigator.CONTROLLODISPONIBILITA);
+		VistaNavigator.loadView(VistaNavigator.CONTROLLODISPONIBILITA);
 	}
 	
 	/**
