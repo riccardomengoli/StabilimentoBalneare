@@ -164,6 +164,9 @@ public class TerminaController implements IController, IControllerTermina{
 		aggiornaDataBase();
 		controller.writeLog("prenotazione " + prenotazione.getIdPrenotazione()
 				+ "terminata alle " + Date.from(Instant.now()));
+		
+		viewTermina.confermaTerminazione();
+		
 	}
 
 	//aggiorna database cancella tutte le info su ombrelloni prenotazione e servizi della prenotazione terminata
@@ -305,7 +308,7 @@ public class TerminaController implements IController, IControllerTermina{
 				break;
 			}
 		
-		mostraRicevuta(); //seleziono la ricevuta e riaggiorno la tabella
+		mostraRicevuta(); //seleziono la convenzione e riaggiorno la tabella
 	}
 	
 	private float calcolaSaldo() {
