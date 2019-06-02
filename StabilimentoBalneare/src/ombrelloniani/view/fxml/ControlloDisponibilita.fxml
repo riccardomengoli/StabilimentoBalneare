@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ScrollPane?>
 
 <GridPane styleClass="container" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="ombrelloniani.view.fxmlControllers.ControlloDisponibilita">
@@ -53,20 +54,25 @@
 
 	<!-- MAP -->
 	<VBox GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
-		<GridPane styleClass="mappaOmbrelloni" VBox.vgrow="ALWAYS">
-			<GridPane fx:id="mappaOmbrelloni" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" GridPane.rowIndex="1">
-				<!-- MAPPA DA RIEMPIRE IN CONTROLLER -->
+		<ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS" pannable="true" style="-fx-padding:0;">
+			<GridPane styleClass="mappaOmbrelloni">
+				<GridPane fx:id="mappaOmbrelloniView" GridPane.rowIndex="1" maxWidth="-Infinity" maxHeight="-Infinity">
+					<!-- MAPPA DA RIEMPIRE IN CONTROLLER -->
+				</GridPane>
+
+				<rowConstraints>
+					<RowConstraints percentHeight="15" />
+					<RowConstraints percentHeight="85" valignment="TOP" />
+				</rowConstraints>
+				<columnConstraints>
+					<ColumnConstraints hgrow="ALWAYS" halignment="CENTER" />
+				</columnConstraints>
 			</GridPane>
 
 			<VBox.margin>
 				<Insets top="30" right="40" bottom="30" left="40" />
 			</VBox.margin>
-
-			<rowConstraints>
-				<RowConstraints percentHeight="15" />
-				<RowConstraints percentHeight="85" />
-			</rowConstraints>
-		</GridPane>
+		</ScrollPane>
 	</VBox>
 
 

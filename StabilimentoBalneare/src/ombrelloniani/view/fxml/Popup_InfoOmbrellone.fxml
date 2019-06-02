@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+
+<fx:root type="VBox" xmlns:fx="http://javafx.com/fxml/1" styleClass="popupInfo">
+	<VBox spacing="2">
+		<HBox spacing="7" alignment="CENTER">
+			<Label text="OMBRELLONE" style="-fx-font-weight:bold" />
+			<Label fx:id="idOmbrellone" style="-fx-font-weight:bold" />
+
+			<VBox.margin>
+				<Insets bottom="5" />
+			</VBox.margin>
+		</HBox>
+		<HBox spacing="7">
+			<Label text="ID Prenotazione:" />
+			<Label fx:id="idPrenotazione" />
+		</HBox>
+		<HBox spacing="7">
+			<Label text="Data inizio:" />
+			<Label fx:id="dataInizio" />
+		</HBox>
+		<HBox spacing="7">
+			<Label text="Data fine:" />
+			<Label fx:id="dataFine" />
+		</HBox>
+		<HBox spacing="7">
+			<Label text="Nome cliente:" />
+			<Label fx:id="nome" />
+		</HBox>
+		<HBox spacing="7">
+			<Label text="Cognome cliente:" />
+			<Label fx:id="cognome" />
+		</HBox>
+
+		<VBox.margin>
+			<Insets top="10" right="10" bottom="10" left="10" />
+		</VBox.margin>
+	</VBox>
+</fx:root>

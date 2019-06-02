@@ -18,8 +18,8 @@ public class MainView extends Application {
 		stage.setHeight(700);
 		stage.centerOnScreen();
 
-		// XXX TEMPORARY FOR DEBUG
-		VistaNavigator.loadView(VistaNavigator.TERMINAPRENOTAZIONE);
+		//Cambiare qui per modificare starting view
+		VistaNavigator.loadView(VistaNavigator.LOGIN);
 	}
 
 	public static void main(String[] args) {

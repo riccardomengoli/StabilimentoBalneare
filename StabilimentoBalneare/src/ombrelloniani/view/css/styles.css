@@ -175,3 +175,15 @@ TableView .table-row-cell:last-row {
 TableView .columnRight {
 	-fx-alignment: center-right;
 }
+
+ImageView {
+	-fx-cursor: hand;
+}
+
+.popupInfo {
+	-fx-background-color: white;
+	-fx-border-size: 1.0px;
+	-fx-border-color: black;
+	-fx-border-style: solid;
+	-fx-font-size: 0.8em;
+}

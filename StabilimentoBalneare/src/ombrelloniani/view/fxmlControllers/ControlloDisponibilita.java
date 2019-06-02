@@ -1,13 +1,22 @@
 package ombrelloniani.view.fxmlControllers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -17,6 +26,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
@@ -24,23 +34,31 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import javafx.stage.Popup;
 import ombrelloniani.controller.DisponibilitaController;
 import ombrelloniani.controller.TerminaController;
 import ombrelloniani.controller.interfaces.IControllerDisponibilita;
 import ombrelloniani.controller.interfaces.IControllerTermina;
 import ombrelloniani.view.VistaNavigator;
-import ombrelloniani.view.interfaces.IViewControlloDisponibilita;
+import ombrelloniani.view.interfaces.IViewDisponibilita;
 import ombrelloniani.view.interfaces.IViewTermina;
 
-public class ControlloDisponibilita extends FXMLController implements IViewControlloDisponibilita {
+public class ControlloDisponibilita extends FXMLController implements IViewDisponibilita {
 	@FXML private DatePicker dataInizio;
 	@FXML private DatePicker dataFine;
-	@FXML private GridPane mappaOmbrelloni;
+	@FXML private GridPane mappaOmbrelloniView;
 
 	private IControllerDisponibilita controller;
+	private int[] ombrelloneSelezionato = null;
+	private Image ombLibero = new Image(
+			getClass().getResourceAsStream("/ombrelloniani/view/images/ombrelloneLibero.png"));
+	private Image ombOccupato = new Image(
+			getClass().getResourceAsStream("/ombrelloniani/view/images/ombrelloneOccupato.png"));
+
+	private Map<ImageView, int[]> mappaOmbrelloni = new HashMap<ImageView, int[]>();
 
 	public ControlloDisponibilita() {
-		// XXX this.controller = new DisponibilitaController(this);
+		this.controller = new DisponibilitaController(this);
 	};
 
 	/**
@@ -49,32 +67,119 @@ public class ControlloDisponibilita extends FXMLController implements IViewContr
 	 */
 	@FXML
 	private void initialize() {
-		
-		//XXX TEST
-		Image image = new Image(getClass().getResourceAsStream("/ombrelloniani/view/images/ombrelloneLibero.png"));
-		ImageView iv = new ImageView();
-		iv.setImage(image);
-		iv.fitWidthProperty().bind(mappaOmbrelloni.widthProperty().divide(20));
-		iv.setPreserveRatio(true);
-		iv.setCache(true);
 
-		mappaOmbrelloni.add(iv, 0, 0);
+		// Inizializzo le date
+		dataInizio.setValue(LocalDate.now());
+		dataFine.setValue(LocalDate.now());
+
+		// Ottengo tutti gli ombrelloni dello stabilimento
+		List<int[]> ombrelloniTotali = controller.getOmbrelloni();
+
+		// Popolo mappa con chiave [riga, colonna] e valore ImageView
+		for (int[] posizioneOmbrellone : ombrelloniTotali) {
+			ImageView iv = new ImageView();
+			iv.setFitWidth(60);
+			iv.setPreserveRatio(true);
+			iv.setCache(true);
+
+			// Associo evento click
+			iv.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					handleStatoOmbrellone(event);
+				}
+			});
+
+			// Inserimento ombrellone nella mappa
+			mappaOmbrelloni.put(iv, posizioneOmbrellone);
+
+			// Mostro ombrelloni (-1 perché parte da 1), prima colonna poi riga
+			mappaOmbrelloniView.add(iv, posizioneOmbrellone[1] - 1, posizioneOmbrellone[0] - 1);
+
+			/*
+			 * NON VA SFORTUNATAMENTE // Associo dimensioni per farli stare tutti nella
+			 * mappa DoubleBinding dimOmbrHor = ((Pane)
+			 * mappaOmbrelloniView.getParent()).widthProperty()
+			 * .divide(ombrelloniTotali.get(ombrelloniTotali.size() - 1)[0]); DoubleBinding
+			 * dimOmbrVer = ((Pane) mappaOmbrelloniView.getParent()).heightProperty()
+			 * .divide(ombrelloniTotali.get(ombrelloniTotali.size() - 1)[1]);
+			 * 
+			 * 
+			 * iv.fitWidthProperty().bind(Bindings.when(dimOmbrHor.lessThan(dimOmbrVer)).
+			 * then(dimOmbrHor).otherwise(dimOmbrVer));
+			 */
+		}
+
+		// Calcolo spazio dinamico tra gli ombrelloni
+		DoubleBinding hgap = ((Pane) mappaOmbrelloniView.getParent()).widthProperty()
+				.subtract(mappaOmbrelloniView.widthProperty()).divide(50);
+		DoubleBinding vgap = ((Pane) mappaOmbrelloniView.getParent()).heightProperty()
+				.subtract(mappaOmbrelloniView.heightProperty()).divide(30);
+
+		mappaOmbrelloniView.hgapProperty().bind(Bindings.when(hgap.lessThan(30)).then(hgap).otherwise(30));
+		mappaOmbrelloniView.vgapProperty().bind(Bindings.when(vgap.lessThan(30)).then(vgap).otherwise(30));
+
+		// Ricevo ombrelloni occupati di data corrente da mostrare e aggiorno la mappa
+		List<int[]> ombOccupati = controller.mostraStatoSpiaggia();
+
+		aggiornaMappa(ombOccupati);
+
+	}
+
+	private void aggiornaMappa(List<int[]> ombrelloniOccupati) {
+		// Tutti gli ombrelloni liberi
+		for (ImageView iv : mappaOmbrelloni.keySet()) {
+			iv.setImage(ombLibero);
+		}
+
+		// Cambia ombrelloni occupati
+		ImageView iv = null;
+		for (int[] ombrelloneOccupato : ombrelloniOccupati) {
+			if ((iv = getImageViewByPosition(mappaOmbrelloni, ombrelloneOccupato)) != null) {
+				iv.setImage(ombOccupato);
+			}
+		}
 	}
 
 	/**
-	 * Richiama la visualizzazione degli ombrelloni liberi e occupati.
+	 * Ottiene la chiave da una mappa dato il valore. Ritorna il primo risultato in
+	 * quanto la mappa è 1-1 (bidirezionale).
+	 * 
+	 * Altre soluzioni utilizzano librerie esterne (bidimap Apache o Google Guava)
+	 */
+	private ImageView getImageViewByPosition(Map<ImageView, int[]> map, int[] value) {
+		for (Entry<ImageView, int[]> entry : map.entrySet()) {
+			if ((value[0] == entry.getValue()[0]) && (value[1] == entry.getValue()[1])) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Ottiene gli ombrelloni occupati per le date selezionate e li mostra a video.
 	 */
 	@FXML
 	private void handleRicerca(ActionEvent event) {
-		controller.mostraStatoSpiaggia();
+		List<int[]> ombOccupati = controller.mostraStatoSpiaggia();
+		aggiornaMappa(ombOccupati);
 	}
 
 	/**
-	 * Richiama la visualizzazione dello stato dell'ombrellone.
+	 * Richiama la visualizzazione dello stato dell'ombrellone. Ottiene i dati e
+	 * carica il popup.
 	 */
 	@FXML
-	private void handleStatoOmbrellone(ActionEvent event) {
-		controller.mostraStatoOmbrellone();
+	private void handleStatoOmbrellone(MouseEvent event) {
+		ombrelloneSelezionato = mappaOmbrelloni.get(event.getSource());
+		String[] content = controller.mostraStatoOmbrellone();
+
+		if (content != null) {
+			Popup info = new Popup();
+			info.getContent().add(new Popup_InfoOmbrellone(content));
+			info.show(((ImageView) event.getSource()).getScene().getWindow(), event.getScreenX(), event.getScreenY());
+			info.setAutoHide(true);
+		}
 	}
 
 	/**
@@ -132,7 +237,7 @@ public class ControlloDisponibilita extends FXMLController implements IViewContr
 
 	@Override
 	public int[] getOmbrelloneSelezionato() {
-		// TODO return {numero riga, numero colonna}
+		return ombrelloneSelezionato;
 	}
 
 }
