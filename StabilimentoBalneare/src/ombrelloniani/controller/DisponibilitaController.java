@@ -179,7 +179,7 @@ public class DisponibilitaController implements IController, IControllerDisponib
 			e.printStackTrace();
 		}
 		
-		//se la lista Ã© vuota non ha trovato nessun risultato => null
+		//se la lista è vuota non ha trovato nessun risultato => null
 		if(list.size() == 0) {
 			return null;
 		}
