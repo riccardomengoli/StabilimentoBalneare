@@ -17,7 +17,7 @@ public interface IControllerDisponibilita {
 	 * [0] numeroRiga
 	 * [1] numeroColonna
 	 */
-	public List<int[]> mostraStatoSpiaggia(LocalDate dataInizio, LocalDate dataFine);
+	public List<int[]> mostraStatoSpiaggia();
 
 	
 	/**
@@ -30,7 +30,6 @@ public interface IControllerDisponibilita {
 	 * [4] = nome
 	 * [5] = cognome
 	 */
-	public List<String[]> mostraStatoOmbrellone(LocalDate dataInizio, LocalDate dataFine, int numeroRiga,
-			int numeroColonna);
+	public List<String[]> mostraStatoOmbrellone();
 
 }

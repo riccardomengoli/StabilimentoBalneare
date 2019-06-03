@@ -93,7 +93,7 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 			// Inserimento ombrellone nella mappa
 			mappaOmbrelloni.put(iv, posizioneOmbrellone);
 
-			// Mostro ombrelloni (-1 perché parte da 1), prima colonna poi riga
+			// Mostro ombrelloni (-1 perchï¿½ parte da 1), prima colonna poi riga
 			mappaOmbrelloniView.add(iv, posizioneOmbrellone[1] - 1, posizioneOmbrellone[0] - 1);
 
 			/*
@@ -143,7 +143,7 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 
 	/**
 	 * Ottiene la chiave da una mappa dato il valore. Ritorna il primo risultato in
-	 * quanto la mappa è 1-1 (bidirezionale).
+	 * quanto la mappa ï¿½ 1-1 (bidirezionale).
 	 * 
 	 * Altre soluzioni utilizzano librerie esterne (bidimap Apache o Google Guava)
 	 */
@@ -185,11 +185,11 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 	@FXML
 	private void handleStatoOmbrellone(MouseEvent event) {
 		ombrelloneSelezionato = mappaOmbrelloni.get(event.getSource());
-		String[] content = controller.mostraStatoOmbrellone();
+		List<String[]> content = controller.mostraStatoOmbrellone();
 
 		if (content != null) {
 			Popup info = new Popup();
-			info.getContent().add(new Popup_InfoOmbrellone(content));
+			info.getContent().add(new Popup_InfoOmbrellone(content.get(1)));
 			info.show(((ImageView) event.getSource()).getScene().getWindow(), event.getScreenX(), event.getScreenY());
 			info.setAutoHide(true);
 		}

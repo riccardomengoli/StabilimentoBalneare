@@ -313,11 +313,11 @@ public class TerminaController implements IController, IControllerTermina{
 	
 	private float calcolaSaldo() {
 		
-		System.out.println("Sconto fedeltà: " + ricevuta.getPercentualeSconto());
+		System.out.println("Sconto fedeltï¿½: " + ricevuta.getPercentualeSconto());
 		System.out.println("Sconto convenzione: " + ricevuta.getPercentualeConvenzione());
 		
 		if(ricevuta.getPercentualeSconto() >= ricevuta.getPercentualeConvenzione()) {
-			System.out.println("Applico sconto fedeltà");
+			System.out.println("Applico sconto fedeltï¿½");
 			return ricevuta.getPrezzoTotale() 
 					- (float)(ricevuta.getPrezzoTotale()*ricevuta.getPercentualeSconto()); }
 		
@@ -360,7 +360,7 @@ public class TerminaController implements IController, IControllerTermina{
 		return sconto;
 	}
 	
-	//attenzione nella entry relativa al prezzo del servizio il giorno è a 0!
+	//attenzione nella entry relativa al prezzo del servizio il giorno ï¿½ a 0!
 	private List<EntryRicevuta> calcolaEntryRicevuta() {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

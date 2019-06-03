@@ -13,6 +13,7 @@ import java.util.List;
 
 import ombrelloniani.controller.interfaces.IController;
 import ombrelloniani.controller.interfaces.IControllerDisponibilita;
+import ombrelloniani.view.fxmlControllers.ControlloDisponibilita;
 import ombrelloniani.view.interfaces.IViewDisponibilita;
 
 public class DisponibilitaController implements IController, IControllerDisponibilita {
@@ -22,6 +23,9 @@ public class DisponibilitaController implements IController, IControllerDisponib
 	//View
 	private IViewDisponibilita viewDisponibilita;
 
+	//Controller
+	private ControlloDisponibilita controlloDisponibilita = new ControlloDisponibilita();
+	
 	static String get_ombrelloni = 
 			"SELECT numeroRiga,numeroColonna FROM OMBRELLONI";
 	
@@ -35,7 +39,7 @@ public class DisponibilitaController implements IController, IControllerDisponib
 			;
 	
 	static String stato_ombrellone = 
-			"SELECT P.*, C.* " + 
+			"SELECT P.*, C.*, O.* " + 
 			"FROM PRENOTAZIONI P JOIN OMBRELLONIPRENOTAZIONE OP JOIN OMBRELLONI O JOIN CLIENTI C " +
 			"ON P.idPrenotazione = OP.idPrenotazione AND OP.idOmbrellone = O.idOmbrellone AND C.documento = P.idCliente " +
 			"WHERE O.numeroRiga = ? AND O.numeroColonna = ? " +
@@ -82,8 +86,10 @@ public class DisponibilitaController implements IController, IControllerDisponib
 	// restituisce numeroRiga, numeroColonna ombrelloni occupati(caso singola Data
 	// mettere la data inserita nei due campi)
 	@Override
-	public List<int[]> mostraStatoSpiaggia(LocalDate dataInizio, LocalDate dataFine) {
+	public List<int[]> mostraStatoSpiaggia() {
 
+		LocalDate dataInizio = controlloDisponibilita.getDataInizio();
+		LocalDate dataFine = controlloDisponibilita.getDataFine();
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 		List<int[]> result = new ArrayList<int[]>();
 		Connection connection = controllerGestione.getConnection();
@@ -131,11 +137,15 @@ public class DisponibilitaController implements IController, IControllerDisponib
 	}
 
 	@Override
-	public List<String[]> mostraStatoOmbrellone(LocalDate dataInizio, LocalDate dataFine, int numeroRiga,
-			int numeroColonna) {
+	public List<String[]> mostraStatoOmbrellone() {
+		
+		LocalDate dataInizio = controlloDisponibilita.getDataInizio();
+		LocalDate dataFine = controlloDisponibilita.getDataFine();
+		int numeroRiga = controlloDisponibilita.getOmbrelloneSelezionato()[0];
+		int numeroColonna = controlloDisponibilita.getOmbrelloneSelezionato()[1];
 
 		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-		List<String[]> result = new ArrayList<String[]>();
+		List<String[]> list = new ArrayList<String[]>();
 		Connection connection = controllerGestione.getConnection();
 
 		try {
@@ -149,24 +159,30 @@ public class DisponibilitaController implements IController, IControllerDisponib
 			stm.setString(6, formatter.format(dataFine));
 			ResultSet rs = stm.executeQuery();
 
+			String[] infoPrenotazione = new String[6];
 			while (rs.next()) {
 
-				String[] infoPrenotazione = new String[5];
-				infoPrenotazione[0] = rs.getString("idPrenotazione");
-				infoPrenotazione[1] = rs.getString("dataInizio");
-				infoPrenotazione[2] = rs.getString("dataFine");
-				infoPrenotazione[3] = rs.getString("nome");
-				infoPrenotazione[4] = rs.getString("cognome");
+				infoPrenotazione[0] = rs.getString("idOmbrellone");
+				infoPrenotazione[1] = rs.getString("idPrenotazione");
+				infoPrenotazione[2] = rs.getString("dataInizio");
+				infoPrenotazione[3] = rs.getString("dataFine");
+				infoPrenotazione[4] = rs.getString("nome");
+				infoPrenotazione[5] = rs.getString("cognome");
 
-				result.add(infoPrenotazione);
+				list.add(infoPrenotazione);
 			}
-
+			
 			stm.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		return result;
+		
+		//se la lista é vuota non ha trovato nessun risultato => null
+		if(list.size() == 0) {
+			return null;
+		}
+		
+		return list;
 	}
 }

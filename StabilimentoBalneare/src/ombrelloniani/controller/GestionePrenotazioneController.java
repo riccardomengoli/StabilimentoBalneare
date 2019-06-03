@@ -91,8 +91,12 @@ public class GestionePrenotazioneController extends Controller implements IContr
 
 	public GestionePrenotazioneController() { super();};
 		
-	// La lista dei servizi è calcolata con duplicati in modo da mostrare anche i servizi inseriti molteplici volte
+	// La lista dei servizi ï¿½ calcolata con duplicati in modo da mostrare anche i servizi inseriti molteplici volte
+	// cerca prenotazione modifica automaticamente le stringhe in ingresso nel formato Nome Cognome
 	public List<Prenotazione> cercaPrenotazioni(String nome, String cognome) {
+		
+		nome = this.capitalizeFirstLetter(nome);
+		cognome = this.capitalizeFirstLetter(cognome);
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Connection connection = this.getConnection();
@@ -128,7 +132,7 @@ public class GestionePrenotazioneController extends Controller implements IContr
 			//ricerca dei servizi associati ad una data prenotazione
 			pstm = connection.prepareStatement(find_serviziByIdPrenotazione);
 			
-			for(Prenotazione p: result) {
+			for(Prenotazione p : result) {
 				
 				pstm.setInt(1, p.getIdPrenotazione());
 				rs = pstm.executeQuery();
@@ -147,7 +151,7 @@ public class GestionePrenotazioneController extends Controller implements IContr
 			
 			pstm = connection.prepareStatement(find_ombrelloniByIdPrenotazione);
 			
-			for(Prenotazione p: result) {
+			for(Prenotazione p : result) {
 				
 				pstm.setInt(1, p.getIdPrenotazione());
 				rs = pstm.executeQuery();
@@ -176,7 +180,7 @@ public class GestionePrenotazioneController extends Controller implements IContr
 		return result;
 	}
 	
-	//fare controllo != null sulla data per vedere se è stata ritrovata oppure no	
+	//fare controllo != null sulla data per vedere se ï¿½ stata ritrovata oppure no	
 	public Prenotazione cercaPrenotazione(int idPrenotazione) {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -401,5 +405,13 @@ public class GestionePrenotazioneController extends Controller implements IContr
 		}
 		
 		ListaStagioni.getListaStagioni().aggiornaStagioni(listaStagioni);
+	}
+	
+
+	private String capitalizeFirstLetter(String original) {
+	    if (original == null || original.length() == 0) {
+	        return original;
+	    }
+	    return original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
 }

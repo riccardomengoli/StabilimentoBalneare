@@ -27,7 +27,7 @@ public class Popup_InfoOmbrellone extends VBox {
 			e.printStackTrace();
 		}
 		
-		idPrenotazione.setText(content[0]);
+		idOmbrellone.setText(content[0]);
 		idPrenotazione.setText(content[1]);
 		dataInizio.setText(content[2]);
 		dataFine.setText(content[3]);
