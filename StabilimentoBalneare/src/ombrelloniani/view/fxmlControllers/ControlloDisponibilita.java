@@ -1,7 +1,6 @@
 package ombrelloniani.view.fxmlControllers;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,39 +8,22 @@ import java.util.Map.Entry;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.binding.NumberBinding;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Line;
 import javafx.stage.Popup;
 import ombrelloniani.controller.DisponibilitaController;
-import ombrelloniani.controller.TerminaController;
 import ombrelloniani.controller.interfaces.IControllerDisponibilita;
-import ombrelloniani.controller.interfaces.IControllerTermina;
 import ombrelloniani.view.VistaNavigator;
 import ombrelloniani.view.interfaces.IViewDisponibilita;
-import ombrelloniani.view.interfaces.IViewTermina;
 
 public class ControlloDisponibilita extends FXMLController implements IViewDisponibilita {
 	@FXML private DatePicker dataInizio;
@@ -93,7 +75,7 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 			// Inserimento ombrellone nella mappa
 			mappaOmbrelloni.put(iv, posizioneOmbrellone);
 
-			// Mostro ombrelloni (-1 perchï¿½ parte da 1), prima colonna poi riga
+			// Mostro ombrelloni (-1 perché parte da 1), prima colonna poi riga
 			mappaOmbrelloniView.add(iv, posizioneOmbrellone[1] - 1, posizioneOmbrellone[0] - 1);
 
 			/*
@@ -143,7 +125,7 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 
 	/**
 	 * Ottiene la chiave da una mappa dato il valore. Ritorna il primo risultato in
-	 * quanto la mappa ï¿½ 1-1 (bidirezionale).
+	 * quanto la mappa è 1-1 (bidirezionale).
 	 * 
 	 * Altre soluzioni utilizzano librerie esterne (bidimap Apache o Google Guava)
 	 */
@@ -189,7 +171,7 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 
 		if (content != null) {
 			Popup info = new Popup();
-			info.getContent().add(new Popup_InfoOmbrellone(content.get(1)));
+			info.getContent().add(new Popup_InfoOmbrellone(content.get(0)));
 			info.show(((ImageView) event.getSource()).getScene().getWindow(), event.getScreenX(), event.getScreenY());
 			info.setAutoHide(true);
 		}
