@@ -5,15 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import ombrelloniani.controller.interfaces.IController;
 import ombrelloniani.controller.interfaces.IControllerDisponibilita;
-import ombrelloniani.view.fxmlControllers.ControlloDisponibilita;
 import ombrelloniani.view.interfaces.IViewDisponibilita;
 
 public class DisponibilitaController implements IController, IControllerDisponibilita {
@@ -24,7 +22,7 @@ public class DisponibilitaController implements IController, IControllerDisponib
 	private IViewDisponibilita viewDisponibilita;
 
 	//Controller
-	private ControlloDisponibilita controlloDisponibilita = new ControlloDisponibilita();
+	//private ControlloDisponibilita controlloDisponibilita = new ControlloDisponibilita();
 	
 	static String get_ombrelloni = 
 			"SELECT numeroRiga,numeroColonna FROM OMBRELLONI";
@@ -88,9 +86,11 @@ public class DisponibilitaController implements IController, IControllerDisponib
 	@Override
 	public List<int[]> mostraStatoSpiaggia() {
 
-		LocalDate dataInizio = controlloDisponibilita.getDataInizio();
-		LocalDate dataFine = controlloDisponibilita.getDataFine();
-		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+		LocalDate dataInizio = viewDisponibilita.getDataInizio();
+		LocalDate dataFine = viewDisponibilita.getDataFine();
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
 		List<int[]> result = new ArrayList<int[]>();
 		Connection connection = controllerGestione.getConnection();
 		int fila, colonna;
@@ -139,12 +139,13 @@ public class DisponibilitaController implements IController, IControllerDisponib
 	@Override
 	public List<String[]> mostraStatoOmbrellone() {
 		
-		LocalDate dataInizio = controlloDisponibilita.getDataInizio();
-		LocalDate dataFine = controlloDisponibilita.getDataFine();
-		int numeroRiga = controlloDisponibilita.getOmbrelloneSelezionato()[0];
-		int numeroColonna = controlloDisponibilita.getOmbrelloneSelezionato()[1];
+		LocalDate dataInizio = viewDisponibilita.getDataInizio();
+		LocalDate dataFine = viewDisponibilita.getDataFine();
+		int numeroRiga = (viewDisponibilita.getOmbrelloneSelezionato())[0];
+		int numeroColonna = (viewDisponibilita.getOmbrelloneSelezionato())[1];
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 		List<String[]> list = new ArrayList<String[]>();
 		Connection connection = controllerGestione.getConnection();
 
