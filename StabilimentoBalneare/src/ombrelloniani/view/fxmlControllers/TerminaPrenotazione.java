@@ -39,7 +39,7 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 	private ObservableList<String> ombrelloni = FXCollections.observableArrayList();
 	private ObservableList<String> servizi = FXCollections.observableArrayList();
 	private ObservableList<String[]> ricevuta = FXCollections.observableArrayList();
-	
+
 	private Dialog_SelPrenByNome dialogNome = null;
 
 	public TerminaPrenotazione() {
@@ -86,6 +86,9 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 	 */
 	@FXML
 	private void handleRicercaPerIdPren(ActionEvent event) {
+		// Pulisco i campi
+		clearFields();
+
 		// Mostro dialog
 		Dialog_SelPrenByID dialogID = new Dialog_SelPrenByID(controller);
 		dialogID.showDialog();
@@ -96,6 +99,9 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 	 */
 	@FXML
 	private void handleRicercaPerCliente(ActionEvent event) {
+		// Pulisco i campi
+		clearFields();
+
 		// Mostro dialog
 		dialogNome = new Dialog_SelPrenByNome(controller);
 		dialogNome.showDialog();
@@ -228,6 +234,13 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 	public void confermaTerminazione() {
 		AlertHelper.showAlert(AlertType.INFORMATION, dataInizio.getScene().getWindow(), "Terminazione completata",
 				"Terminazione prenotazione eseguita con successo.");
+		clearFields();
+	}
+
+	/**
+	 * Svuota tutti i campi.
+	 */
+	private void clearFields() {
 		dataInizio.clear();
 		dataFine.clear();
 		numeroLettini.clear();
