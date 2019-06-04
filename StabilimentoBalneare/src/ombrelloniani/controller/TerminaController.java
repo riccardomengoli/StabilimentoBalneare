@@ -71,15 +71,12 @@ public class TerminaController implements IController, IControllerTermina{
 	private  static String informazioniServizio = 
 			"SELECT dataOra FROM SERVIZIPRENOTAZIONE "
 			+ "WHERE idPrenotazione = ? AND nomeServizio = ?";
-	
-	private static String numGiorni_prenotazione = 
-			"SELECT (strftime('%s',?) - strftime('%s',?))/86400"
-			;
-	
+		
 	private static String termina_ombrelloniPrenotazione =
 			"DELETE FROM OMBRELLONIPRENOTAZIONE " +
 			"WHERE idPrenotazione = ? "
 			;
+	
 	
 	private static String termina_serviziPrenotazione =
 			"DELETE FROM SERVIZIPRENOTAZIONE " +
@@ -87,9 +84,11 @@ public class TerminaController implements IController, IControllerTermina{
 			;
 	
 	//Costruttore deve prendere in ingresso la view sulla quale richiamare i metodi
+	
 	public TerminaController(IViewTermina viewTermina) {
 		this.viewTermina = viewTermina;
 	}
+	
 	
 	//Metodi della classe
 	
@@ -97,13 +96,19 @@ public class TerminaController implements IController, IControllerTermina{
 		prenotazione = controller.cercaPrenotazione(idPren);
 		
 		if(prenotazione.getDataInizio().compareTo(Date.from(Instant.now())) > 0) {
-			viewTermina.showError("Prenotazione non valida", "Prenotazione selezionata non Ã© ancora iniziata");
+			viewTermina.showError("Prenotazione non valida", "Prenotazione selezionata non è ancora iniziata");
 			return;
 		}
 		
 		if(prenotazione.getDataFine().compareTo(Date.from(Instant.now())) > 0) {
 			prenotazione = modController.modificaDataFine(prenotazione, Date.from(Instant.now()));
 		}
+		
+		//aggiornamento delle liste da spostare nella main view
+		controller.aggiornaListaConvenzioni();
+		controller.aggiornaListaFedelta();
+		controller.aggiornaListaPrezzi();
+		
 		mostraPrenotazione();
 	}
 	
@@ -111,11 +116,19 @@ public class TerminaController implements IController, IControllerTermina{
 	
 	public void cercaPrenotazioni(String nome, String cognome) {
 		List<Prenotazione> pren =  controller.cercaPrenotazioni(nome, cognome);
+		prenotazioni = new ArrayList<Prenotazione>();
 		for(Prenotazione p : pren) {
-			if(p.getDataInizio().compareTo(Date.from(Instant.now())) > 0) {
+			//le prenotazioni non ancora iniziate non vengono mostrate nella terminazione
+			if(p.getDataInizio().compareTo(Date.from(Instant.now())) < 0) {
 				prenotazioni.add(p);
 			}
 		}
+		
+		//aggiornamento delle liste da spostare nella main view
+		controller.aggiornaListaConvenzioni();
+		controller.aggiornaListaFedelta();
+		controller.aggiornaListaPrezzi();
+		
 		//int numeroPrenotazioni = prenotazioni.size();
 		mostraPrenotazioni();
 	}
@@ -325,11 +338,11 @@ public class TerminaController implements IController, IControllerTermina{
 	
 	private float calcolaSaldo() {
 		
-		System.out.println("Sconto fedeltï¿½: " + ricevuta.getPercentualeSconto());
+		System.out.println("Sconto fedeltà " + ricevuta.getPercentualeSconto());
 		System.out.println("Sconto convenzione: " + ricevuta.getPercentualeConvenzione());
 		
 		if(ricevuta.getPercentualeSconto() >= ricevuta.getPercentualeConvenzione()) {
-			System.out.println("Applico sconto fedeltï¿½");
+			System.out.println("Applico sconto fedeltà");
 			return ricevuta.getPrezzoTotale() 
 					- (float)(ricevuta.getPrezzoTotale()*ricevuta.getPercentualeSconto()); }
 		
@@ -493,7 +506,6 @@ public class TerminaController implements IController, IControllerTermina{
 	//versione semplificata: prende la stagione nella quale si trova la data di fine
 	//il formatter della data passata in ingresso deve essere dd/MM/yyyy
 	private float calcolaTotaleOmbrellone(Ombrellone o, Date dataFine, int numGiorni) {
-		controller.aggiornaListaPrezzi();
 		prezzi = ListaPrezzi.getListaPrezzi();
 		List<Prezzo> lp = prezzi.getPrezzi();
 		for(Prezzo p: lp) {
