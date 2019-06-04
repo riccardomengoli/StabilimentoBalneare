@@ -122,7 +122,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			}
 			
 			else this.viewCreazione.showError("Cliente non trovato",
-					"Non è stato trovato alcun cliente associato al documento: " + idDocumento.toUpperCase());
+					"Non ï¿½ stato trovato alcun cliente associato al documento: " + idDocumento.toUpperCase());
 			
 			pstm.close();
 			//connection.close();
@@ -145,7 +145,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		try {
 			
 			if(viewCreazione.getNumeroLettini() > 4*this.ombrelloni.size()) {
-				viewCreazione.showError("Troppi lettini", "Per ogni ombrellone si possono avere al più 4 lettini");
+				viewCreazione.showError("Troppi lettini", "Per ogni ombrellone si possono avere al piï¿½ 4 lettini");
 				return;
 			}
 			
@@ -167,15 +167,15 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			
 			if(ombrelloniOccupati.size() > 0 ) {
 				this.viewCreazione.showError("Ombrellone occupato", 
-						"L'ombrellone (ID = " + ombrelloniOccupati.get(0) + ") non è disponibile nei giorni selezionati");
+						"L'ombrellone (ID = " + ombrelloniOccupati.get(0) + ") non ï¿½ disponibile nei giorni selezionati");
 			}
 			
 			if(this.cliente == null) {
 			
 				pstm = connection.prepareStatement(createCliente);
 				pstm.setString(1, viewCreazione.getIdDocumento());
-				pstm.setString(2, viewCreazione.getNome());
-				pstm.setString(3, viewCreazione.getCognome());
+				pstm.setString(2, this.capitalizeFirstLetter(viewCreazione.getNome()));
+				pstm.setString(3, this.capitalizeFirstLetter(viewCreazione.getCognome()));
 				pstm.setString(4, viewCreazione.getEmail());
 				pstm.setString(5, viewCreazione.getTelefono());
 				pstm.executeUpdate();
@@ -241,7 +241,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				}
 				
 				else this.viewCreazione.showError("Ombrellone inesistente",
-						"Non è stato trovato nessun ombrellone con ID: " + idOmbrellone.toUpperCase());
+						"Non ï¿½ stato trovato nessun ombrellone con ID: " + idOmbrellone.toUpperCase());
 				
 				pstm.close();
 				
@@ -250,8 +250,8 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			}
 		}
 		
-		else this.viewCreazione.showError("Ombrellone già inserito",
-				"L'ombrellone con ID " + idOmbrellone.toUpperCase() + " è gia stato inserito nella prenotazione");
+		else this.viewCreazione.showError("Ombrellone giï¿½ inserito",
+				"L'ombrellone con ID " + idOmbrellone.toUpperCase() + " ï¿½ gia stato inserito nella prenotazione");
 	}
 	
 	public void rimuoviOmbrellone() {
@@ -275,7 +275,14 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		}
 		
 		if(trovato == false) this.viewCreazione.showError("Ombrellone inesistente",
-				"Non è stato trovato nessun ombrellone con ID: " + idOmbrellone.toUpperCase());
+				"Non ï¿½ stato trovato nessun ombrellone con ID: " + idOmbrellone.toUpperCase());
 		
+	}
+	
+	private String capitalizeFirstLetter(String original) {
+	    if (original == null || original.length() == 0) {
+	        return original;
+	    }
+	    return original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
 }

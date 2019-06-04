@@ -91,7 +91,7 @@ public class GestionePrenotazioneController extends Controller implements IContr
 
 	public GestionePrenotazioneController() { super();};
 		
-	// La lista dei servizi è calcolata con duplicati in modo da mostrare anche i servizi inseriti molteplici volte
+	// La lista dei servizi ï¿½ calcolata con duplicati in modo da mostrare anche i servizi inseriti molteplici volte
 	// cerca prenotazione modifica automaticamente le stringhe in ingresso nel formato Nome Cognome
 	public List<Prenotazione> cercaPrenotazioni(String nome, String cognome) {
 		
@@ -180,7 +180,7 @@ public class GestionePrenotazioneController extends Controller implements IContr
 		return result;
 	}
 	
-	//fare controllo != null sulla data per vedere se è stata ritrovata oppure no	
+	//fare controllo != null sulla data per vedere se ï¿½ stata ritrovata oppure no	
 	public Prenotazione cercaPrenotazione(int idPrenotazione) {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

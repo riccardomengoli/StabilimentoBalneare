@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,6 @@ public class TerminaController implements IController, IControllerTermina{
 	private float prezzoBaseOmbrelloni = 10;
 	private float prezzoBaseServizi = 10;
 	//View
-	
 	private IViewTermina viewTermina;
 	
 	//Query
@@ -95,17 +96,27 @@ public class TerminaController implements IController, IControllerTermina{
 	public void cercaPrenotazione(int idPren) {
 		prenotazione = controller.cercaPrenotazione(idPren);
 		
-		if(prenotazione.getDataFine().compareTo(Date.from(Instant.now())) == 1) {
-			prenotazione = modController.modificaDataFine(prenotazione, Date.from(Instant.now()));
+		if(prenotazione.getDataInizio().compareTo(Date.from(Instant.now())) > 0) {
+			viewTermina.showError("Prenotazione non valida", "Prenotazione selezionata non Ã© ancora iniziata");
+			return;
 		}
 		
+		if(prenotazione.getDataFine().compareTo(Date.from(Instant.now())) > 0) {
+			prenotazione = modController.modificaDataFine(prenotazione, Date.from(Instant.now()));
+		}
 		mostraPrenotazione();
 	}
 	
 	//cerco tutte le prenotazioni con nome e cognome dati
 	
 	public void cercaPrenotazioni(String nome, String cognome) {
-		prenotazioni =  controller.cercaPrenotazioni(nome, cognome);
+		List<Prenotazione> pren =  controller.cercaPrenotazioni(nome, cognome);
+		for(Prenotazione p : pren) {
+			if(p.getDataInizio().compareTo(Date.from(Instant.now())) > 0) {
+				prenotazioni.add(p);
+			}
+		}
+		//int numeroPrenotazioni = prenotazioni.size();
 		mostraPrenotazioni();
 	}
 	
@@ -212,6 +223,7 @@ public class TerminaController implements IController, IControllerTermina{
 		ricevuta.setPercentualeSconto(calcolaSconto());
 		ricevuta.setPercentualeConvenzione(0); // viene aggiunta successivamente
 		ricevuta.setPrezzoTotale();
+		
 	}
 
 	//funzione manca al controllo
@@ -313,11 +325,11 @@ public class TerminaController implements IController, IControllerTermina{
 	
 	private float calcolaSaldo() {
 		
-		System.out.println("Sconto fedeltà: " + ricevuta.getPercentualeSconto());
+		System.out.println("Sconto fedeltï¿½: " + ricevuta.getPercentualeSconto());
 		System.out.println("Sconto convenzione: " + ricevuta.getPercentualeConvenzione());
 		
 		if(ricevuta.getPercentualeSconto() >= ricevuta.getPercentualeConvenzione()) {
-			System.out.println("Applico sconto fedeltà");
+			System.out.println("Applico sconto fedeltï¿½");
 			return ricevuta.getPrezzoTotale() 
 					- (float)(ricevuta.getPrezzoTotale()*ricevuta.getPercentualeSconto()); }
 		
@@ -360,14 +372,14 @@ public class TerminaController implements IController, IControllerTermina{
 		return sconto;
 	}
 	
-	//attenzione nella entry relativa al prezzo del servizio il giorno è a 0!
+	//attenzione nella entry relativa al prezzo del servizio il giorno ï¿½ a 0!
 	private List<EntryRicevuta> calcolaEntryRicevuta() {
 		
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
 		List<EntryRicevuta> entries = new ArrayList<EntryRicevuta>();
 		EntryRicevuta entry;
-		int numGiorni = 0;
+		/*int numGiorni = 0;
 		Connection connection = controller.getConnection();
 
 		try {
@@ -379,7 +391,12 @@ public class TerminaController implements IController, IControllerTermina{
 				
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}*/
+		String inizio = formatter.format(this.prenotazione.getDataInizio());
+		String fine   = formatter.format(this.prenotazione.getDataFine());
+		LocalDate localInizio = LocalDate.parse(inizio);
+		LocalDate localFine   = LocalDate.parse(fine);
+		int numGiorni = Period.between(localInizio, localFine).getDays() + 1;
 	
 		for(Ombrellone o : this.prenotazione.getOmbrelloni()) {
 			
@@ -429,6 +446,7 @@ public class TerminaController implements IController, IControllerTermina{
 		float totaleServizio = 0;
 		int numeroServizi = 0;
 		boolean trovato = false;
+		prezzi = ListaPrezzi.getListaPrezzi();
 		
 		try {
 			pstm = connection.prepareStatement(informazioniServizio);
@@ -475,8 +493,10 @@ public class TerminaController implements IController, IControllerTermina{
 	//versione semplificata: prende la stagione nella quale si trova la data di fine
 	//il formatter della data passata in ingresso deve essere dd/MM/yyyy
 	private float calcolaTotaleOmbrellone(Ombrellone o, Date dataFine, int numGiorni) {
-		
-		for(Prezzo p: prezzi.getPrezzi()) {
+		controller.aggiornaListaPrezzi();
+		prezzi = ListaPrezzi.getListaPrezzi();
+		List<Prezzo> lp = prezzi.getPrezzi();
+		for(Prezzo p: lp) {
 			
 			if(p.getClass() == PrezzoOmbrellone.class) {
 				
