@@ -89,6 +89,21 @@ public class TerminaController implements IController, IControllerTermina{
 		this.viewTermina = viewTermina;
 	}
 	
+	private void inizializzaListe() {
+		controller.aggiornaListaConvenzioni();
+		controller.aggiornaListaFedelta();
+		controller.aggiornaListaPrezzi();
+		controller.aggiornaListaStagioni();
+	}
+	
+	private void initCampi() {
+		
+		nomeFedelta = null;
+		ricevuta = null;
+		convenzione = null;
+		prenotazioneTerminata = null;
+	}
+	
 	//Metodi della classe
 	public void cercaPrenotazione(int idPren) {
 		prenotazione = controller.cercaPrenotazione(idPren);
@@ -108,11 +123,8 @@ public class TerminaController implements IController, IControllerTermina{
 			prenotazione = modController.modificaDataFine(prenotazione, Date.from(Instant.now()));
 		}
 		
-		//aggiornamento delle liste da spostare nella main view
-		controller.aggiornaListaConvenzioni();
-		controller.aggiornaListaFedelta();
-		controller.aggiornaListaPrezzi();
-		
+		inizializzaListe();
+		initCampi();
 		mostraPrenotazione();
 	}
 	
@@ -135,12 +147,8 @@ public class TerminaController implements IController, IControllerTermina{
 			return;
 		}
 		
-		//aggiornamento delle liste da spostare nella main view
-		controller.aggiornaListaConvenzioni();
-		controller.aggiornaListaFedelta();
-		controller.aggiornaListaPrezzi();
-		
-		//int numeroPrenotazioni = prenotazioni.size();
+		inizializzaListe();
+		initCampi();
 		mostraPrenotazioni();
 	}
 	
@@ -252,7 +260,8 @@ public class TerminaController implements IController, IControllerTermina{
 
 	//funzione manca al controllo
 	private void mostraRicevuta() {
-		creaRicevuta();
+		if(ricevuta == null) creaRicevuta();
+		
 		List<String[]> entriesRicevuta = new ArrayList<String[]>();
 		String[] entry;
 		
@@ -283,7 +292,7 @@ public class TerminaController implements IController, IControllerTermina{
 		}
 		else {
 			entry[0] = "Sconto " + this.ricevuta.getPercentualeSconto()*100 + "% - " + this.nomeFedelta;
-			entry[2] = Double.toString(this.ricevuta.getPercentualeSconto());
+			entry[2] = "- " + Double.toString(this.ricevuta.getPercentualeSconto()*this.ricevuta.getPrezzoTotale());
 		}
 		
 		entriesRicevuta.add(entry);
@@ -335,9 +344,15 @@ public class TerminaController implements IController, IControllerTermina{
 
 	//index fa riferimento alla posizione nella lista di convenzioniString
 	public void convenzioneSelezionata(int index) {
+			
+		String nomeConvenzione = (convenzioniString.get(index))[1];	
 		
-		String nomeConvenzione = (convenzioniString.get(index))[0];
+		System.out.println(nomeConvenzione + " convenzione selezionata");
+		
 		ricevuta.setPercentualeConvenzione(Double.parseDouble((convenzioniString.get(index))[2]));
+		
+		System.out.println(ricevuta.getPercentualeConvenzione() + " percentuale sconto");
+		
 		for(Convenzione c: this.convenzioni.getConvenzioni())
 			if(c.getNome().equals(nomeConvenzione)) {
 				this.convenzione = c;
