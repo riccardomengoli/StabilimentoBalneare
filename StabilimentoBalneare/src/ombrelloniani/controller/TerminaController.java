@@ -39,6 +39,7 @@ public class TerminaController implements IController, IControllerTermina{
 	private ListaConvenzioni convenzioni = ListaConvenzioni.getListaConvenzioni();
 	private List<String[]> convenzioniString = new ArrayList<String[]>();
 	private ListaFedelta fedelta = ListaFedelta.getListaFedelta();
+	private String nomeFedelta;
 	private Ricevuta ricevuta;
 	private Convenzione convenzione;
 	private PrenotazioneTerminata prenotazioneTerminata;
@@ -77,23 +78,26 @@ public class TerminaController implements IController, IControllerTermina{
 			"WHERE idPrenotazione = ? "
 			;
 	
-	
 	private static String termina_serviziPrenotazione =
 			"DELETE FROM SERVIZIPRENOTAZIONE " +
 			"WHERE idPrenotazione = ? "
 			;
 	
-	//Costruttore deve prendere in ingresso la view sulla quale richiamare i metodi
 	
+	//Costruttore deve prendere in ingresso la view sulla quale richiamare i metodi
 	public TerminaController(IViewTermina viewTermina) {
 		this.viewTermina = viewTermina;
 	}
 	
-	
 	//Metodi della classe
-	
 	public void cercaPrenotazione(int idPren) {
 		prenotazione = controller.cercaPrenotazione(idPren);
+		
+		//in caso di prenotazione non trovata invio una notifica al cliente
+		if(prenotazione.getCliente() == null) {
+			viewTermina.showError("idPrenotazione non esistente", "L'ID inserito non corrisponde a nessuna prenotazione");
+			return;
+		}
 		
 		if(prenotazione.getDataInizio().compareTo(Date.from(Instant.now())) > 0) {
 			viewTermina.showError("Prenotazione non valida", "Prenotazione selezionata non è ancora iniziata");
@@ -117,11 +121,18 @@ public class TerminaController implements IController, IControllerTermina{
 	public void cercaPrenotazioni(String nome, String cognome) {
 		List<Prenotazione> pren =  controller.cercaPrenotazioni(nome, cognome);
 		prenotazioni = new ArrayList<Prenotazione>();
+		
 		for(Prenotazione p : pren) {
 			//le prenotazioni non ancora iniziate non vengono mostrate nella terminazione
 			if(p.getDataInizio().compareTo(Date.from(Instant.now())) < 0) {
 				prenotazioni.add(p);
 			}
+		}
+		
+		if(prenotazioni.size() == 0) {
+			viewTermina.showError("Prenotazioni non presenti", "Non sono presenti prenotazioni terminabili per il cliente : " + nome.toUpperCase() + " " +
+						cognome.toUpperCase());
+			return;
 		}
 		
 		//aggiornamento delle liste da spostare nella main view
@@ -154,7 +165,7 @@ public class TerminaController implements IController, IControllerTermina{
 	public void prenotazioneSelezionata(int index) {
 		prenotazione = prenotazioni.get(index);
 		
-		if(prenotazione.getDataFine().compareTo(Date.from(Instant.now())) == 1) {
+		if(prenotazione.getDataFine().compareTo(Date.from(Instant.now())) > 0) {
 			prenotazione = modController.modificaDataFine(prenotazione, Date.from(Instant.now()));
 		}
 		
@@ -271,7 +282,7 @@ public class TerminaController implements IController, IControllerTermina{
 			entry[2] = "";
 		}
 		else {
-			entry[0] = "Sconto";
+			entry[0] = "Sconto " + this.ricevuta.getPercentualeSconto()*100 + "% - " + this.nomeFedelta;
 			entry[2] = Double.toString(this.ricevuta.getPercentualeSconto());
 		}
 		
@@ -377,6 +388,7 @@ public class TerminaController implements IController, IControllerTermina{
 				if(giorni >= f.getGiorni()) {
 					if(f.getSconto() > sconto) {
 						sconto = f.getSconto();
+						this.nomeFedelta = f.getNome();
 					}
 				}
 			}
