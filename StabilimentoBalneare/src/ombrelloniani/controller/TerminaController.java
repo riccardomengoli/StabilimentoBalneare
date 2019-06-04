@@ -88,14 +88,7 @@ public class TerminaController implements IController, IControllerTermina{
 	public TerminaController(IViewTermina viewTermina) {
 		this.viewTermina = viewTermina;
 	}
-	
-	private void inizializzaListe() {
-		controller.aggiornaListaConvenzioni();
-		controller.aggiornaListaFedelta();
-		controller.aggiornaListaPrezzi();
-		controller.aggiornaListaStagioni();
-	}
-	
+		
 	private void initCampi() {
 		
 		nomeFedelta = null;
@@ -123,7 +116,6 @@ public class TerminaController implements IController, IControllerTermina{
 			prenotazione = modController.modificaDataFine(prenotazione, Date.from(Instant.now()));
 		}
 		
-		inizializzaListe();
 		initCampi();
 		mostraPrenotazione();
 	}
@@ -147,7 +139,6 @@ public class TerminaController implements IController, IControllerTermina{
 			return;
 		}
 		
-		inizializzaListe();
 		initCampi();
 		mostraPrenotazioni();
 	}
