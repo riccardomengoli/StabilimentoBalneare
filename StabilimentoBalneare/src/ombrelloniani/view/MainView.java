@@ -3,6 +3,7 @@ package ombrelloniani.view;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import ombrelloniani.controller.GestionePrenotazioneController;
 
 public class MainView extends Application {
 
@@ -20,10 +21,20 @@ public class MainView extends Application {
 
 		//Cambiare qui per modificare starting view
 		VistaNavigator.loadView(VistaNavigator.LOGIN);
+		
+		//Inizializzazione liste all'avvio
+		loadLists();
 	}
 
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	private void loadLists() {
+		GestionePrenotazioneController mainController = new GestionePrenotazioneController();
+		mainController.aggiornaListaConvenzioni();
+		mainController.aggiornaListaFedelta();
+		mainController.aggiornaListaPrezzi();
+		mainController.aggiornaListaStagioni();
+	}
 }
