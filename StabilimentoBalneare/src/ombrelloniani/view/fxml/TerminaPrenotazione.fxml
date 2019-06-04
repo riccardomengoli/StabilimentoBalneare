@@ -92,7 +92,8 @@
 								<Pane prefHeight="1">
 									<Label fx:id="label_g3" styleClass="sectionHeader" text="Totale da pagare" />
 									<Line fx:id="hr_g3" />
-									<Button fx:id="btn_g3" styleClass="standardButton" id="convenzioneButton" text="Seleziona convenzione" />
+									<Button fx:id="btn_g3" onAction="#handleSelezionaConvenzione" styleClass="standardButton"
+										id="convenzioneButton" text="Seleziona convenzione" />
 									<VBox.margin>
 										<Insets top="35" bottom="10" />
 									</VBox.margin>

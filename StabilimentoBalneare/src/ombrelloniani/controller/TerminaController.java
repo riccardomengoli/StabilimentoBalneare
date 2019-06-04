@@ -337,7 +337,7 @@ public class TerminaController implements IController, IControllerTermina{
 	public void convenzioneSelezionata(int index) {
 		
 		String nomeConvenzione = (convenzioniString.get(index))[0];
-		ricevuta.setPercentualeConvenzione(Double.parseDouble((convenzioniString.get(index))[3]));
+		ricevuta.setPercentualeConvenzione(Double.parseDouble((convenzioniString.get(index))[2]));
 		for(Convenzione c: this.convenzioni.getConvenzioni())
 			if(c.getNome().equals(nomeConvenzione)) {
 				this.convenzione = c;

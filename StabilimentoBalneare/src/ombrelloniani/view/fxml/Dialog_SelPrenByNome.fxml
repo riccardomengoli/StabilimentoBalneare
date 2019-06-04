@@ -16,11 +16,11 @@
 	<VBox>
 		<GridPane hgap="10">
 			<Label text="Nome" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-			<TextField fx:id="nome" styleClass="inputText" maxWidth="300" GridPane.rowIndex="0"
+			<TextField fx:id="nome" onAction="#handleRicerca" styleClass="inputText" maxWidth="300" GridPane.rowIndex="0"
 				GridPane.columnIndex="1" />
 
 			<Label text="Cognome" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-			<TextField fx:id="cognome" styleClass="inputText" maxWidth="300" GridPane.rowIndex="1"
+			<TextField fx:id="cognome" onAction="#handleRicerca" styleClass="inputText" maxWidth="300" GridPane.rowIndex="1"
 				GridPane.columnIndex="1" />
 
 			<Button onAction="#handleRicerca" styleClass="standardButton" text="Cerca" GridPane.rowIndex="0"

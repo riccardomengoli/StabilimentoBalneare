@@ -41,6 +41,7 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 	private ObservableList<String[]> ricevuta = FXCollections.observableArrayList();
 
 	private Dialog_SelPrenByNome dialogNome = null;
+	private Dialog_SelConvenzione dialogConvenzione = null;
 
 	public TerminaPrenotazione() {
 		this.controller = new TerminaController(this);
@@ -105,6 +106,16 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 		// Mostro dialog
 		dialogNome = new Dialog_SelPrenByNome(controller);
 		dialogNome.showDialog();
+	}
+	
+	/**
+	 * Richiama la finestra di selezione di una convenzione.
+	 */
+	@FXML
+	private void handleSelezionaConvenzione(ActionEvent event) {
+		// Mostro dialog
+		dialogConvenzione = new Dialog_SelConvenzione(controller);
+		dialogConvenzione.showDialog();
 	}
 
 	/**
@@ -291,7 +302,7 @@ public class TerminaPrenotazione extends FXMLController implements IViewTermina 
 
 	@Override
 	public void aggiornaListaConvenzioni(List<String[]> convenzioni) {
-		// TODO Sviluppi futuri
-
+		//Inoltra risultati richiesta
+		dialogConvenzione.aggiornaListaConvenzioni(convenzioni);
 	}
 }

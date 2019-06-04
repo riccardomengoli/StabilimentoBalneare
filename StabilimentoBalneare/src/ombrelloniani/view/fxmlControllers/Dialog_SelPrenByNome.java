@@ -83,9 +83,6 @@ public class Dialog_SelPrenByNome extends VBox {
 	}
 
 	public int getPrenotazioneSelezionata() {
-		if (listaPrenotazioni.getSelectionModel().selectedItemProperty().isNull().get()) {
-			return -1;
-		}
 		return listaPrenotazioni.getSelectionModel().getSelectedIndex();
 	}
 

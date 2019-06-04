@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ombrelloniani.view.fxmlControllers.*;
@@ -101,7 +100,7 @@ public class VistaNavigator {
 		stage.show();
 	}
 	
-	public static void loadPopup(Pane root, String title) {
+	public static void loadPopup(Parent root, String title) {
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(VistaNavigator.class.getResource("css/styles.css").toExternalForm());
 		
