@@ -169,12 +169,17 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 		ombrelloneSelezionato = mappaOmbrelloni.get(event.getSource());
 		List<String[]> content = controller.mostraStatoOmbrellone();
 
-		if (content != null) {
-			Popup info = new Popup();
-			info.getContent().add(new Popup_InfoOmbrellone(content.get(0)));
-			info.show(((ImageView) event.getSource()).getScene().getWindow(), event.getScreenX(), event.getScreenY());
-			info.setAutoHide(true);
+		//Creo popup e mostro la prima prenotazione o se libero solo il nome dell'ombrellone
+		Popup info = new Popup();
+		String[] primaPrenotazione = content.get(0);
+		if (primaPrenotazione[1] == null) {
+			info.getContent().add(new Popup_InfoOmbrellone(primaPrenotazione));
+		} else {
+			info.getContent().add(new Popup_InfoOmbrelloneComplete(primaPrenotazione));
 		}
+		
+		info.show(((ImageView) event.getSource()).getScene().getWindow(), event.getScreenX(), event.getScreenY());
+		info.setAutoHide(true);
 	}
 
 	/**

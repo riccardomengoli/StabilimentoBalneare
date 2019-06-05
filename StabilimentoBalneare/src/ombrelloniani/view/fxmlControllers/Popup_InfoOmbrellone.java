@@ -10,11 +10,6 @@ import javafx.scene.layout.VBox;
 public class Popup_InfoOmbrellone extends VBox {
 
 	@FXML private Label idOmbrellone;
-	@FXML private Label idPrenotazione;
-	@FXML private Label dataInizio;
-	@FXML private Label dataFine;
-	@FXML private Label nome;
-	@FXML private Label cognome;
 
 	public Popup_InfoOmbrellone(String[] content) {
 		try {
@@ -28,10 +23,5 @@ public class Popup_InfoOmbrellone extends VBox {
 		}
 		
 		idOmbrellone.setText(content[0]);
-		idPrenotazione.setText(content[1]);
-		dataInizio.setText(content[2]);
-		dataFine.setText(content[3]);
-		nome.setText(content[4]);
-		cognome.setText(content[5]);
 	}
 }
