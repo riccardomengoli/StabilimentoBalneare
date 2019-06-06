@@ -46,6 +46,12 @@ public class DisponibilitaController implements IController, IControllerDisponib
 			"(P.dataInizio >= ? AND P.dataFine <= ?)) "
 			;
 	
+	static String get_idOmbrellone = 
+			"SELECT idOmbrellone " +
+			"FROM OMBRELLONI " +
+			"WHERE numeroRiga = ? AND numeroColonna = ? "
+			;
+	
 	// Costruttore deve prendere in ingresso la view sulla quale richiamare i metodi
 	public DisponibilitaController (IViewDisponibilita viewDisponibilita) {
 			this.viewDisponibilita = viewDisponibilita;
@@ -173,15 +179,25 @@ public class DisponibilitaController implements IController, IControllerDisponib
 				list.add(infoPrenotazione);
 			}
 			
+			if(list.size() == 0) {
+				
+				stm = connection.prepareStatement(get_idOmbrellone);
+				stm.setInt(1, numeroRiga);
+				stm.setInt(2, numeroColonna);
+				rs = stm.executeQuery();
+				infoPrenotazione[0] = rs.getString("idOmbrellone");
+				infoPrenotazione[1] = null;
+				infoPrenotazione[2] = null;
+				infoPrenotazione[3] = null;
+				infoPrenotazione[4] = null;
+				infoPrenotazione[5] = null;
+				list.add(infoPrenotazione);
+			}
+			
 			stm.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		
-		//se la lista è vuota non ha trovato nessun risultato => null
-		if(list.size() == 0) {
-			return null;
 		}
 		
 		return list;
