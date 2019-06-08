@@ -98,8 +98,10 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 		DoubleBinding vgap = ((Pane) mappaOmbrelloniView.getParent()).heightProperty()
 				.subtract(mappaOmbrelloniView.heightProperty()).divide(30);
 
-		mappaOmbrelloniView.hgapProperty().bind(Bindings.when(hgap.lessThan(30)).then(hgap).otherwise(30));
-		mappaOmbrelloniView.vgapProperty().bind(Bindings.when(vgap.lessThan(30)).then(vgap).otherwise(30));
+		mappaOmbrelloniView.hgapProperty().bind(Bindings.when(hgap.greaterThan(20)).then(20)
+				.otherwise(Bindings.when(hgap.lessThan(5)).then(5).otherwise(hgap)));
+		mappaOmbrelloniView.vgapProperty().bind(Bindings.when(vgap.greaterThan(20)).then(20)
+				.otherwise(Bindings.when(vgap.lessThan(5)).then(5).otherwise(vgap)));
 
 		// Ricevo ombrelloni occupati di data corrente da mostrare e aggiorno la mappa
 		List<int[]> ombOccupati = controller.mostraStatoSpiaggia();
@@ -169,7 +171,8 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 		ombrelloneSelezionato = mappaOmbrelloni.get(event.getSource());
 		List<String[]> content = controller.mostraStatoOmbrellone();
 
-		//Creo popup e mostro la prima prenotazione o se libero solo il nome dell'ombrellone
+		// Creo popup e mostro la prima prenotazione o se libero solo il nome
+		// dell'ombrellone
 		Popup info = new Popup();
 		String[] primaPrenotazione = content.get(0);
 		if (primaPrenotazione[1] == null) {
@@ -177,7 +180,7 @@ public class ControlloDisponibilita extends FXMLController implements IViewDispo
 		} else {
 			info.getContent().add(new Popup_InfoOmbrelloneComplete(primaPrenotazione));
 		}
-		
+
 		info.show(((ImageView) event.getSource()).getScene().getWindow(), event.getScreenX(), event.getScreenY());
 		info.setAutoHide(true);
 	}
