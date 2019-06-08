@@ -44,7 +44,7 @@ public class GestionePrenotazioneController extends Controller implements IContr
 			"SELECT * "+ 
 			"FROM PRENOTAZIONI P JOIN CLIENTI C "+
 			"ON P.idCliente = C.documento " +
-			"WHERE C.nome = ? AND C.cognome = ? "
+			"WHERE lower(C.nome) = ? AND lower(C.cognome) = ? "
 			;
 	
 	static String find_serviziByIdPrenotazione =
@@ -91,7 +91,7 @@ public class GestionePrenotazioneController extends Controller implements IContr
 
 	public GestionePrenotazioneController() { super();};
 		
-	// La lista dei servizi ï¿½ calcolata con duplicati in modo da mostrare anche i servizi inseriti molteplici volte
+	// La lista dei servizi è calcolata con duplicati in modo da mostrare anche i servizi inseriti molteplici volte
 	// cerca prenotazione modifica automaticamente le stringhe in ingresso nel formato Nome Cognome
 	public List<Prenotazione> cercaPrenotazioni(String nome, String cognome) {
 		
@@ -105,8 +105,8 @@ public class GestionePrenotazioneController extends Controller implements IContr
 		try {
 			
 			PreparedStatement pstm = connection.prepareStatement(prenotazioni_nomeCognome);
-			pstm.setString(1, nome);
-			pstm.setString(2, cognome);
+			pstm.setString(1, nome.toLowerCase());
+			pstm.setString(2, cognome.toLowerCase());
 			ResultSet rs = pstm.executeQuery();
 			
 			while(rs.next()) {

@@ -61,8 +61,8 @@ public class TerminaController implements IController, IControllerTermina{
 			+ "WHERE idPrenotazione = ?";
 	
 	private static String aggiornaPrenotazioniTerminate = 
-			"INSERT INTO PRENOTAZIONI_TERMINATE(idPrenotazione, dataInizio, dataFine, numeroLettini, idCliente, saldo) "
-			+ "VALUES (?, ?, ?, ?, ?, ?)";
+			"INSERT INTO PRENOTAZIONI_TERMINATE(dataInizio, dataFine, numeroLettini, idCliente, saldo) "
+			+ "VALUES (?, ?, ?, ?, ?)";
 	
 	private static String giorniTotaliSoggiorno =
 			"SELECT SUM(((strftime('%s',dataFine)-strftime('%s',dataInizio))/86400)+1) "
@@ -152,12 +152,13 @@ public class TerminaController implements IController, IControllerTermina{
 		List<String[]> prenotazioni = new ArrayList<String[]>();
 		
 		for(Prenotazione p : this.prenotazioni) {
+			prenotazione = new String[3];
 			prenotazione[0] = Integer.toString(p.getIdPrenotazione());
 			prenotazione[1] = formatter.format(p.getDataInizio());
 			prenotazione[2] = formatter.format(p.getDataFine());
 			prenotazioni.add(prenotazione);
 		}
-		
+	
 		viewTermina.aggiornaListaPrenotazioniDisponibili(prenotazioni);
 	}
 
@@ -225,12 +226,11 @@ public class TerminaController implements IController, IControllerTermina{
 			delete.executeUpdate();
 			
 			insert = connection.prepareStatement(aggiornaPrenotazioniTerminate);
-			insert.setInt(1, prenotazioneTerminata.getIdPrenotazione());
-			insert.setString(2, formatter.format(prenotazioneTerminata.getDataInizio()));
-			insert.setString(3, formatter.format(prenotazioneTerminata.getDataFine()));
-			insert.setInt(4, prenotazioneTerminata.getNumeroLettini());
-			insert.setString(5, prenotazioneTerminata.getCliente().getIdDocumento());
-			insert.setFloat(6, prenotazioneTerminata.getSaldo());
+			insert.setString(1, formatter.format(prenotazioneTerminata.getDataInizio()));
+			insert.setString(2, formatter.format(prenotazioneTerminata.getDataFine()));
+			insert.setInt(3, prenotazioneTerminata.getNumeroLettini());
+			insert.setString(4, prenotazioneTerminata.getCliente().getIdDocumento());
+			insert.setFloat(5, prenotazioneTerminata.getSaldo());
 			insert.executeUpdate();
 			
 		} catch (SQLException e) {

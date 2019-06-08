@@ -65,6 +65,15 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			"DELETE FROM PRENOTAZIONI " +
 			"WHERE idPrenotazione = ? "
 	;
+	
+	static String updateCliente = 
+			"UPDATE CLIENTI " +
+			"SET nome = ?, " +
+			"cognome = ?, " +
+			"email = ?, " +
+			"telefono = ? " +
+			"WHERE documento = ? "
+	;
 		
 	public CreaPrenotazioneController(IViewCreazione viewCreazione) {
 		this.viewCreazione = viewCreazione;
@@ -83,6 +92,30 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				result = rs.getInt("idPrenotazione");
 			}
 		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	//se inserisco carta di identità registrata e provo a salvare un nuovo cliente
+	private boolean verificaCliente() {
+		
+		String idDocumento = viewCreazione.getIdDocumento();
+		Connection connection = this.getConnection();
+		boolean result = false;
+		try {
+			
+			PreparedStatement pstm = connection.prepareStatement(find_client);
+			pstm.setString(1, idDocumento.toLowerCase());
+			ResultSet rs = pstm.executeQuery();
+			
+			if(rs.next()) result = true;
+			
+			pstm.close();
+			//connection.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -175,22 +208,45 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				return;
 			}
 			
-			if(this.cliente == null) {
-			
+			if(this.cliente == null || !this.cliente.getIdDocumento().equals(viewCreazione.getIdDocumento().toUpperCase()) ) {
+				
+				if(verificaCliente()) {
+					viewCreazione.showError("Errore Inserimento", "Documento di identità associato ad un ospite già registrato");
+					return;
+				}
+				
 				pstm = connection.prepareStatement(createCliente);
-				pstm.setString(1, viewCreazione.getIdDocumento());
-				pstm.setString(2, this.capitalizeFirstLetter(viewCreazione.getNome()));
-				pstm.setString(3, this.capitalizeFirstLetter(viewCreazione.getCognome()));
+				pstm.setString(1, viewCreazione.getIdDocumento().toUpperCase());
+				pstm.setString(2, this.capitalizeFirstLetter(viewCreazione.getNome().toLowerCase()));
+				pstm.setString(3, this.capitalizeFirstLetter(viewCreazione.getCognome().toLowerCase()));
 				pstm.setString(4, viewCreazione.getEmail());
 				pstm.setString(5, viewCreazione.getTelefono());
 				pstm.executeUpdate();
 			}
 			
+			//in questo modo ho la possibilità di modificare i parametri del cliente sul db
+			else if(!this.cliente.getNome().equalsIgnoreCase(viewCreazione.getNome()) ||
+					!this.cliente.getCognome().equalsIgnoreCase(viewCreazione.getCognome()) ||
+					(this.cliente.getEmail() == null && viewCreazione.getEmail() != null) ||
+					(this.cliente.getTelefono() == null && viewCreazione.getTelefono() != null) ||
+					!this.cliente.getEmail().equalsIgnoreCase(viewCreazione.getEmail()) ||
+					!this.cliente.getTelefono().equalsIgnoreCase(viewCreazione.getTelefono()) ) {
+				
+				pstm = connection.prepareStatement(updateCliente);
+				pstm.setString(1, this.capitalizeFirstLetter(viewCreazione.getNome()));
+				pstm.setString(2, this.capitalizeFirstLetter(viewCreazione.getCognome()));
+				pstm.setString(3, viewCreazione.getEmail());
+				pstm.setString(4, viewCreazione.getTelefono());
+				pstm.setString(5, viewCreazione.getIdDocumento().toUpperCase());
+				pstm.executeUpdate();
+			}
+				
+			
 			pstm = connection.prepareStatement(createPrenotazione);
 			pstm.setString(1, formatter.format(dataInizio));
 			pstm.setString(2, formatter.format(dataFine));
 			pstm.setInt(3, viewCreazione.getNumeroLettini());
-			if(this.cliente == null) pstm.setString(4, viewCreazione.getIdDocumento());
+			if(this.cliente == null) pstm.setString(4, viewCreazione.getIdDocumento().toUpperCase());
 			else pstm.setString(4, this.cliente.getIdDocumento());
 			
 			pstm.executeUpdate();
@@ -199,7 +255,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 					
 				pstm = connection.prepareStatement(aggiungiOmbrellonePrenotazione);
 				pstm.setInt(1,this.getLastIdPrenotazione());
-				pstm.setString(2, o.getIdOmbrellone());
+				pstm.setString(2, o.getIdOmbrellone().toUpperCase());
 				pstm.executeUpdate();
 			}
 			
@@ -266,9 +322,9 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 		String idOmbrellone;
 		boolean trovato = false;
 		
-		idOmbrellone = viewCreazione.getInputOmbrellone();
+		idOmbrellone = viewCreazione.getOmbrelloneSelezionato();
 		if (idOmbrellone == null)
-			idOmbrellone = viewCreazione.getOmbrelloneSelezionato();
+			idOmbrellone = viewCreazione.getInputOmbrellone();
 		
 		for(Ombrellone o: this.ombrelloni) {
 			
