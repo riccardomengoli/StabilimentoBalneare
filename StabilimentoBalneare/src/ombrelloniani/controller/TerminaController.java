@@ -283,7 +283,10 @@ public class TerminaController implements IController, IControllerTermina{
 		}
 		else {
 			entry[0] = "Sconto " + this.ricevuta.getPercentualeSconto()*100 + "% - " + this.nomeFedelta;
-			entry[2] = "- " + Double.toString(this.ricevuta.getPercentualeSconto()*this.ricevuta.getPrezzoTotale());
+			if(this.ricevuta.getPercentualeSconto() > this.ricevuta.getPercentualeConvenzione())
+				entry[2] = "- " + Float.toString((float)(this.ricevuta.getPercentualeSconto()*this.ricevuta.getPrezzoTotale()));
+			else 
+				entry[2] = "";
 		}
 		
 		entriesRicevuta.add(entry);
@@ -296,7 +299,10 @@ public class TerminaController implements IController, IControllerTermina{
 		}
 		else {
 			entry[0] = "Convenzione - " + this.convenzione.getNome() + " - " + Double.toString(this.convenzione.getSconto()*100) + "%";
-			entry[2] = "- " + Double.toString(this.ricevuta.getPrezzoTotale()*this.convenzione.getSconto());
+			if(this.ricevuta.getPercentualeConvenzione() > this.ricevuta.getPercentualeSconto())
+				entry[2] = "- " + Float.toString((float)(this.ricevuta.getPrezzoTotale()*this.convenzione.getSconto()));
+			else
+				entry[2] = "";
 		}
 		
 		entriesRicevuta.add(entry);
