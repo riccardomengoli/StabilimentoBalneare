@@ -332,7 +332,7 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 				
 				trovato = true;
 				this.ombrelloni.remove(o);
-				this.viewCreazione.removeOmbrelloneFromList(idOmbrellone);
+				this.viewCreazione.removeOmbrelloneFromList(idOmbrellone.toUpperCase());
 				break;
 			}
 		}
