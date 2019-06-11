@@ -230,7 +230,7 @@ public class TerminaController implements IController, IControllerTermina{
 			insert.setString(2, formatter.format(prenotazioneTerminata.getDataFine()));
 			insert.setInt(3, prenotazioneTerminata.getNumeroLettini());
 			insert.setString(4, prenotazioneTerminata.getCliente().getIdDocumento());
-			insert.setFloat(5, prenotazioneTerminata.getSaldo());
+			insert.setFloat(5, (float)prenotazioneTerminata.getSaldo());
 			insert.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -493,27 +493,30 @@ public class TerminaController implements IController, IControllerTermina{
 			
 			while(rs.next()) {
 				
-				trovato = false;
+				Date dateTime = formatter.parse(rs.getString("dataOra"));
+				if(dateTime.before(this.prenotazione.getDataFine()) || dateTime.equals(this.prenotazione.getDataFine())) {
 				
-				for(Prezzo p: this.prezzi.getPrezzi()) {
+					trovato = false;
 					
-					if(p.getClass() == PrezzoServizio.class) {
+					for(Prezzo p: this.prezzi.getPrezzi()) {
 						
-						Date dateTime = formatter.parse(rs.getString("dataOra"));
-						PrezzoServizio pServ = (PrezzoServizio)p;
+						if(p.getClass() == PrezzoServizio.class) {
 						
-						if(pServ.getStagione().getDataInizio().compareTo(dateTime) <= 0 &&
-								pServ.getStagione().getDataFine().compareTo(dateTime) >= 0 
-								&& pServ.getServizio().getNome().equals(servizio.getNome())) {
-		
-							totaleServizio += pServ.getPrezzo();
-							trovato = true;
-							break;
+							PrezzoServizio pServ = (PrezzoServizio)p;
+							
+							if(pServ.getStagione().getDataInizio().compareTo(dateTime) <= 0 &&
+									pServ.getStagione().getDataFine().compareTo(dateTime) >= 0 
+									&& pServ.getServizio().getNome().equals(servizio.getNome())) {
+			
+								totaleServizio += pServ.getPrezzo();
+								trovato = true;
+								break;
+							}
 						}
 					}
+					
+					if(trovato == false) totaleServizio += this.prezzoBaseServizi;
 				}
-				
-				if(trovato == false) totaleServizio += this.prezzoBaseServizi;
 			}
 			
 		} catch (SQLException e) {
