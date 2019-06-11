@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class CreaPrenotazioneController extends Controller implements IController,IControllerCrea{
@@ -263,6 +264,10 @@ public class CreaPrenotazioneController extends Controller implements IControlle
 			this.viewCreazione.confermaCreazione(this.getLastIdPrenotazione());
 			this.cliente = null;
 			this.ombrelloni = new ArrayList<Ombrellone>();
+			
+			//Scrittura log
+			this.writeLog(LocalDateTime.now(), Controller.username, "creazionePrenotazione", "creazione avvenuta con successo");
+			
 			pstm.close();
 			
 		} catch (SQLException e) {

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.StringTokenizer;
 
 import ombrelloniani.controller.exceptions.UserNotFoundException;
@@ -17,6 +18,7 @@ public class ControllerLogin implements IControllerLogin,IController {
 
 	private FileReader reader;
 	private File filePassword;
+	private Controller controller = new Controller();
 
 	public ControllerLogin() {
 	};
@@ -44,13 +46,18 @@ public class ControllerLogin implements IControllerLogin,IController {
 			StringTokenizer str;
 			String line;
 			String ruolo = null;
+			String user = null;
+			String passwd = null;
 			boolean utenteTrovato = false;
 			BufferedReader bf = new BufferedReader(this.reader);
 
 			while ((line = bf.readLine()) != null) {
 				str = new StringTokenizer(line);
 				ruolo = str.nextToken();
-				if (username.equals(str.nextToken()) && password.equals(str.nextToken())) {
+				user = str.nextToken();
+				passwd = str.nextToken();
+				
+				if (username.equals(user) && password.equals(passwd)) {
 					this.reader.close();
 					utenteTrovato = true;
 					break;
@@ -60,6 +67,10 @@ public class ControllerLogin implements IControllerLogin,IController {
 			this.reader.close();
 
 			if (utenteTrovato) {
+				Controller.setUser(user);
+
+				controller.writeLog(LocalDateTime.now(), Controller.username, "Login", "Login effettuato con successo");
+				
 				if (ruolo.equalsIgnoreCase("gestore")) {
 					VistaNavigator.loadView(VistaNavigator.HOMEGESTORE);
 				} else if (ruolo.equalsIgnoreCase("operatore")) {

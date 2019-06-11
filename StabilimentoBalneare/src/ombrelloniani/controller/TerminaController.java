@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
@@ -197,8 +198,7 @@ public class TerminaController implements IController, IControllerTermina{
 		prenotazioneTerminata.setSaldo(this.calcolaSaldo());
 		
 		aggiornaDataBase();
-		controller.writeLog("prenotazione " + prenotazione.getIdPrenotazione()
-				+ "terminata alle " + Date.from(Instant.now()));
+		controller.writeLog(LocalDateTime.now(), Controller.username, "terminazione Prenotazione", "terminazione effettuata");
 		
 		viewTermina.confermaTerminazione();
 		

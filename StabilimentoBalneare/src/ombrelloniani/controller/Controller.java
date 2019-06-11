@@ -11,15 +11,21 @@ import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class Controller {
 
 	private Connection dbConnection;
 	private Writer logWriter;
 	private String dbPath = getClass().getResource("/resources/database.db").toExternalForm();
+	public static String username;
 
 	public Controller() {};
 
+	public static void setUser(String user) {
+		username = user;
+	}
+	
 	public synchronized Connection getConnection() {
 
 		if (this.dbConnection == null)
@@ -44,13 +50,14 @@ public class Controller {
 		return conn;
 	}
 
-	public synchronized void writeLog(String string) {
-
+	public synchronized void writeLog(LocalDateTime data, String user, String operazione, String esito) {
+		
 		if (this.logWriter == null)
 			this.logWriter = openLogOperation();
 
 		try {
-			this.logWriter.append(string);
+			System.out.println(""+ data.toString() + " , " + user + " , " + operazione + " , " + esito + "\n");
+			this.logWriter.write(""+ data.toString() + " , " + user + " , " + operazione + " , " + esito + "\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
