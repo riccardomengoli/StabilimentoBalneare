@@ -56,8 +56,7 @@ public class Controller {
 			this.logWriter = openLogOperation();
 
 		try {
-			System.out.println(""+ data.toString() + " , " + user + " , " + operazione + " , " + esito + "\n");
-			this.logWriter.write(""+ data.toString() + " , " + user + " , " + operazione + " , " + esito + "\n");
+			this.logWriter.append(""+ data.toString() + " , " + user + " , " + operazione + " , " + esito + "\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -69,6 +68,7 @@ public class Controller {
 		FileWriter fw = null;
 
 		try {
+			
 			f = new File(getClass().getResource("/resources/log.txt").toURI());
 			fw = new FileWriter(f);
 
