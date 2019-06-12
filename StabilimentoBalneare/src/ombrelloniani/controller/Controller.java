@@ -25,7 +25,7 @@ public class Controller {
 	public static void setUser(String user) {
 		username = user;
 	}
-	
+
 	public synchronized Connection getConnection() {
 
 		if (this.dbConnection == null)
@@ -51,15 +51,16 @@ public class Controller {
 	}
 
 	public synchronized void writeLog(LocalDateTime data, String user, String operazione, String esito) {
-		
-		if (this.logWriter == null)
-			this.logWriter = openLogOperation();
 
 		try {
-			this.logWriter.append(""+ data.toString() + " , " + user + " , " + operazione + " , " + esito + "\n");
+			this.logWriter = openLogOperation();
+			this.logWriter.write(data.toString() + "\t" + user + "\t" + operazione + "\t" + esito + "\n");
+			logWriter.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	private Writer openLogOperation() {
@@ -68,9 +69,9 @@ public class Controller {
 		FileWriter fw = null;
 
 		try {
-			
+
 			f = new File(getClass().getResource("/resources/log.txt").toURI());
-			fw = new FileWriter(f);
+			fw = new FileWriter(f, true);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -86,7 +87,7 @@ public class Controller {
 
 		File f = null;
 		FileReader fr = null;
-		
+
 		try {
 			f = new File(getClass().getResource("/resources/log.txt").toURI());
 			fr = new FileReader(f);
